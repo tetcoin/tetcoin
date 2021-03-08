@@ -1,6 +1,6 @@
 # Tetcoin
 
-Implementation of a https://polkadot.network node in Rust based on the Substrate framework.
+Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework.
 
 > **NOTE:** In 2018, we split our implementation of "Polkadot" from its development framework
 > "Substrate". See the [Substrate][substrate-repo] repo for git history prior to 2018.
