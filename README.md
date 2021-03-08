@@ -1,4 +1,4 @@
-# Polkadot
+# Tetcoin
 
 Implementation of a https://polkadot.network node in Rust based on the Substrate framework.
 
