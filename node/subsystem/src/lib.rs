@@ -156,7 +156,7 @@ pub enum SubsystemError {
 	Infallible(#[from] std::convert::Infallible),
 
 	#[error(transparent)]
-	Prometheus(#[from] tetcore_prometheus_endpoint::PrometheusError),
+	Prometheus(#[from] prometheus_endpoint::PrometheusError),
 
 	#[error(transparent)]
 	Jaeger(#[from] JaegerError),

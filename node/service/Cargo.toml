@@ -51,7 +51,7 @@ noble-transaction-payment-rpc-runtime-api = { git = "https://github.com/tetcoin/
 # Tetcore Other
 fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 fabric-system-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-prometheus-endpoint = { package = "tetcore-prometheus-endpoint", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { version = "0.8.1" }
 
 # External Crates
 futures = "0.3.12"

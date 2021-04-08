@@ -395,7 +395,7 @@ impl<ToJob> JobHandle<ToJob> {
 /// This module reexports Prometheus types and defines the [`Metrics`] trait.
 pub mod metrics {
 	/// Reexport Tetcore Prometheus types.
-	pub use tetcore_prometheus_endpoint as prometheus;
+	pub use prometheus_endpoint as prometheus;
 
 
 	/// Subsystem- or job-specific Prometheus metrics.

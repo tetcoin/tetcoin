@@ -27,7 +27,7 @@ tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcore-prometheus-endpoint = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { version = "0.8.1" }
 
 [dev-dependencies]
 assert_matches = "1.4.0"

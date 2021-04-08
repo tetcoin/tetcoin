@@ -21,4 +21,4 @@ tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-prometheus-endpoint = { package = "tetcore-prometheus-endpoint", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { version = "0.8.1" }

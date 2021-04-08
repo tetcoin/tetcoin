@@ -26,7 +26,7 @@ tetcoin-node-jaeger = { path = "../jaeger" }
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 smallvec = "1.6.1"
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcore-prometheus-endpoint = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 thiserror = "1.0.23"
 log = "0.4.13"
 
