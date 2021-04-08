@@ -16,7 +16,7 @@
 
 //! Mocks for all the traits.
 
-use tp_io::TestExternalities;
+use tet_io::TestExternalities;
 use tet_core::H256;
 use tp_runtime::traits::{
 	BlakeTwo256, IdentityLookup,

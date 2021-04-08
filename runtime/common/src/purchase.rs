@@ -506,9 +506,9 @@ mod tests {
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup. It also executes our `setup` function which sets up this pallet for use.
-	pub fn new_test_ext() -> tp_io::TestExternalities {
+	pub fn new_test_ext() -> tet_io::TestExternalities {
 		let t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
-		let mut ext = tp_io::TestExternalities::new(t);
+		let mut ext = tet_io::TestExternalities::new(t);
 		ext.execute_with(|| setup());
 		ext
 	}

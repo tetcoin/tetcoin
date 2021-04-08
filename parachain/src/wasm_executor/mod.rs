@@ -211,7 +211,7 @@ pub fn validate_candidate(
 }
 
 /// The host functions provided by the wasm executor to the parachain wasm blob.
-type HostFunctions = tp_io::TetcoreHostFunctions;
+type HostFunctions = tet_io::TetcoreHostFunctions;
 
 /// Validate a candidate under the given validation code.
 ///

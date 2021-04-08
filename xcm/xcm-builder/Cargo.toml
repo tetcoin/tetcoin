@@ -11,7 +11,7 @@ xcm = { path = "..", default-features = false }
 xcm-executor = { path = "../xcm-executor", default-features = false }
 tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
@@ -26,7 +26,7 @@ std = [
 	"xcm-executor/std",
 	"tetcore-std/std",
 	"tp-arithmetic/std",
-	"tp-io/std",
+	"tet-io/std",
 	"tp-runtime/std",
 	"fabric-support/std",
 	"tetcoin-parachain/std",

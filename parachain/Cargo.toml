@@ -6,7 +6,7 @@ description = "Types and utilities for creating and working with parachains"
 edition = "2018"
 
 [dependencies]
-# note: special care is taken to avoid inclusion of `tp-io` externals when compiling
+# note: special care is taken to avoid inclusion of `tet-io` externals when compiling
 # this crate for WASM. This is critical to avoid forcing all parachain WASM into implementing
 # various unnecessary Tetcore-specific endpoints.
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
@@ -23,7 +23,7 @@ thiserror = { version = "1.0.22", optional = true }
 serde = { version = "1.0.117", default-features = false, features = [ "derive" ], optional = true }
 tp-externalities = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 parking_lot = { version = "0.11.1", optional = true }
 log = { version = "0.4.11", optional = true }
 futures = { version = "0.3.8", optional = true }
@@ -48,7 +48,7 @@ std = [
 	"tetsy-util-mem",
 	"tp-externalities",
 	"tc-executor",
-	"tp-io",
+	"tet-io",
 	"tetcoin-core-primitives/std",
 	"futures",
 ]

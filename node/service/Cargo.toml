@@ -32,7 +32,7 @@ tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-offchain = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

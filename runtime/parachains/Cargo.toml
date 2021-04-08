@@ -15,7 +15,7 @@ derive_more = "0.99.11"
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -72,7 +72,7 @@ std = [
 	"tp-api/std",
 	"tp-keystore",
 	"tetcore-std/std",
-	"tp-io/std",
+	"tet-io/std",
 	"fabric-support/std",
 	"noble-authorship/std",
 	"noble-balances/std",

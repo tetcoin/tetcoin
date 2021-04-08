@@ -14,7 +14,7 @@ tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master", o
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-version = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -43,7 +43,7 @@ std = [
 	"tp-authority-discovery/std",
 	"tp-keystore",
 	"tetcore-std/std",
-	"tp-io/std",
+	"tet-io/std",
 	"tp-version/std",
 	"tp-staking/std",
 	"tp-arithmetic/std",

@@ -898,7 +898,7 @@ mod tests {
 			<Configuration as Store>::ActiveConfig::put(ground_truth.clone());
 
 			// Extract the active config via the well known key.
-			let raw_active_config = tp_io::storage::get(well_known_keys::ACTIVE_CONFIG)
+			let raw_active_config = tet_io::storage::get(well_known_keys::ACTIVE_CONFIG)
 				.expect("config must be present in storage under ACTIVE_CONFIG");
 			let abridged_config = AbridgedHostConfiguration::decode(&mut &raw_active_config[..])
 				.expect("HostConfiguration must be decodable into AbridgedHostConfiguration");

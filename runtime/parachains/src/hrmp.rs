@@ -1649,7 +1649,7 @@ mod tests {
 			// decode it into the abridged version.
 			assert!(channel_exists(para_a, para_b));
 			let raw_hrmp_channel =
-				tp_io::storage::get(&well_known_keys::hrmp_channels(HrmpChannelId {
+				tet_io::storage::get(&well_known_keys::hrmp_channels(HrmpChannelId {
 					sender: para_a,
 					recipient: para_b,
 				}))
@@ -1671,7 +1671,7 @@ mod tests {
 
 			// Now, verify that we can access and decode the egress index.
 			let raw_egress_index =
-				tp_io::storage::get(
+				tet_io::storage::get(
 					&well_known_keys::hrmp_egress_channel_index(para_a)
 				)
 				.expect("the egress index must be present for para_a");

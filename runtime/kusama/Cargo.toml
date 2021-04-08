@@ -21,7 +21,7 @@ tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", defaul
 inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 offchain-primitives = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -105,7 +105,7 @@ std = [
 	"block-builder-api/std",
 	"offchain-primitives/std",
 	"tetcore-std/std",
-	"tp-io/std",
+	"tet-io/std",
 	"fabric-support/std",
 	"noble-authorship/std",
 	"noble-balances/std",

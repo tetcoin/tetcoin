@@ -178,7 +178,7 @@ mod tests {
 	type Balances = noble_balances::Module<Test>;
 	type System = fabric_system::Module<Test>;
 
-	pub fn new_test_ext() -> tp_io::TestExternalities {
+	pub fn new_test_ext() -> tet_io::TestExternalities {
 		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 		// We use default for brevity, but you can configure as desired if needed.
 		noble_balances::GenesisConfig::<Test>::default().assimilate_storage(&mut t).unwrap();

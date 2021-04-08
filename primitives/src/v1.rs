@@ -62,7 +62,7 @@ pub use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 pub mod well_known_keys {
 	use super::{Id, HrmpChannelId};
 	use hex_literal::hex;
-	use tp_io::hashing::twox_64;
+	use tet_io::hashing::twox_64;
 	use tetcore_std::prelude::*;
 	use tetsy_scale_codec::Encode as _;
 

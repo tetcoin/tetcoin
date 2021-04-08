@@ -924,7 +924,7 @@ mod tests {
 		new_test_ext(GenesisConfigBuilder::default().build()).execute_with(|| {
 			queue_upward_msg(a, msg);
 
-			let raw_queue_size = tp_io::storage::get(&well_known_keys::relay_dispatch_queue_size(a))
+			let raw_queue_size = tet_io::storage::get(&well_known_keys::relay_dispatch_queue_size(a))
 				.expect("enqueing a message should create the dispatch queue\
 				and it should be accessible via the well known keys");
 			let (cnt, size) = <(u32, u32)>::decode(&mut &raw_queue_size[..])

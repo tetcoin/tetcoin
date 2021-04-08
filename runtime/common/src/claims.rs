@@ -17,7 +17,7 @@
 //! Module to process claims from Ethereum addresses.
 
 use tetcore_std::{prelude::*, fmt::Debug};
-use tp_io::{hashing::keccak_256, crypto::secp256k1_ecdsa_recover};
+use tet_io::{hashing::keccak_256, crypto::secp256k1_ecdsa_recover};
 use fabric_support::{
 	decl_event, decl_storage, decl_module, decl_error, ensure,
 	traits::{Currency, Get, VestingSchedule, EnsureOrigin, IsSubType},
@@ -719,7 +719,7 @@ mod tests {
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup.
-	pub fn new_test_ext() -> tp_io::TestExternalities {
+	pub fn new_test_ext() -> tet_io::TestExternalities {
 		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 		// We use default for brevity, but you can configure as desired if needed.
 		noble_balances::GenesisConfig::<Test>::default().assimilate_storage(&mut t).unwrap();

@@ -254,7 +254,7 @@ impl<T: Config> Module<T> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use tp_io::TestExternalities;
+	use tet_io::TestExternalities;
 	use tet_core::H256;
 	use tp_runtime::{
 		traits::{

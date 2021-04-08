@@ -1411,7 +1411,7 @@ mod test_fees {
 		let call = Call::Balances(call);
 		let len = call.using_encoded(|e| e.len()) as u32;
 
-		let mut ext = tp_io::TestExternalities::new_empty();
+		let mut ext = tet_io::TestExternalities::new_empty();
 		ext.execute_with(|| {
 			noble_transaction_payment::NextFeeMultiplier::put(min_multiplier);
 			let fee = TransactionPayment::compute_fee(len, &info, 0);

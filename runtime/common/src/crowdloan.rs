@@ -776,7 +776,7 @@ mod tests {
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup.
-	pub fn new_test_ext() -> tp_io::TestExternalities {
+	pub fn new_test_ext() -> tet_io::TestExternalities {
 		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 		noble_balances::GenesisConfig::<Test>{
 			balances: vec![(1, 1000), (2, 2000), (3, 3000), (4, 4000)],

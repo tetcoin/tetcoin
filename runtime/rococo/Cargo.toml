@@ -14,7 +14,7 @@ hex-literal = "0.3.1"
 
 fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -86,7 +86,7 @@ std = [
 	"noble-session/std",
 	"tp-api/std",
 	"tet-core/std",
-	"tp-io/std",
+	"tet-io/std",
 	"tp-runtime/std",
 	"tp-session/std",
 	"tp-staking/std",

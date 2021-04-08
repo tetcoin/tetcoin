@@ -15,7 +15,7 @@
 // along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use tetcore_std::marker::PhantomData;
-use tp_io::hashing::blake2_256;
+use tet_io::hashing::blake2_256;
 use tp_runtime::traits::AccountIdConversion;
 use fabric_support::traits::Get;
 use tetsy_scale_codec::Encode;

@@ -242,7 +242,7 @@ mod multiplier_tests {
 	type System = fabric_system::Module<Runtime>;
 
 	fn run_with_system_weight<F>(w: Weight, assertions: F) where F: Fn() -> () {
-		let mut t: tp_io::TestExternalities =
+		let mut t: tet_io::TestExternalities =
 			fabric_system::GenesisConfig::default().build_storage::<Runtime>().unwrap().into();
 		t.execute_with(|| {
 			System::set_block_consumed_resources(w, 0);
