@@ -1,4 +1,4 @@
-// This file is part of Substrate.
+// This file is part of Tetcore.
 
 // Copyright (C) 2020 Parity Technologies (UK) Ltd.
 // SPDX-License-Identifier: Apache-2.0
@@ -42,7 +42,7 @@
 use fabric_support::{traits::Get, weights::Weight};
 use tetcore_std::marker::PhantomData;
 
-/// Weights for noble_bounties using the Substrate node and recommended hardware.
+/// Weights for noble_bounties using the Tetcore node and recommended hardware.
 pub struct WeightInfo<T>(PhantomData<T>);
 impl<T: fabric_system::Config> noble_bounties::WeightInfo for WeightInfo<T> {
 	fn propose_bounty(d: u32, ) -> Weight {

@@ -22,12 +22,12 @@ use tetcore_std::prelude::*;
 use tetcore_std::convert::TryInto;
 use tetcore_std::cmp::Ordering;
 
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use bitvec::vec::BitVec;
 #[cfg(feature = "std")]
 use serde::{Serialize, Deserialize};
 #[cfg(feature = "std")]
-use parity_util_mem::{MallocSizeOf, MallocSizeOfOps};
+use tetsy_util_mem::{MallocSizeOf, MallocSizeOfOps};
 
 #[cfg(feature = "std")]
 use tp_keystore::{CryptoStore, SyncCryptoStorePtr, Error as KeystoreError};
@@ -40,7 +40,7 @@ use application_crypto::KeyTypeId;
 
 pub use runtime_primitives::traits::{BlakeTwo256, Hash as HashT, Verify, IdentifyAccount};
 pub use tetcoin_core_primitives::*;
-pub use parity_scale_codec::Compact;
+pub use tetsy_scale_codec::Compact;
 
 pub use tetcoin_parachain::primitives::{
 	Id, LOWEST_USER_ID, UpwardMessage, HeadData, BlockData,
@@ -834,7 +834,7 @@ pub mod id {
 /// This helper trait ensures that we can encode Statement as CompactStatement,
 /// and anything as itself.
 ///
-/// This resembles `parity_scale_codec::EncodeLike`, but it's distinct:
+/// This resembles `tetsy_scale_codec::EncodeLike`, but it's distinct:
 /// EncodeLike is a marker trait which asserts at the typesystem level that
 /// one type's encoding is a valid encoding for another type. It doesn't
 /// perform any type conversion when encoding.

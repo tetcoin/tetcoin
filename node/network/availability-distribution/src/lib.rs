@@ -24,7 +24,7 @@
 
 #![deny(unused_crate_dependencies, unused_qualifications)]
 
-use parity_scale_codec::{Decode, Encode};
+use tetsy_scale_codec::{Decode, Encode};
 use futures::{channel::oneshot, FutureExt, TryFutureExt};
 
 use tet_core::crypto::Public;

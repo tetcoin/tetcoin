@@ -20,7 +20,7 @@ do
       echo "| warning!"
       echo "| Lines should not be longer than 120 characters."
       echo "| "
-      echo "| see more https://wiki.parity.io/Substrate-Style-Guide"
+      echo "| see more https://wiki.parity.io/Tetcore-Style-Guide"
       echo "|"
       FAIL="true"
     fi
@@ -36,7 +36,7 @@ do
         echo "| warning!"
         echo "| Lines should be longer than 100 characters only in exceptional circumstances!"
         echo "| "
-        echo "| see more https://wiki.parity.io/Substrate-Style-Guide"
+        echo "| see more https://wiki.parity.io/Tetcore-Style-Guide"
         echo "|"
       fi
       echo "| file: ${file}"

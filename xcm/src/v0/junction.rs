@@ -1,12 +1,12 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
 // This file is part of Cumulus.
 
-// Substrate is free software: you can redistribute it and/or modify
+// Tetcore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Substrate is distributed in the hope that it will be useful,
+// Tetcore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -17,7 +17,7 @@
 //! Support datastructures for `MultiLocation`, primarily the `Junction` datatype.
 
 use alloc::vec::Vec;
-use parity_scale_codec::{self, Encode, Decode};
+use tetsy_scale_codec::{self, Encode, Decode};
 
 /// A global identifier of an account-bearing consensus system.
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Encode, Decode, Debug)]
@@ -49,7 +49,7 @@ pub enum Junction {
 	/// A 32-byte identifier for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.
 	///
-	/// Generally used when the context is a Substrate-based chain.
+	/// Generally used when the context is a Tetcore-based chain.
 	AccountId32 { network: NetworkId, id: [u8; 32] },
 	/// An 8-byte index for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.

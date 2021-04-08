@@ -24,7 +24,7 @@
 //! f is the maximum number of faulty validators in the system.
 //! The data is coded so any f+1 chunks can be used to reconstruct the full data.
 
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use reed_solomon::galois_16::{self, ReedSolomon};
 use primitives::v0::{self, Hash as H256, BlakeTwo256, HashT};
 use primitives::v1;
@@ -80,7 +80,7 @@ pub enum Error {
 #[derive(Debug, PartialEq)]
 struct CodeParams {
 	data_shards: usize,
-	parity_shards: usize,
+	tetsy_shards: usize,
 }
 
 impl CodeParams {
@@ -99,7 +99,7 @@ impl CodeParams {
 		let shard_len = self.shard_len(payload.len());
 		let mut shards = vec![
 			WrappedShard::new(vec![0; shard_len]);
-			self.data_shards + self.parity_shards
+			self.data_shards + self.tetsy_shards
 		];
 
 		for (data_chunk, blank_shard) in payload.chunks(shard_len).zip(&mut shards) {
@@ -115,7 +115,7 @@ impl CodeParams {
 
 	// make a reed-solomon instance.
 	fn make_encoder(&self) -> ReedSolomon {
-		ReedSolomon::new(self.data_shards, self.parity_shards)
+		ReedSolomon::new(self.data_shards, self.tetsy_shards)
 			.expect("this struct is not created with invalid shard number; qed")
 	}
 }
@@ -136,7 +136,7 @@ fn code_params(n_validators: usize) -> Result<CodeParams, Error> {
 
 	Ok(CodeParams {
 		data_shards: n_faulty + 1,
-		parity_shards: n_good - 1,
+		tetsy_shards: n_good - 1,
 	})
 }
 
@@ -366,12 +366,12 @@ struct ShardInput<'a, I> {
 	cur_shard: Option<(&'a [u8], usize)>,
 }
 
-impl<'a, I: Iterator<Item=&'a [u8]>> parity_scale_codec::Input for ShardInput<'a, I> {
-	fn remaining_len(&mut self) -> Result<Option<usize>, parity_scale_codec::Error> {
+impl<'a, I: Iterator<Item=&'a [u8]>> tetsy_scale_codec::Input for ShardInput<'a, I> {
+	fn remaining_len(&mut self) -> Result<Option<usize>, tetsy_scale_codec::Error> {
 		Ok(Some(self.remaining_len))
 	}
 
-	fn read(&mut self, into: &mut [u8]) -> Result<(), parity_scale_codec::Error> {
+	fn read(&mut self, into: &mut [u8]) -> Result<(), tetsy_scale_codec::Error> {
 		let mut read_bytes = 0;
 
 		loop {
@@ -426,22 +426,22 @@ mod tests {
 
 		assert_eq!(code_params(2), Ok(CodeParams {
 			data_shards: 1,
-			parity_shards: 1,
+			tetsy_shards: 1,
 		}));
 
 		assert_eq!(code_params(3), Ok(CodeParams {
 			data_shards: 1,
-			parity_shards: 2,
+			tetsy_shards: 2,
 		}));
 
 		assert_eq!(code_params(4), Ok(CodeParams {
 			data_shards: 2,
-			parity_shards: 2,
+			tetsy_shards: 2,
 		}));
 
 		assert_eq!(code_params(100), Ok(CodeParams {
 			data_shards: 34,
-			parity_shards: 66,
+			tetsy_shards: 66,
 		}));
 	}
 
@@ -449,7 +449,7 @@ mod tests {
 	fn shard_len_is_reasonable() {
 		let mut params = CodeParams {
 			data_shards: 5,
-			parity_shards: 0, // doesn't affect calculation.
+			tetsy_shards: 0, // doesn't affect calculation.
 		};
 
 		assert_eq!(params.shard_len(100), 20);

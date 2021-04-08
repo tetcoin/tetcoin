@@ -20,7 +20,7 @@
 #![warn(missing_docs)]
 
 use tetcoin_primitives::v1::{Hash, BlockNumber};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use std::{convert::TryFrom, fmt, collections::HashMap};
 
 pub use tc_network::{ReputationChange, PeerId};
@@ -288,7 +288,7 @@ pub mod v1 {
 		SignedFullStatement,
 		approval::{IndirectAssignmentCert, IndirectSignedApprovalVote},
 	};
-	use parity_scale_codec::{Encode, Decode};
+	use tetsy_scale_codec::{Encode, Decode};
 	use super::RequestId;
 	use std::convert::TryFrom;
 
@@ -389,15 +389,15 @@ pub mod v1 {
 			const MAX_POV_BLOCK_SIZE: usize = 32 * 1024 * 1024;
 
 			struct InputDecoder<'a, T: std::io::BufRead>(&'a mut zstd::Decoder<T>, usize);
-			impl<'a, T: std::io::BufRead> parity_scale_codec::Input for InputDecoder<'a, T> {
-				fn read(&mut self, into: &mut [u8]) -> Result<(), parity_scale_codec::Error> {
+			impl<'a, T: std::io::BufRead> tetsy_scale_codec::Input for InputDecoder<'a, T> {
+				fn read(&mut self, into: &mut [u8]) -> Result<(), tetsy_scale_codec::Error> {
 					self.1 = self.1.saturating_add(into.len());
 					if self.1 > MAX_POV_BLOCK_SIZE {
 						return Err("pov block too big".into())
 					}
 					self.0.read_exact(into).map_err(Into::into)
 				}
-				fn remaining_len(&mut self) -> Result<Option<usize>, parity_scale_codec::Error> {
+				fn remaining_len(&mut self) -> Result<Option<usize>, tetsy_scale_codec::Error> {
 					Ok(None)
 				}
 			}

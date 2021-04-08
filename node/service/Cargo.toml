@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-# Substrate Client
+# Tetcore Client
 tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 babe = { package = "tc-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 grandpa = { package = "tc-finality-grandpa", git = "https://github.com/tetcoin/tetcore", branch = "master" }
@@ -22,7 +22,7 @@ tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "ma
 service = { package = "tc-service", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 telemetry = { package = "tc-telemetry", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
-# Substrate Primitives
+# Tetcore Primitives
 tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 babe-primitives = { package = "tp-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 consensus_common = { package = "tp-consensus", git = "https://github.com/tetcoin/tetcore", branch = "master" }
@@ -42,13 +42,13 @@ tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "ma
 tp-trie = { version = "2.0.2" }
 tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
-# Substrate Pallets
+# Tetcore Pallets
 noble-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-im-online = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-transaction-payment-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
-# Substrate Other
+# Tetcore Other
 fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 fabric-system-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 prometheus-endpoint = { package = "tetcore-prometheus-endpoint", git = "https://github.com/tetcoin/tetcore", branch = "master" }

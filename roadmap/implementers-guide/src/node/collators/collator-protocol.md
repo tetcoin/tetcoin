@@ -31,7 +31,7 @@ It uses the [`CollatorProtocolV1Message`](../../types/network.md#collator-protoc
 Since this protocol functions both for validators and collators, it is easiest to go through the protocol actions for each of them separately.
 
 Validators and collators.
-```dot process
+```tet process
 digraph {
   c1 [shape=MSquare, label="Collator 1"];
   c2 [shape=MSquare, label="Collator 2"];
@@ -68,7 +68,7 @@ Once connected to the relevant peers for the current group assigned to the core 
 
 On the validator side of the protocol, validators need to accept incoming connections from collators. They should keep some peer slots open for accepting new speculative connections from collators and should disconnect from collators who are not relevant.
 
-```dot process
+```tet process
 digraph G {
   label = "Declaring, advertising, and providing collations";
   labelloc = "t";

@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 
 # Tetcoin dependencies
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
@@ -13,7 +13,7 @@ tetcoin-test-service = { path = "../service" }
 tetcoin-primitives = { path = "../../../primitives" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 
-# Substrate dependencies
+# Tetcore dependencies
 tetcore-test-client = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

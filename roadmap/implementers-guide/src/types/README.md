@@ -8,7 +8,7 @@ Diagrams are rendered in high resolution; open them in a separate tab to see ful
 
 These data types are defined in `tetcoin/primitives/src/v1.rs`:
 
-```dot process
+```tet process
 digraph {
     rankdir = LR;
     node [shape = plain]
@@ -344,7 +344,7 @@ digraph {
 
 These data types are defined in `tetcoin/parachain/src/primitives.rs`:
 
-```dot process
+```tet process
 digraph {
     rankdir = LR;
     node [shape = plain]

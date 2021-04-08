@@ -74,7 +74,7 @@ pub trait Config: noble_session::Config
 }
 
 /// A proposal for adding a parachain to the relay chain.
-#[derive(parity_scale_codec::Encode, parity_scale_codec::Decode)]
+#[derive(tetsy_scale_codec::Encode, tetsy_scale_codec::Decode)]
 struct Proposal<AccountId, ValidatorId, Balance> {
 	/// The account that proposed this parachain.
 	proposer: AccountId,
@@ -89,7 +89,7 @@ struct Proposal<AccountId, ValidatorId, Balance> {
 }
 
 /// Information about the registered parachain.
-#[derive(parity_scale_codec::Encode, parity_scale_codec::Decode)]
+#[derive(tetsy_scale_codec::Encode, tetsy_scale_codec::Decode)]
 struct RegisteredParachainInfo<AccountId, ValidatorId> {
 	/// The validators for the relay chain provided by the parachain.
 	validators: Vec<ValidatorId>,

@@ -19,7 +19,7 @@
 
 use tetcore_std::vec::Vec;
 
-use parity_scale_codec::{Encode, Decode, CompactAs};
+use tetsy_scale_codec::{Encode, Decode, CompactAs};
 use tet_core::{RuntimeDebug, TypeId};
 
 #[cfg(feature = "std")]
@@ -29,7 +29,7 @@ use serde::{Serialize, Deserialize};
 use tet_core::bytes;
 
 #[cfg(feature = "std")]
-use parity_util_mem::MallocSizeOf;
+use tetsy_util_mem::MallocSizeOf;
 
 use tetcoin_core_primitives::{Hash, OutboundHrmpMessage};
 
@@ -200,12 +200,12 @@ pub trait AccountIdConversion<AccountId>: Sized {
 // TODO: Remove all of this, move tp-runtime::AccountIdConversion to own crate and and use that.
 // #360
 struct TrailingZeroInput<'a>(&'a [u8]);
-impl<'a> parity_scale_codec::Input for TrailingZeroInput<'a> {
-	fn remaining_len(&mut self) -> Result<Option<usize>, parity_scale_codec::Error> {
+impl<'a> tetsy_scale_codec::Input for TrailingZeroInput<'a> {
+	fn remaining_len(&mut self) -> Result<Option<usize>, tetsy_scale_codec::Error> {
 		Ok(None)
 	}
 
-	fn read(&mut self, into: &mut [u8]) -> Result<(), parity_scale_codec::Error> {
+	fn read(&mut self, into: &mut [u8]) -> Result<(), tetsy_scale_codec::Error> {
 		let len = into.len().min(self.0.len());
 		into[..len].copy_from_slice(&self.0[..len]);
 		for i in &mut into[len..] {

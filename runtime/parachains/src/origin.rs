@@ -19,7 +19,7 @@
 use tetcore_std::result;
 use tp_runtime::traits::BadOrigin;
 use primitives::v1::Id as ParaId;
-use parity_scale_codec::{Decode, Encode};
+use tetsy_scale_codec::{Decode, Encode};
 
 /// Origin for the parachains.
 #[derive(PartialEq, Eq, Clone, Encode, Decode, tet_core::RuntimeDebug)]

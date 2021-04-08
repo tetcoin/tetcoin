@@ -22,7 +22,7 @@ use tetcore_std::{prelude::*, mem::swap, convert::TryInto};
 use tp_runtime::traits::{
 	CheckedSub, StaticLookup, Zero, One, CheckedConversion, Hash, AccountIdConversion,
 };
-use parity_scale_codec::{Encode, Decode, Codec};
+use tetsy_scale_codec::{Encode, Decode, Codec};
 use fabric_support::{
 	decl_module, decl_storage, decl_event, decl_error, ensure, dispatch::DispatchResult,
 	traits::{Currency, ReservableCurrency, WithdrawReasons, ExistenceRequirement, Get, Randomness},

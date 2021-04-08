@@ -36,7 +36,7 @@ use fabric_support::{
 	traits::Get,
 	weights::Weight,
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use crate::{configuration, initializer::SessionChangeNotification};
 use tet_core::RuntimeDebug;
 

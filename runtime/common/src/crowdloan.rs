@@ -78,7 +78,7 @@ use tp_runtime::{ModuleId, DispatchResult,
 	traits::{AccountIdConversion, Hash, Saturating, Zero, CheckedAdd, Bounded}
 };
 use crate::slots;
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use tetcore_std::vec::Vec;
 use primitives::v1::{Id as ParaId, HeadData};
 

@@ -25,7 +25,7 @@ use primitives::v1::ValidatorId;
 use fabric_support::{
 	decl_storage, decl_module, decl_error, traits::Randomness,
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use crate::{
 	configuration::{self, HostConfiguration},
 	paras, scheduler, inclusion, session_info, dmp, ump, hrmp,

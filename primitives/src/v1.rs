@@ -18,7 +18,7 @@
 
 use tetcore_std::prelude::*;
 use tetcore_std::collections::btree_map::BTreeMap;
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use bitvec::vec::BitVec;
 
 use primitives::RuntimeDebug;
@@ -49,7 +49,7 @@ pub use crate::v0::{
 };
 
 #[cfg(feature = "std")]
-use parity_util_mem::{MallocSizeOf, MallocSizeOfOps};
+use tetsy_util_mem::{MallocSizeOf, MallocSizeOfOps};
 
 // More exports from v0 for std.
 #[cfg(feature = "std")]
@@ -64,7 +64,7 @@ pub mod well_known_keys {
 	use hex_literal::hex;
 	use tp_io::hashing::twox_64;
 	use tetcore_std::prelude::*;
-	use parity_scale_codec::Encode as _;
+	use tetsy_scale_codec::Encode as _;
 
 	// A note on generating these magic values below:
 	//

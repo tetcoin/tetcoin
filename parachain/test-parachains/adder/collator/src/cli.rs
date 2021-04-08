@@ -16,7 +16,7 @@
 
 //! Tetcoin CLI library.
 
-use tc_cli::{RuntimeVersion, SubstrateCli};
+use tc_cli::{RuntimeVersion, TetcoreCli};
 use structopt::StructOpt;
 
 /// Sub-commands supported by the collator.
@@ -61,7 +61,7 @@ pub struct Cli {
 	pub run: RunCmd,
 }
 
-impl SubstrateCli for Cli {
+impl TetcoreCli for Cli {
 	fn impl_name() -> String {
 		"Parity Tetcoin".into()
 	}

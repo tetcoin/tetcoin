@@ -15,7 +15,7 @@ Accepting a parablock is the end result of having passed through the detection s
 
 It often makes more sense to think of relay-chain blocks as having been approved or not as opposed to thinking about whether parablocks have been approved. A relay-chain block containing a single bad parablock needs to be reverted, and a relay-chain block that contains only approved parablocks can be called approved, as long as its parent relay-chain block is also approved. It is important that the validity of any particular relay-chain block depend on the validity of its ancestry, so we do not finalize a block which has a bad block in its ancestry.
 
-```dot process Approval Process
+```tet process Approval Process
 digraph {
   Included -> Assignments -> Approval -> Finality
   Assignments -> Escalation -> Consequences

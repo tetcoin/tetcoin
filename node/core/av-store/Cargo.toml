@@ -14,7 +14,7 @@ tracing = "0.1.22"
 tracing-futures = "0.2.4"
 bitvec = "0.20.1"
 
-parity-scale-codec = { version = "2.0.0", features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", features = ["derive"] }
 erasure = { package = "tetcoin-erasure-coding", path = "../../../erasure-coding" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }

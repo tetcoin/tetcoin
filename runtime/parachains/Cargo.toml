@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 log = "0.4.13"
 rustc-hex = { version = "2.1.0", default-features = false }
 serde = { version = "1.0.123", features = [ "derive" ], optional = true }
@@ -63,7 +63,7 @@ default = ["std"]
 no_std = []
 std = [
 	"bitvec/std",
-	"parity-scale-codec/std",
+	"tetsy-scale-codec/std",
 	"rustc-hex/std",
 	"serde",
 	"primitives/std",

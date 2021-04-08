@@ -24,7 +24,7 @@ use noble_transaction_payment::CurrencyAdapter;
 use tetcore_std::prelude::*;
 use tetcore_std::collections::btree_map::BTreeMap;
 use tet_core::u32_trait::{_1, _2, _3, _5};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use primitives::v1::{
 	AccountId, AccountIndex, Balance, BlockNumber, CandidateEvent, CommittedCandidateReceipt,
 	CoreState, GroupRotationInfo, Hash, Id, Moment, Nonce, OccupiedCoreAssumption,
@@ -88,7 +88,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 /// Runtime version (Kusama).
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("kusama"),
-	impl_name: create_runtime_str!("parity-kusama"),
+	impl_name: create_runtime_str!("tetsy-kusama"),
 	authoring_version: 2,
 	spec_version: 2028,
 	impl_version: 0,
@@ -1215,7 +1215,7 @@ tp_api::impl_runtime_apis! {
 			_set_id: fg_primitives::SetId,
 			authority_id: fg_primitives::AuthorityId,
 		) -> Option<fg_primitives::OpaqueKeyOwnershipProof> {
-			use parity_scale_codec::Encode;
+			use tetsy_scale_codec::Encode;
 
 			Historical::prove((fg_primitives::KEY_TYPE, authority_id))
 				.map(|p| p.encode())
@@ -1256,7 +1256,7 @@ tp_api::impl_runtime_apis! {
 			_slot: babe_primitives::Slot,
 			authority_id: babe_primitives::AuthorityId,
 		) -> Option<babe_primitives::OpaqueKeyOwnershipProof> {
-			use parity_scale_codec::Encode;
+			use tetsy_scale_codec::Encode;
 
 			Historical::prove((babe_primitives::KEY_TYPE, authority_id))
 				.map(|p| p.encode())
@@ -1348,7 +1348,7 @@ tp_api::impl_runtime_apis! {
 			let params = (&config, &whitelist);
 			// Tetcoin
 			add_benchmark!(params, batches, runtime_common::claims, Claims);
-			// Substrate
+			// Tetcore
 			add_benchmark!(params, batches, noble_balances, Balances);
 			add_benchmark!(params, batches, noble_bounties, Bounties);
 			add_benchmark!(params, batches, noble_collective, Council);
@@ -1383,7 +1383,7 @@ mod test_fees {
 	use fabric_support::storage::StorageValue;
 	use tp_runtime::FixedPointNumber;
 	use fabric_support::weights::GetDispatchInfo;
-	use parity_scale_codec::Encode;
+	use tetsy_scale_codec::Encode;
 	use noble_transaction_payment::Multiplier;
 	use separator::Separatable;
 

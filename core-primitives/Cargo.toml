@@ -8,8 +8,8 @@ edition = "2018"
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
-parity-util-mem = { version = "0.9.0", default-features = false, optional = true }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+tetsy-util-mem = { version = "0.9.0", default-features = false, optional = true }
 
 [features]
 default = [ "std" ]
@@ -17,6 +17,6 @@ std = [
 	"tet-core/std",
 	"tp-runtime/std",
 	"tetcore-std/std",
-	"parity-scale-codec/std",
-	"parity-util-mem",
+	"tetsy-scale-codec/std",
+	"tetsy-util-mem",
 ]

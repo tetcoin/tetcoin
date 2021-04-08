@@ -23,7 +23,7 @@ use tetcoin_primitives::v1::{
 	CandidateHash, Hash, ValidatorIndex, Signed, ValidatorSignature, CoreIndex,
 	BlockNumber, CandidateIndex,
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 
 /// Validators assigning to check a particular candidate are split up into tranches.
 /// Earlier tranches of validators check first, with later tranches serving as backup.

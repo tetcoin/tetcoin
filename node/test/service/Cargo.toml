@@ -25,7 +25,7 @@ tetcoin-node-primitives = { path = "../../primitives" }
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
 tetcoin-runtime-parachains = { path = "../../../runtime/parachains" }
 
-# Substrate dependencies
+# Tetcore dependencies
 tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 babe = { package = "tc-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }

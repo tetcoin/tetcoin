@@ -1,12 +1,12 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
 // This file is part of Cumulus.
 
-// Substrate is free software: you can redistribute it and/or modify
+// Tetcore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Substrate is distributed in the hope that it will be useful,
+// Tetcore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -19,7 +19,7 @@
 use core::{result, convert::TryFrom};
 use alloc::{boxed::Box, vec::Vec};
 
-use parity_scale_codec::{self, Encode, Decode};
+use tetsy_scale_codec::{self, Encode, Decode};
 use super::{VersionedXcm, VersionedMultiAsset};
 
 mod junction;

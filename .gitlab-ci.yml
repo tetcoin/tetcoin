@@ -42,7 +42,7 @@ default:
 
 .kubernetes-env:                   &kubernetes-env
   tags:
-    - kubernetes-parity-build
+    - kubernetes-tetsy-build
   interruptible:                   true
 
 .docker-env:                       &docker-env
@@ -348,7 +348,7 @@ deploy-polkasync-kusama:
     TETCOIN_CI_COMMIT_NAME:       "${CI_COMMIT_REF_NAME}"
     TETCOIN_CI_COMMIT_REF:        "${CI_COMMIT_REF}"
   allow_failure:                   true
-  trigger:                         "parity/infrastructure/parity-testnet"
+  trigger:                         "parity/infrastructure/tetsy-testnet"
 
 #### stage:                        .post
 

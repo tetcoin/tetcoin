@@ -20,7 +20,7 @@ use tetcoin_node_primitives::CollationGenerationConfig;
 use tetcoin_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
 use tetcoin_primitives::v1::Id as ParaId;
 use tetcoin_cli::{Error, Result};
-use tc_cli::{Error as SubstrateCliError, Role, SubstrateCli};
+use tc_cli::{Error as TetcoreCliError, Role, TetcoreCli};
 use tet_core::hexdisplay::HexDisplay;
 use test_parachain_adder_collator::Collator;
 
@@ -48,7 +48,7 @@ fn main() -> Result<()> {
 		}
 		None => {
 			let runner = cli.create_runner(&cli.run.base)
-				.map_err(|e| SubstrateCliError::Application(Box::new(e) as Box::<(dyn 'static + Send + Sync + std::error::Error)>))?;
+				.map_err(|e| TetcoreCliError::Application(Box::new(e) as Box::<(dyn 'static + Send + Sync + std::error::Error)>))?;
 
 			runner.run_node_until_exit(|config| async move {
 				let role = config.role.clone();

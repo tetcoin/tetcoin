@@ -20,7 +20,7 @@ use tetcoin_primitives::v1::{
 	PersistedValidationData, Id as ParaId, OccupiedCoreAssumption,
 	SessionIndex, SessionInfo, ValidationCode, ValidatorId, ValidatorIndex,
 };
-use parity_util_mem::{MallocSizeOf, MallocSizeOfExt};
+use tetsy_util_mem::{MallocSizeOf, MallocSizeOfExt};
 
 
 use memory_lru::{MemoryLruCache, ResidentSize};

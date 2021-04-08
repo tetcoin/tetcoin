@@ -28,7 +28,7 @@
 //!
 //! As such, we provide a function from this module to clear the database on start-up.
 //! In the future, we may use a temporary DB which doesn't need to be wiped, but for the
-//! time being we share the same DB with the rest of Substrate.
+//! time being we share the same DB with the rest of Tetcore.
 
 // TODO https://github.com/tetcoin/tetcoin/issues/1975: remove this
 #![allow(unused)]
@@ -40,7 +40,7 @@ use tetcoin_primitives::v1::{
 	BlockNumber, Hash, CandidateHash,
 };
 use tp_consensus_slots::Slot;
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 
 use std::collections::{BTreeMap, HashMap};
 use std::collections::hash_map::Entry;

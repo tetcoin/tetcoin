@@ -21,7 +21,7 @@ use tp_runtime::generic::BlockId;
 use tp_api::ProvideRuntimeApi;
 use tc_block_builder::{BlockBuilderProvider, BlockBuilder};
 use tp_state_machine::BasicExternalities;
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 
 /// An extension for the test client to init a Tetcoin specific block builder.
 pub trait InitTetcoinBlockBuilder {

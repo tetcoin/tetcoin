@@ -3,7 +3,7 @@
 Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework.
 
 > **NOTE:** In 2018, we split our implementation of "Tetcoin" from its development framework
-> "Substrate". See the [Substrate][tetcore-repo] repo for git history prior to 2018.
+> "Tetcore". See the [Tetcore][tetcore-repo] repo for git history prior to 2018.
 
 [tetcore-repo]: https://github.com/tetcoin/tetcore
 
@@ -40,9 +40,9 @@ gpg --export 9D4B2B6EB8F97156D19669A9FF0812D491B96798 > /usr/share/keyrings/pari
 # Add the Parity repository and update the package index
 echo 'deb [signed-by=/usr/share/keyrings/parity.gpg] https://releases.parity.io/deb release main' > /etc/apt/sources.list.d/parity.list
 apt update
-# Install the `parity-keyring` package - This will ensure the GPG key
+# Install the `tetsy-keyring` package - This will ensure the GPG key
 # used by APT remains up-to-date
-apt install parity-keyring
+apt install tetsy-keyring
 # Install tetcoin
 apt install tetcoin
 
@@ -145,13 +145,13 @@ You can see your node on [telemetry] (set a custom name with `--name "my custom 
 
 [telemetry]: https://telemetry.tetcoin.io/#list/Westend
 
-### Obtaining DOTs
+### Obtaining TETs
 
 If you want to do anything on Tetcoin, Kusama, or Westend, then you'll need to get an account and
-some DOT, KSM, or WND tokens, respectively. See the
-[claims instructions](https://claims.tetcoin.network/) for Tetcoin if you have DOTs to claim. For
+some TET, KSM, or WND tokens, respectively. See the
+[claims instructions](https://claims.tetcoin.network/) for Tetcoin if you have TETs to claim. For
 Westend's WND tokens, see the faucet
-[instructions](https://wiki.tetcoin.network/docs/en/learn-DOT#getting-westies) on the Wiki.
+[instructions](https://wiki.tetcoin.network/docs/en/learn-TET#getting-westies) on the Wiki.
 
 ## Hacking on Tetcoin
 

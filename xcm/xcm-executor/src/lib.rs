@@ -18,7 +18,7 @@
 
 use tetcore_std::{prelude::*, marker::PhantomData, convert::TryInto};
 use fabric_support::{ensure, dispatch::Dispatchable};
-use parity_scale_codec::Decode;
+use tetsy_scale_codec::Decode;
 use xcm::v0::{
 	Xcm, Order, ExecuteXcm, SendXcm, Error as XcmError, Result as XcmResult,
 	MultiLocation, MultiAsset, Junction,

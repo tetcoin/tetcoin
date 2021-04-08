@@ -30,7 +30,7 @@ Some connections are long-lived, some are just for a single request.
 
 #### Custom libp2p sub-protocols
 
-Tetcoin parachains involve many distinct networking protocols. Ideally, we'd be able to spawn each of these as a separate futures task which communicates via channel with other protocols or node code as necessary. This requires changes in Substrate and libp2p.
+Tetcoin parachains involve many distinct networking protocols. Ideally, we'd be able to spawn each of these as a separate futures task which communicates via channel with other protocols or node code as necessary. This requires changes in Tetcore and libp2p.
 
 ---
 ### Assignment

@@ -61,7 +61,7 @@ pub use tc_client_api::{Backend, ExecutionStrategy, CallExecutor};
 pub use tc_consensus::LongestChain;
 pub use tc_executor::NativeExecutionDispatch;
 pub use service::{
-	Role, PruningMode, TransactionPoolOptions, Error as SubstrateServiceError, RuntimeGenesis,
+	Role, PruningMode, TransactionPoolOptions, Error as TetcoreServiceError, RuntimeGenesis,
 	TFullClient, TLightClient, TFullBackend, TLightBackend, TFullCallExecutor, TLightCallExecutor,
 	Configuration, ChainSpec, TaskManager,
 };
@@ -111,7 +111,7 @@ pub enum Error {
 	AddrFormatInvalid(#[from] std::net::AddrParseError),
 
 	#[error(transparent)]
-	Sub(#[from] SubstrateServiceError),
+	Sub(#[from] TetcoreServiceError),
 
 	#[error(transparent)]
 	Blockchain(#[from] tp_blockchain::Error),
@@ -574,7 +574,7 @@ pub fn new_full<RuntimeApi, Executor>(
 
 	// Note: GrandPa is pushed before the Tetcoin-specific protocols. This doesn't change
 	// anything in terms of behaviour, but makes the logs more consistent with the other
-	// Substrate nodes.
+	// Tetcore nodes.
 	config.network.extra_sets.push(grandpa::grandpa_peers_set_config());
 	#[cfg(feature = "real-overseer")]
 	config.network.extra_sets.extend(tetcoin_network_bridge::peer_sets_info());

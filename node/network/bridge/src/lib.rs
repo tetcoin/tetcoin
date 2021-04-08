@@ -20,7 +20,7 @@
 #![warn(missing_docs)]
 
 
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use futures::prelude::*;
 
 use tetcoin_subsystem::{

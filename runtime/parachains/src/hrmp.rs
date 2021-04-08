@@ -19,7 +19,7 @@ use crate::{
 	configuration::{self, HostConfiguration},
 	initializer, paras, dmp,
 };
-use parity_scale_codec::{Decode, Encode};
+use tetsy_scale_codec::{Decode, Encode};
 use fabric_support::{
 	decl_storage, decl_module, decl_error, ensure, traits::{Get, ReservableCurrency}, weights::Weight,
 	StorageMap, StorageValue, dispatch::DispatchResult,
@@ -948,7 +948,7 @@ impl<T: Config> Module<T> {
 
 		let notification_bytes = {
 			use xcm::v0::Xcm;
-			use parity_scale_codec::Encode as _;
+			use tetsy_scale_codec::Encode as _;
 
 			Xcm::HrmpNewChannelOpenRequest {
 				sender: u32::from(origin),
@@ -1012,7 +1012,7 @@ impl<T: Config> Module<T> {
 		<Self as Store>::HrmpAcceptedChannelRequestCount::insert(&origin, accepted_cnt + 1);
 
 		let notification_bytes = {
-			use parity_scale_codec::Encode as _;
+			use tetsy_scale_codec::Encode as _;
 			use xcm::v0::Xcm;
 
 			Xcm::HrmpChannelAccepted {
@@ -1055,7 +1055,7 @@ impl<T: Config> Module<T> {
 
 		let config = <configuration::Module<T>>::config();
 		let notification_bytes = {
-			use parity_scale_codec::Encode as _;
+			use tetsy_scale_codec::Encode as _;
 			use xcm::v0::Xcm;
 
 			Xcm::HrmpChannelClosing {

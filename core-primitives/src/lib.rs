@@ -21,9 +21,9 @@
 //! These core Tetcoin types are used by the relay chain and the Parachains.
 
 use tp_runtime::{generic, MultiSignature, traits::{Verify, IdentifyAccount}};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 #[cfg(feature = "std")]
-use parity_util_mem::MallocSizeOf;
+use tetsy_util_mem::MallocSizeOf;
 
 pub use tp_runtime::traits::{BlakeTwo256, Hash as HashT};
 

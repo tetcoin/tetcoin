@@ -2,10 +2,10 @@
 
 # Check for any changes in any runtime directories (e.g., ^runtime/tetcoin) as
 # well as directories common to all runtimes (e.g., ^runtime/common). If there
-# are no changes, check if the Substrate git SHA in Cargo.lock has been
+# are no changes, check if the Tetcore git SHA in Cargo.lock has been
 # changed. If so, pull the repo and verify if {spec,impl}_versions have been
-# altered since the previous Substrate version used. Also, if any of the
-# Substrate changes between the previous and current version referenced by
+# altered since the previous Tetcore version used. Also, if any of the
+# Tetcore changes between the previous and current version referenced by
 # Cargo.lock were labelled with 'D2-breaksapi', label this PR the same.
 #
 # If there were changes to any runtimes or common dirs, we iterate over each
@@ -123,7 +123,7 @@ EOT
       pr_id=$(echo "$line" | sed -E 's/.*#([0-9]+)\)$/\1/')
 
       if has_label 'tetcoin/tetcore' "$pr_id" 'D2-breaksapi'; then
-        boldprint "Substrate change labelled with D2-breaksapi. Labelling..."
+        boldprint "Tetcore change labelled with D2-breaksapi. Labelling..."
         github_label "D2-breaksapi"
         exit 1
       fi

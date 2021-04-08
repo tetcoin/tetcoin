@@ -19,7 +19,7 @@ There may be multiple competing blocks all ending the availability phase for a p
 
 ## Lifetime of the block data and chunks in storage
 
-```dot process
+```tet process
 digraph {
 	label = "Block data FSM\n\n\n";
 	labelloc = "t";

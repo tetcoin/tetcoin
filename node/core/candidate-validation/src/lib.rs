@@ -43,7 +43,7 @@ use tetcoin_parachain::wasm_executor::{
 };
 use tetcoin_parachain::primitives::{ValidationResult as WasmValidationResult, ValidationParams};
 
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 use tet_core::traits::SpawnNamed;
 
 use futures::channel::oneshot;

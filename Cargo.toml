@@ -4,7 +4,7 @@ path = "src/main.rs"
 
 [package]
 name = "tetcoin"
-description = "Implementation of a https://tetcoin.network node in Rust based on the Substrate framework."
+description = "Implementation of a https://tetcoin.network node in Rust based on the Tetcore framework."
 license = "GPL-3.0-only"
 version = "0.8.28"
 authors = ["Parity Technologies <admin@parity.io>"]
@@ -17,7 +17,7 @@ color-eyre = "0.5.10"
 thiserror = "1.0.23"
 futures = "0.3.12"
 service = { package = "tetcoin-service", path = "node/service" }
-parity-util-mem = { version = "*", default-features = false, features = ["jemalloc-global"] }
+tetsy-util-mem = { version = "*", default-features = false, features = ["jemalloc-global"] }
 
 [dev-dependencies]
 assert_cmd = "1.0.2"
@@ -95,7 +95,7 @@ real-overseer=["cli/real-overseer"]
 # Configuration for building a .deb package - for use with `cargo-deb`
 [package.metadata.deb]
 name = "tetcoin"
-extended-description = "Implementation of a https://tetcoin.network node in Rust based on the Substrate framework."
+extended-description = "Implementation of a https://tetcoin.network node in Rust based on the Tetcore framework."
 section = "misc"
 maintainer = "martin@parity.io"
 license-file = ["LICENSE", "0"]

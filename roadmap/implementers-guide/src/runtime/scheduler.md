@@ -22,7 +22,7 @@ An availability core can exist in either one of two states at the beginning or e
 
 Cores are treated as an ordered list and are typically referred to by their index in that list.
 
-```dot process
+```tet process
 digraph {
   label = "Availability Core State Machine\n\n\n";
   labelloc = "t";
@@ -37,7 +37,7 @@ digraph {
 }
 ```
 
-```dot process
+```tet process
 digraph {
   label = "Availability Core Transitions within Block\n\n\n";
   labelloc = "t";

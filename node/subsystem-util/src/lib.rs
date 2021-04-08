@@ -32,7 +32,7 @@ use tetcoin_node_subsystem::{
 use tetcoin_node_jaeger::JaegerSpan;
 use futures::{channel::{mpsc, oneshot}, prelude::*, select, stream::Stream};
 use futures_timer::Delay;
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 use pin_project::pin_project;
 use tetcoin_primitives::v1::{
 	CandidateEvent, CommittedCandidateReceipt, CoreState, EncodeAs, PersistedValidationData,
@@ -394,7 +394,7 @@ impl<ToJob> JobHandle<ToJob> {
 
 /// This module reexports Prometheus types and defines the [`Metrics`] trait.
 pub mod metrics {
-	/// Reexport Substrate Prometheus types.
+	/// Reexport Tetcore Prometheus types.
 	pub use tetcore_prometheus_endpoint as prometheus;
 
 

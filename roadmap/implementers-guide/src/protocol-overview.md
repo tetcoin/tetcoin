@@ -58,7 +58,7 @@ Reiterating the lifecycle of a candidate:
 1. Included: Backed and considered available.
 1. Accepted: Backed, available, and undisputed
 
-```dot process Inclusion Pipeline
+```tet process Inclusion Pipeline
 digraph {
 	subgraph cluster_vg {
 		label=<
@@ -133,7 +133,7 @@ The diagram above shows the happy path of a block from (1) Candidate to the (7) 
 It is also important to take note of the fact that the relay-chain is extended by BABE, which is a forkful algorithm. That means that different block authors can be chosen at the same time, and may not be building on the same block parent. Furthermore, the set of validators is not fixed, nor is the set of parachains. And even with the same set of validators and parachains, the validators' assignments to parachains is flexible. This means that the architecture proposed in the next chapters must deal with the variability and multiplicity of the network state.
 
 
-```dot process
+```tet process
 digraph {
 	rca [label="Relay Block A" shape=box]
 	rcb [label="Relay Block B" shape=box]
@@ -172,7 +172,7 @@ digraph {
 
 In this example, group 1 has received block C while the others have not due to network asynchrony. Now, a validator from group 2 may be able to build another block on top of B, called C'. Assume that afterwards, some validators become aware of both C and C', while others remain only aware of one.
 
-```dot process
+```tet process
 digraph {
 	rca [label="Relay Block A" shape=box]
 	rcb [label="Relay Block B" shape=box]

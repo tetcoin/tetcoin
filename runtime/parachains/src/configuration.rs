@@ -26,7 +26,7 @@ use fabric_support::{
 	dispatch::DispatchResult,
 	weights::{DispatchClass, Weight},
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use fabric_system::ensure_root;
 use tp_runtime::traits::Zero;
 

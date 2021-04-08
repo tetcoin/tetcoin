@@ -31,7 +31,7 @@ use fabric_support::{
 	decl_storage, decl_module, decl_error, decl_event, ensure, debug,
 	dispatch::DispatchResult, IterableStorageMap, weights::Weight, traits::Get,
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use bitvec::{order::Lsb0 as BitOrderLsb0, vec::BitVec};
 use tp_staking::SessionIndex;
 use tp_runtime::{DispatchError, traits::{One, Saturating}};

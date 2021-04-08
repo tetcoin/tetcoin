@@ -28,7 +28,7 @@ use runtime_parachains::{
 	configuration, dmp, ump, hrmp, paras::{self, ParaGenesisArgs},
 };
 use primitives::v1::Id as ParaId;
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 
 /// The module's configuration trait.
 pub trait Config:

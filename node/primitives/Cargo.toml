@@ -9,7 +9,7 @@ description = "Primitives types for the Node-side"
 futures = "0.3.12"
 tetcoin-primitives = { path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 runtime_primitives = { package = "tp-runtime", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-consensus-vrf = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

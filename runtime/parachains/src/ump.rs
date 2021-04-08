@@ -58,7 +58,7 @@ pub struct XcmSink<Config>(tetcore_std::marker::PhantomData<Config>);
 
 impl<Config: xcm_executor::Config> UmpSink for XcmSink<Config> {
 	fn process_upward_message(origin: ParaId, msg: Vec<u8>) -> Weight {
-		use parity_scale_codec::Decode;
+		use tetsy_scale_codec::Decode;
 		use xcm::VersionedXcm;
 		use xcm::v0::{Junction, MultiLocation, ExecuteXcm};
 		use xcm_executor::XcmExecutor;
@@ -916,7 +916,7 @@ mod tests {
 		// keys and is decodable into a (u32, u32).
 
 		use primitives::v1::well_known_keys;
-		use parity_scale_codec::Decode as _;
+		use tetsy_scale_codec::Decode as _;
 
 		let a = ParaId::from(228);
 		let msg = vec![1, 2, 3];

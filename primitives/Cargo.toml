@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 serde = { version = "1.0.123", optional = true, features = ["derive"] }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
 primitives = { package = "tet-core", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 application-crypto = { package = "tp-application-crypto", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -25,7 +25,7 @@ trie = { package = "tp-trie", version = "2.0.2", default-features = false }
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
 fabric-system = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 hex-literal = "0.3.1"
-parity-util-mem = { version = "0.9.0", default-features = false, optional = true }
+tetsy-util-mem = { version = "0.9.0", default-features = false, optional = true }
 
 [dev-dependencies]
 tp-serializer = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
@@ -35,7 +35,7 @@ pretty_assertions = "0.6.1"
 default = ["std"]
 std = [
 	"application-crypto/std",
-	"parity-scale-codec/std",
+	"tetsy-scale-codec/std",
 	"primitives/std",
 	"inherents/std",
 	"trie/std",
@@ -49,7 +49,7 @@ std = [
 	"tp-arithmetic/std",
 	"runtime_primitives/std",
 	"serde",
-	"parity-util-mem",
+	"tetsy-util-mem",
 	"tetcoin-parachain/std",
 	"tetcoin-core-primitives/std",
 	"bitvec/std",

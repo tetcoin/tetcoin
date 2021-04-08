@@ -37,7 +37,7 @@ browser-utils = { package = "tetcore-browser-utils", version = "0.8.1" , optiona
 tp-trie = { version = "2.0.2", default-features = false }
 
 [build-dependencies]
-build-script-utils = { version = "2.0.1 }
+build-script-utils = { version = "2.0.1" }
 
 [features]
 default = [ "wasmtime", "db", "cli", "full-node", "trie-memory-tracker", "tetcoin-parachain" ]

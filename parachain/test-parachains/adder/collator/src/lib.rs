@@ -19,7 +19,7 @@
 use futures_timer::Delay;
 use tetcoin_node_primitives::{Collation, CollatorFn};
 use tetcoin_primitives::v1::{CollatorId, CollatorPair, PoV};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use tet_core::Pair;
 use std::{
 	collections::HashMap,

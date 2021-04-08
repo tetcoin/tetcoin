@@ -22,7 +22,7 @@
 
 use std::{any::{TypeId, Any}, path::PathBuf};
 use crate::primitives::{ValidationParams, ValidationResult};
-use parity_scale_codec::{Decode, Encode};
+use tetsy_scale_codec::{Decode, Encode};
 use tet_core::{storage::{ChildInfo, TrackedStorageKey}, traits::{CallInWasm, SpawnNamed}};
 use tp_externalities::Extensions;
 use tp_wasm_interface::HostFunctions as _;
@@ -211,7 +211,7 @@ pub fn validate_candidate(
 }
 
 /// The host functions provided by the wasm executor to the parachain wasm blob.
-type HostFunctions = tp_io::SubstrateHostFunctions;
+type HostFunctions = tp_io::TetcoreHostFunctions;
 
 /// Validate a candidate under the given validation code.
 ///

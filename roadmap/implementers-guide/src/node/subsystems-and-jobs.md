@@ -21,7 +21,7 @@ Which subsystems send messages to which other subsystems.
 **Note**: Messages with a filled diamond arrowhead ("♦") include a `oneshot::Sender` which communicates a response from the recipient.
 Messages with an open triangle arrowhead ("Δ") do not include a return sender.
 
-```dot process
+```tet process
 digraph {
     rankdir=LR;
     node [shape = oval];
@@ -426,9 +426,9 @@ distinction is that no subsystem currently does so.
 
 The proposer is an atypical subsystem in that, unlike most of them, it is not primarily driven by
 the `Overseer`, but instead by the `tp_consensus::Environment` and `tp_consensus::Proposer` traits
-from Substrate. It doesn't make much sense to diagram this flow because it's very linear:
+from Tetcore. It doesn't make much sense to diagram this flow because it's very linear:
 
-- Substrate creates a `Proposer` from the `ProposerFactory` once per upcoming block, using the `parent_header: Header`.
+- Tetcore creates a `Proposer` from the `ProposerFactory` once per upcoming block, using the `parent_header: Header`.
 - At some later point, it calls `Proposer::propose(self, ...)`, consuming the proposer to generate a proposal
 - `Proposer::propose` sends a `RequestInherentData` to the `Provisioner`. This has a fixed timeout of
   2.5 seconds, meaning that the provisioner has approximately 0.5 seconds to generate and send the data.

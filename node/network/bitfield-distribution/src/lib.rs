@@ -22,7 +22,7 @@
 
 #![deny(unused_crate_dependencies)]
 
-use parity_scale_codec::{Decode, Encode};
+use tetsy_scale_codec::{Decode, Encode};
 use futures::{channel::oneshot, FutureExt};
 
 use tetcoin_subsystem::messages::*;

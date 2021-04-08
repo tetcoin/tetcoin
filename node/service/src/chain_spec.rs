@@ -20,32 +20,32 @@ use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use babe_primitives::AuthorityId as BabeId;
 use grandpa::AuthorityId as GrandpaId;
 use hex_literal::hex;
-use kusama::constants::currency::DOTS as KSM;
+use kusama::constants::currency::TETS as KSM;
 use kusama_runtime as kusama;
 use noble_im_online::sr25519::AuthorityId as ImOnlineId;
 use noble_staking::Forcing;
-use tetcoin::constants::currency::DOTS;
+use tetcoin::constants::currency::TETS;
 use tetcoin_primitives::v1::{AccountId, AccountPublic, ValidatorId, AssignmentId};
 use tetcoin_runtime as tetcoin;
 use rococo_runtime as rococo;
-use rococo_runtime::constants::currency::DOTS as ROC;
+use rococo_runtime::constants::currency::TETS as ROC;
 use tc_chain_spec::{ChainSpecExtension, ChainType};
 use serde::{Deserialize, Serialize};
 use tet_core::{crypto::UncheckedInto, sr25519, Pair, Public};
 use tp_runtime::{traits::IdentifyAccount, Perbill};
 use telemetry::TelemetryEndpoints;
-use westend::constants::currency::DOTS as WND;
+use westend::constants::currency::TETS as WND;
 use westend_runtime as westend;
 
 const TETCOIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
 const KUSAMA_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
 const WESTEND_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
 const ROCOCO_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
-const DEFAULT_PROTOCOL_ID: &str = "dot";
+const DEFAULT_PROTOCOL_ID: &str = "tet";
 
 /// Node `ChainSpec` extensions.
 ///
-/// Additional parameters for some Substrate core modules,
+/// Additional parameters for some Tetcore core modules,
 /// customizable from the chain spec.
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]
@@ -196,8 +196,8 @@ fn tetcoin_staging_testnet_config_genesis(wasm_binary: &[u8]) -> tetcoin::Genesi
 		AuthorityDiscoveryId,
 	)> = vec![];
 
-	const ENDOWMENT: u128 = 1_000_000 * DOTS;
-	const STASH: u128 = 100 * DOTS;
+	const ENDOWMENT: u128 = 1_000_000 * TETS;
+	const STASH: u128 = 100 * TETS;
 
 	tetcoin::GenesisConfig {
 		fabric_system: Some(tetcoin::SystemConfig {
@@ -1061,8 +1061,8 @@ pub fn tetcoin_testnet_genesis(
 ) -> tetcoin::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * DOTS;
-	const STASH: u128 = 100 * DOTS;
+	const ENDOWMENT: u128 = 1_000_000 * TETS;
+	const STASH: u128 = 100 * TETS;
 
 	tetcoin::GenesisConfig {
 		fabric_system: Some(tetcoin::SystemConfig {
@@ -1251,8 +1251,8 @@ pub fn westend_testnet_genesis(
 ) -> westend::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * DOTS;
-	const STASH: u128 = 100 * DOTS;
+	const ENDOWMENT: u128 = 1_000_000 * TETS;
+	const STASH: u128 = 100 * TETS;
 
 	westend::GenesisConfig {
 		fabric_system: Some(westend::SystemConfig {
@@ -1331,7 +1331,7 @@ pub fn rococo_testnet_genesis(
 ) -> rococo_runtime::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * DOTS;
+	const ENDOWMENT: u128 = 1_000_000 * TETS;
 
 	rococo_runtime::GenesisConfig {
 		fabric_system: Some(rococo_runtime::SystemConfig {

@@ -26,5 +26,5 @@ tc-sync-state-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "mast
 txpool-api = { package = "tp-transaction-pool", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 fabric-rpc-system = { package = "tetcore-fabric-rpc-system", git = "https://github.com/tetcoin/tetcore", branch = "master"  }
 noble-transaction-payment-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-parity-scale-codec = { version = "2.0.0", default-features = false }
+tetsy-scale-codec = { version = "2.0.0", default-features = false }
 tp-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

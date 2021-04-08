@@ -21,7 +21,7 @@ use futures::future::BoxFuture;
 use futures::prelude::*;
 use futures::stream::BoxStream;
 
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 
 use tc_network::Event as NetworkEvent;
 

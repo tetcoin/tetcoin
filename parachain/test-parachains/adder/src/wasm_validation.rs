@@ -20,7 +20,7 @@ use crate::{HeadData, BlockData};
 use core::panic;
 use tetcore_std::vec::Vec;
 use parachain::primitives::{ValidationResult, HeadData as GenericHeadData};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 
 #[no_mangle]
 pub extern "C" fn validate_block(params: *const u8, len: usize) -> u64 {

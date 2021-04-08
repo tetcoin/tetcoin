@@ -23,7 +23,7 @@
 use noble_transaction_payment::CurrencyAdapter;
 use tetcore_std::prelude::*;
 use tetcore_std::collections::btree_map::BTreeMap;
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 
 use tetcoin_runtime_parachains::configuration as parachains_configuration;
 use tetcoin_runtime_parachains::inclusion as parachains_inclusion;
@@ -95,7 +95,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 /// Runtime version (Test).
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("tetcoin-test-runtime"),
-	impl_name: create_runtime_str!("parity-tetcoin-test-runtime"),
+	impl_name: create_runtime_str!("tetsy-tetcoin-test-runtime"),
 	authoring_version: 2,
 	spec_version: 1055,
 	impl_version: 0,

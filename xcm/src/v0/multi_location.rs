@@ -1,12 +1,12 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
 // This file is part of Cumulus.
 
-// Substrate is free software: you can redistribute it and/or modify
+// Tetcore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Substrate is distributed in the hope that it will be useful,
+// Tetcore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -18,7 +18,7 @@
 
 use core::{result, mem, convert::TryFrom};
 
-use parity_scale_codec::{self, Encode, Decode};
+use tetsy_scale_codec::{self, Encode, Decode};
 use super::Junction;
 use crate::VersionedMultiLocation;
 
@@ -32,7 +32,7 @@ use crate::VersionedMultiLocation;
 /// - A (normal, layer-1) block chain, e.g. the Bitcoin mainnet or a parachain.
 /// - A layer-0 super-chain, e.g. the Tetcoin Relay chain.
 /// - A layer-2 smart contract, e.g. an ERC-20 on Ethereum.
-/// - A logical functional component of a chain, e.g. a single instance of a pallet on a Frame-based Substrate chain.
+/// - A logical functional component of a chain, e.g. a single instance of a pallet on a Frame-based Tetcore chain.
 /// - An account.
 ///
 /// A `MultiLocation` is a *relative identifier*, meaning that it can only be used to define the relative path

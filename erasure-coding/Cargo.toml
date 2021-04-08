@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 primitives = { package = "tetcoin-primitives", path = "../primitives" }
 reed_solomon = { package = "reed-solomon-erasure", version = "4.0.2" }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 trie = { package = "tp-trie", version = "2.0.2" }
 thiserror = "1.0.23"

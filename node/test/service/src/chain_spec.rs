@@ -22,12 +22,12 @@ use grandpa::AuthorityId as GrandpaId;
 use noble_staking::Forcing;
 use tetcoin_primitives::v1::{ValidatorId, AccountId, AssignmentId};
 use tetcoin_service::chain_spec::{get_account_id_from_seed, get_from_seed, Extensions};
-use tetcoin_test_runtime::constants::currency::DOTS;
+use tetcoin_test_runtime::constants::currency::TETS;
 use tc_chain_spec::{ChainSpec, ChainType};
 use tet_core::sr25519;
 use tp_runtime::Perbill;
 
-const DEFAULT_PROTOCOL_ID: &str = "dot";
+const DEFAULT_PROTOCOL_ID: &str = "tet";
 
 /// The `ChainSpec` parametrized for tetcoin test runtime.
 pub type TetcoinChainSpec =
@@ -110,8 +110,8 @@ fn tetcoin_testnet_genesis(
 
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * DOTS;
-	const STASH: u128 = 100 * DOTS;
+	const ENDOWMENT: u128 = 1_000_000 * TETS;
+	const STASH: u128 = 100 * TETS;
 
 	runtime::GenesisConfig {
 		fabric_system: Some(runtime::SystemConfig {

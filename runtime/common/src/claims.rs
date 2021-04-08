@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
 // This file is part of Tetcoin.
 
-// Substrate is free software: you can redistribute it and/or modify
+// Tetcore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Substrate is distributed in the hope that it will be useful,
+// Tetcore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcore.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Module to process claims from Ethereum addresses.
 
@@ -25,7 +25,7 @@ use fabric_support::{
 	noble_prelude::DispatchResultWithPostInfo,
 };
 use fabric_system::{ensure_signed, ensure_root, ensure_none};
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 #[cfg(feature = "std")]
 use serde::{self, Serialize, Deserialize, Serializer, Deserializer};
 #[cfg(feature = "std")]
@@ -152,7 +152,7 @@ decl_event!(
 		Balance = BalanceOf<T>,
 		AccountId = <T as fabric_system::Config>::AccountId
 	{
-		/// Someone claimed some DOTs. [who, ethereum_address, amount]
+		/// Someone claimed some TETs. [who, ethereum_address, amount]
 		Claimed(AccountId, EthereumAddress, Balance),
 	}
 );
@@ -177,7 +177,7 @@ decl_error! {
 
 decl_storage! {
 	// A macro for the Storage trait, and its implementation, for this module.
-	// This allows for type-safe usage of the Substrate storage database, so you can
+	// This allows for type-safe usage of the Tetcore storage database, so you can
 	// keep things around between blocks.
 	trait Store for Module<T: Config> as Claims {
 		Claims get(fn claims) build(|config: &GenesisConfig<T>| {
@@ -223,7 +223,7 @@ decl_module! {
 		/// Deposit one of this module's events by using the default implementation.
 		fn deposit_event() = default;
 
-		/// Make a claim to collect your DOTs.
+		/// Make a claim to collect your TETs.
 		///
 		/// The dispatch origin for this call must be _None_.
 		///
@@ -259,14 +259,14 @@ decl_module! {
 			Self::process_claim(signer, dest)?;
 		}
 
-		/// Mint a new claim to collect DOTs.
+		/// Mint a new claim to collect TETs.
 		///
 		/// The dispatch origin for this call must be _Root_.
 		///
 		/// Parameters:
 		/// - `who`: The Ethereum address allowed to collect this claim.
-		/// - `value`: The number of DOTs that will be claimed.
-		/// - `vesting_schedule`: An optional vesting schedule for these DOTs.
+		/// - `value`: The number of TETs that will be claimed.
+		/// - `vesting_schedule`: An optional vesting schedule for these TETs.
 		///
 		/// <weight>
 		/// The weight of this call is invariant over the input parameters.
@@ -293,7 +293,7 @@ decl_module! {
 			}
 		}
 
-		/// Make a claim to collect your DOTs by signing a statement.
+		/// Make a claim to collect your TETs by signing a statement.
 		///
 		/// The dispatch origin for this call must be _None_.
 		///
@@ -602,7 +602,7 @@ mod tests {
 	use secp_utils::*;
 
 	use tet_core::H256;
-	use parity_scale_codec::Encode;
+	use tetsy_scale_codec::Encode;
 	// The testing primitives are very useful for avoiding having to work with signatures
 	// or public keys. `u64` is used as the `AccountId` and no `Signature`s are required.
 	use tp_runtime::{traits::{BlakeTwo256, IdentityLookup, Identity}, testing::Header};

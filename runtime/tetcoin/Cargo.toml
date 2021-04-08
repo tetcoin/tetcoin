@@ -7,7 +7,7 @@ build = "build.rs"
 
 [dependencies]
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 log = { version = "0.4.13", optional = true }
 rustc-hex = { version = "2.1.0", default-features = false }
 serde = { version = "1.0.123", default-features = false }
@@ -95,7 +95,7 @@ std = [
 	"bitvec/std",
 	"primitives/std",
 	"rustc-hex/std",
-	"parity-scale-codec/std",
+	"tetsy-scale-codec/std",
 	"inherents/std",
 	"tet-core/std",
 	"tp-api/std",

@@ -17,7 +17,7 @@
 
 use futures::channel::mpsc;
 
-use parity_scale_codec::Decode;
+use tetsy_scale_codec::Decode;
 use tetcoin_node_network_protocol::{
 	peer_set::PeerSet, v1 as protocol_v1, PeerId, ReputationChange,
 };

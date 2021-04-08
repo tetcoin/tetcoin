@@ -18,7 +18,7 @@ use tetcore_std::marker::PhantomData;
 use tp_io::hashing::blake2_256;
 use tp_runtime::traits::AccountIdConversion;
 use fabric_support::traits::Get;
-use parity_scale_codec::Encode;
+use tetsy_scale_codec::Encode;
 use xcm::v0::{MultiLocation, NetworkId, Junction};
 use xcm_executor::traits::LocationConversion;
 

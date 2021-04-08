@@ -1460,7 +1460,7 @@ dependencies = [
  "futures-timer 3.0.2",
  "log",
  "num-traits 0.2.14",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
 ]
 
@@ -1506,7 +1506,7 @@ name = "fork-tree"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
 ]
 
 [[package]]
@@ -1527,7 +1527,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "linregress",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "paste",
  "sp-api",
  "sp-io",
@@ -1546,7 +1546,7 @@ dependencies = [
  "chrono",
  "fabric-benchmarking",
  "handlebars",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-cli",
  "sc-client-db",
  "sc-executor",
@@ -1567,7 +1567,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -1581,7 +1581,7 @@ name = "fabric-metadata"
 version = "12.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-std",
@@ -1598,7 +1598,7 @@ dependencies = [
  "impl-trait-for-tuples 0.2.0",
  "log",
  "once_cell",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "paste",
  "serde",
  "smallvec 1.6.1",
@@ -1653,7 +1653,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -1670,7 +1670,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-core",
  "sp-runtime",
  "sp-std",
@@ -1681,7 +1681,7 @@ name = "fabric-system-rpc-runtime-api"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
 ]
 
@@ -2382,7 +2382,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df170efa359aebdd5cb7fe78edcc67107748e4737bdca8a8fb40d15ea7a877ed"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
 ]
 
 [[package]]
@@ -2633,7 +2633,7 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-server-utils",
  "log",
- "parity-tokio-ipc",
+ "tetsy-tokio-ipc",
  "parking_lot 0.10.2",
  "tokio-service",
 ]
@@ -2676,7 +2676,7 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-server-utils",
  "log",
- "parity-ws",
+ "tetsy-ws",
  "parking_lot 0.10.2",
  "slab",
 ]
@@ -2744,7 +2744,7 @@ dependencies = [
  "noble-treasury",
  "noble-utility",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "tetcoin-runtime-common",
  "rustc-hex",
@@ -2789,7 +2789,7 @@ version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8891bd853eff90e33024195d79d578dc984c82f9e0715fcd2b525a0c19d52811"
 dependencies = [
- "parity-util-mem",
+ "tetsy-util-mem",
  "smallvec 1.6.1",
 ]
 
@@ -2800,7 +2800,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "30a0da8e08caf08d384a620ec19bb6c9b85c84137248e202617fb91881f25912"
 dependencies = [
  "kvdb",
- "parity-util-mem",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
 ]
 
@@ -2815,7 +2815,7 @@ dependencies = [
  "log",
  "num_cpus",
  "owning_ref",
- "parity-util-mem",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "regex",
  "rocksdb",
@@ -2833,7 +2833,7 @@ dependencies = [
  "kvdb",
  "kvdb-memorydb",
  "log",
- "parity-util-mem",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "send_wrapper 0.5.0",
  "wasm-bindgen",
@@ -2911,7 +2911,7 @@ dependencies = [
  "libp2p-wasm-ext",
  "libp2p-websocket",
  "libp2p-yamux",
- "parity-multiaddr",
+ "tetsy-multiaddr",
  "parking_lot 0.11.1",
  "pin-project 1.0.4",
  "smallvec 1.6.1",
@@ -2936,7 +2936,7 @@ dependencies = [
  "log",
  "multihash",
  "multistream-select",
- "parity-multiaddr",
+ "tetsy-multiaddr",
  "parking_lot 0.11.1",
  "pin-project 1.0.4",
  "prost 0.7.0",
@@ -3251,7 +3251,7 @@ dependencies = [
  "futures 0.3.12",
  "js-sys",
  "libp2p-core",
- "parity-send-wrapper",
+ "tetsy-send-wrapper",
  "wasm-bindgen",
  "wasm-bindgen-futures",
 ]
@@ -3479,7 +3479,7 @@ checksum = "814bbecfc0451fc314eeea34f05bbcd5b98a7ad7af37faee088b86a1e633f1d4"
 dependencies = [
  "hash-db",
  "hashbrown",
- "parity-util-mem",
+ "tetsy-util-mem",
 ]
 
 [[package]]
@@ -3955,7 +3955,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "noble-session",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-application-crypto",
  "sp-authority-discovery",
@@ -3971,7 +3971,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-authorship",
  "sp-inherents",
  "sp-runtime",
@@ -3989,7 +3989,7 @@ dependencies = [
  "noble-authorship",
  "noble-session",
  "noble-timestamp",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-application-crypto",
  "sp-consensus-babe",
@@ -4011,7 +4011,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
@@ -4026,7 +4026,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "noble-treasury",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
@@ -4040,7 +4040,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4056,7 +4056,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4071,7 +4071,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-npos-elections",
  "sp-runtime",
@@ -4088,7 +4088,7 @@ dependencies = [
  "fabric-system",
  "noble-authorship",
  "noble-session",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-application-crypto",
  "sp-core",
@@ -4108,7 +4108,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4125,7 +4125,7 @@ dependencies = [
  "fabric-system",
  "noble-authorship",
  "noble-session",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-application-crypto",
  "sp-core",
@@ -4143,7 +4143,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4159,7 +4159,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4174,7 +4174,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4189,7 +4189,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4204,7 +4204,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "noble-balances",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-staking",
@@ -4226,7 +4226,7 @@ dependencies = [
  "noble-offences",
  "noble-session",
  "noble-staking",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-runtime",
  "sp-staking",
  "sp-std",
@@ -4240,7 +4240,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4255,7 +4255,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "safe-mix",
  "sp-runtime",
  "sp-std",
@@ -4269,7 +4269,7 @@ dependencies = [
  "enumflags2",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4284,7 +4284,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4300,7 +4300,7 @@ dependencies = [
  "fabric-system",
  "impl-trait-for-tuples 0.1.3",
  "noble-timestamp",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4334,7 +4334,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "rand_chacha 0.2.2",
  "serde",
  "sp-runtime",
@@ -4351,7 +4351,7 @@ dependencies = [
  "fabric-system",
  "noble-authorship",
  "noble-session",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "rand_chacha 0.2.2",
  "serde",
  "sp-application-crypto",
@@ -4381,7 +4381,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-io",
  "sp-runtime",
@@ -4397,7 +4397,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-inherents",
  "sp-io",
@@ -4415,7 +4415,7 @@ dependencies = [
  "fabric-support",
  "fabric-system",
  "noble-treasury",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
@@ -4428,7 +4428,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "smallvec 1.6.1",
  "sp-core",
@@ -4446,7 +4446,7 @@ dependencies = [
  "jsonrpc-core-client",
  "jsonrpc-derive",
  "noble-transaction-payment-rpc-runtime-api",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-blockchain",
  "sp-core",
@@ -4460,7 +4460,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "noble-transaction-payment",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-runtime",
 ]
@@ -4475,7 +4475,7 @@ dependencies = [
  "fabric-system",
  "impl-trait-for-tuples 0.2.0",
  "noble-balances",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
@@ -4489,7 +4489,7 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -4506,14 +4506,14 @@ dependencies = [
  "fabric-benchmarking",
  "fabric-support",
  "fabric-system",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
 ]
 
 [[package]]
-name = "parity-db"
+name = "tetsy-db"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00d595e372d119261593297debbe4193811a4dc811d2a1ccbb8caaa6666ad7ab"
@@ -4527,7 +4527,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-multiaddr"
+name = "tetsy-multiaddr"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8bfda2e46fc5e14122649e2645645a81ee5844e0fb2e727ef560cc71a8b2d801"
@@ -4545,7 +4545,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-scale-codec"
+name = "tetsy-scale-codec"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75c823fdae1bb5ff5708ee61a62697e6296175dc671710876871c853f48592b3"
@@ -4553,12 +4553,12 @@ dependencies = [
  "arrayvec 0.5.2",
  "bitvec",
  "byte-slice-cast",
- "parity-scale-codec-derive",
+ "tetsy-scale-codec-derive",
  "serde",
 ]
 
 [[package]]
-name = "parity-scale-codec-derive"
+name = "tetsy-scale-codec-derive"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9029e65297c7fd6d7013f0579e193ec2b34ae78eabca854c9417504ad8a2d214"
@@ -4570,13 +4570,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-send-wrapper"
+name = "tetsy-send-wrapper"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa9777aa91b8ad9dd5aaa04a9b6bcb02c7f1deb952fca5a66034d5e63afc5c6f"
 
 [[package]]
-name = "parity-tokio-ipc"
+name = "tetsy-tokio-ipc"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e57fea504fea33f9fbb5f49f378359030e7e026a6ab849bb9e8f0787376f1bf"
@@ -4595,7 +4595,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-util-mem"
+name = "tetsy-util-mem"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "664a8c6b8e62d8f9f2f937e391982eb433ab285b4cd9545b342441e04a906e42"
@@ -4606,7 +4606,7 @@ dependencies = [
  "impl-trait-for-tuples 0.2.0",
  "jemallocator",
  "lru",
- "parity-util-mem-derive",
+ "tetsy-util-mem-derive",
  "parking_lot 0.11.1",
  "primitive-types",
  "smallvec 1.6.1",
@@ -4614,7 +4614,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-util-mem-derive"
+name = "tetsy-util-mem-derive"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f557c32c6d268a07c921471619c0295f5efad3a0e76d4f97a05c091a51d110b2"
@@ -4625,7 +4625,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-wasm"
+name = "tetsy-wasm"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "16ad52817c4d343339b3bc2e26861bd21478eda0b7509acf83505727000512ac"
@@ -4634,13 +4634,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-wasm"
+name = "tetsy-wasm"
 version = "0.41.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ddfc878dac00da22f8f61e7af3157988424567ab01d9920b962ef7dcbd7cd865"
 
 [[package]]
-name = "parity-ws"
+name = "tetsy-ws"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e02a625dd75084c2a7024f07c575b61b782f729d18702dabb3cdbf31911dc61"
@@ -4932,7 +4932,7 @@ dependencies = [
  "color-eyre",
  "futures 0.3.12",
  "nix 0.19.1",
- "parity-util-mem",
+ "tetsy-util-mem",
  "tetcoin-cli",
  "tetcoin-service",
  "tempfile",
@@ -4970,7 +4970,7 @@ dependencies = [
  "futures 0.3.12",
  "log",
  "maplit",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-node-network-protocol",
  "tetcoin-node-subsystem",
  "tetcoin-node-subsystem-test-helpers",
@@ -4990,7 +4990,7 @@ dependencies = [
  "assert_matches",
  "futures 0.3.12",
  "maplit",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-erasure-coding",
  "tetcoin-node-network-protocol",
  "tetcoin-node-subsystem",
@@ -5082,8 +5082,8 @@ dependencies = [
 name = "tetcoin-core-primitives"
 version = "0.7.30"
 dependencies = [
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "sp-core",
  "sp-runtime",
  "sp-std",
@@ -5093,7 +5093,7 @@ dependencies = [
 name = "tetcoin-erasure-coding"
 version = "0.8.28"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "reed-solomon-erasure",
  "sp-core",
@@ -5108,7 +5108,7 @@ dependencies = [
  "assert_matches",
  "async-trait",
  "futures 0.3.12",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "tetcoin-node-network-protocol",
  "tetcoin-node-subsystem",
@@ -5146,7 +5146,7 @@ version = "0.1.0"
 dependencies = [
  "bitvec",
  "futures 0.3.12",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-node-primitives",
  "tetcoin-node-subsystem",
  "tetcoin-overseer",
@@ -5169,7 +5169,7 @@ dependencies = [
  "kvdb-memorydb",
  "kvdb-rocksdb",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "tetcoin-erasure-coding",
  "tetcoin-node-subsystem",
@@ -5245,7 +5245,7 @@ version = "0.1.0"
 dependencies = [
  "assert_matches",
  "futures 0.3.12",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-node-primitives",
  "tetcoin-node-subsystem",
  "tetcoin-node-subsystem-test-helpers",
@@ -5320,7 +5320,7 @@ version = "0.1.0"
 dependencies = [
  "futures 0.3.12",
  "memory-lru",
- "parity-util-mem",
+ "tetsy-util-mem",
  "tetcoin-node-subsystem",
  "tetcoin-node-subsystem-test-helpers",
  "tetcoin-node-subsystem-util",
@@ -5350,7 +5350,7 @@ dependencies = [
 name = "tetcoin-node-network-protocol"
 version = "0.1.0"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-node-jaeger",
  "tetcoin-node-primitives",
  "tetcoin-primitives",
@@ -5365,7 +5365,7 @@ name = "tetcoin-node-primitives"
 version = "0.1.0"
 dependencies = [
  "futures 0.3.12",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "tetcoin-statement-table",
  "sp-consensus-slots",
@@ -5387,7 +5387,7 @@ dependencies = [
  "lazy_static",
  "log",
  "mick-jaeger",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pin-project 1.0.4",
  "tetcoin-node-jaeger",
@@ -5412,7 +5412,7 @@ dependencies = [
  "async-trait",
  "futures 0.3.12",
  "futures-timer 3.0.2",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pin-project 1.0.4",
  "tetcoin-node-primitives",
@@ -5439,7 +5439,7 @@ dependencies = [
  "futures-timer 3.0.2",
  "log",
  "metered-channel",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pin-project 1.0.4",
  "tetcoin-node-jaeger",
@@ -5486,8 +5486,8 @@ dependencies = [
  "derive_more",
  "futures 0.3.12",
  "log",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "tetcoin-core-primitives",
  "sc-executor",
@@ -5529,8 +5529,8 @@ dependencies = [
  "bitvec",
  "fabric-system",
  "hex-literal",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "tetcoin-core-primitives",
  "tetcoin-parachain",
  "pretty_assertions",
@@ -5557,7 +5557,7 @@ version = "0.8.28"
 dependencies = [
  "jsonrpc-core",
  "noble-transaction-payment-rpc",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "sc-chain-spec",
  "sc-client-api",
@@ -5625,7 +5625,7 @@ dependencies = [
  "noble-treasury",
  "noble-utility",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "tetcoin-runtime-common",
  "rustc-hex",
@@ -5678,7 +5678,7 @@ dependencies = [
  "noble-transaction-payment",
  "noble-treasury",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "tetcoin-runtime-parachains",
  "rustc-hex",
@@ -5726,7 +5726,7 @@ dependencies = [
  "noble-timestamp",
  "noble-treasury",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "rand 0.8.3",
  "rand_chacha 0.3.0",
@@ -5862,7 +5862,7 @@ dependencies = [
 name = "tetcoin-statement-table"
 version = "0.8.28"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-primitives",
  "sp-core",
 ]
@@ -5871,7 +5871,7 @@ dependencies = [
 name = "tetcoin-test-client"
 version = "0.8.28"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-node-subsystem",
  "tetcoin-primitives",
  "tetcoin-test-runtime",
@@ -5920,7 +5920,7 @@ dependencies = [
  "noble-transaction-payment",
  "noble-transaction-payment-rpc-runtime-api",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "tetcoin-primitives",
  "tetcoin-runtime-common",
@@ -6253,7 +6253,7 @@ checksum = "0f53bc2558e8376358ebdc28301546471d67336584f6438ed4b7c7457a055fd7"
 dependencies = [
  "byteorder",
  "log",
- "parity-wasm 0.41.0",
+ "tetsy-wasm 0.41.0",
 ]
 
 [[package]]
@@ -6672,7 +6672,7 @@ dependencies = [
  "noble-timestamp",
  "noble-transaction-payment",
  "noble-transaction-payment-rpc-runtime-api",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "tetcoin-primitives",
  "tetcoin-runtime-common",
@@ -6849,7 +6849,7 @@ dependencies = [
  "futures-timer 3.0.2",
  "libp2p",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "prost 0.7.0",
  "prost-build",
  "rand 0.7.3",
@@ -6873,7 +6873,7 @@ dependencies = [
  "futures 0.3.12",
  "futures-timer 3.0.2",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-block-builder",
  "sc-client-api",
  "sc-proposer-metrics",
@@ -6893,7 +6893,7 @@ name = "sc-block-builder"
 version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-client-api",
  "sp-api",
  "sp-block-builder",
@@ -6911,7 +6911,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-chain-spec-derive",
  "sc-consensus-babe",
  "sc-consensus-epochs",
@@ -6949,7 +6949,7 @@ dependencies = [
  "libp2p",
  "log",
  "names",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "rand 0.7.3",
  "regex",
  "rpassword",
@@ -6987,7 +6987,7 @@ dependencies = [
  "kvdb",
  "lazy_static",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sc-executor",
  "sp-api",
@@ -7021,9 +7021,9 @@ dependencies = [
  "kvdb-rocksdb",
  "linked-hash-map",
  "log",
- "parity-db",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-db",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sc-executor",
@@ -7064,7 +7064,7 @@ dependencies = [
  "num-bigint",
  "num-rational",
  "num-traits 0.2.14",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pdqselect",
  "rand 0.7.3",
@@ -7126,7 +7126,7 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "fork-tree",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sp-blockchain",
@@ -7141,7 +7141,7 @@ dependencies = [
  "futures 0.3.12",
  "futures-timer 3.0.2",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sc-telemetry",
@@ -7182,8 +7182,8 @@ dependencies = [
  "lazy_static",
  "libsecp256k1",
  "log",
- "parity-scale-codec",
- "parity-wasm 0.41.0",
+ "tetsy-scale-codec",
+ "tetsy-wasm 0.41.0",
  "parking_lot 0.11.1",
  "sc-executor-common",
  "sc-executor-wasmi",
@@ -7208,8 +7208,8 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "derive_more",
- "parity-scale-codec",
- "parity-wasm 0.41.0",
+ "tetsy-scale-codec",
+ "tetsy-wasm 0.41.0",
  "sp-allocator",
  "sp-core",
  "sp-serializer",
@@ -7224,7 +7224,7 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-executor-common",
  "sp-allocator",
  "sp-core",
@@ -7239,8 +7239,8 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "log",
- "parity-scale-codec",
- "parity-wasm 0.41.0",
+ "tetsy-scale-codec",
+ "tetsy-wasm 0.41.0",
  "pwasm-utils",
  "sc-executor-common",
  "scoped-tls",
@@ -7263,7 +7263,7 @@ dependencies = [
  "futures-timer 3.0.2",
  "linked-hash-map",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pin-project 0.4.23",
  "rand 0.7.3",
@@ -7302,7 +7302,7 @@ dependencies = [
  "jsonrpc-derive",
  "jsonrpc-pubsub",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-client-api",
  "sc-finality-grandpa",
  "sc-rpc",
@@ -7322,7 +7322,7 @@ dependencies = [
  "futures 0.3.12",
  "log",
  "num-traits 0.2.14",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "prost 0.6.1",
  "sc-client-api",
@@ -7341,7 +7341,7 @@ dependencies = [
  "ansi_term 0.12.1",
  "futures 0.3.12",
  "log",
- "parity-util-mem",
+ "tetsy-util-mem",
  "sc-client-api",
  "sc-network",
  "sp-blockchain",
@@ -7378,7 +7378,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "hash-db",
  "lazy_static",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sc-executor",
@@ -7416,7 +7416,7 @@ dependencies = [
  "log",
  "lru",
  "nohash-hasher",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "pin-project 0.4.23",
  "prost 0.7.0",
@@ -7471,7 +7471,7 @@ dependencies = [
  "hyper-rustls",
  "log",
  "num_cpus",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "rand 0.7.3",
  "sc-client-api",
@@ -7517,7 +7517,7 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-pubsub",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sc-block-builder",
  "sc-client-api",
@@ -7553,7 +7553,7 @@ dependencies = [
  "jsonrpc-derive",
  "jsonrpc-pubsub",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "serde",
  "serde_json",
@@ -7598,8 +7598,8 @@ dependencies = [
  "jsonrpc-pubsub",
  "lazy_static",
  "log",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "pin-project 0.4.23",
  "rand 0.7.3",
@@ -7652,9 +7652,9 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "log",
- "parity-scale-codec",
- "parity-util-mem",
- "parity-util-mem-derive",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
+ "tetsy-util-mem-derive",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sp-core",
@@ -7751,7 +7751,7 @@ dependencies = [
  "futures 0.3.12",
  "linked-hash-map",
  "log",
- "parity-util-mem",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "retain_mut",
  "serde",
@@ -7773,8 +7773,8 @@ dependencies = [
  "futures-diagnose",
  "intervalier",
  "log",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sc-transaction-graph",
@@ -8204,7 +8204,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "hash-db",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api-proc-macro",
  "sp-core",
  "sp-runtime",
@@ -8231,7 +8231,7 @@ name = "sp-application-crypto"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-core",
  "sp-io",
@@ -8245,7 +8245,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "integer-sqrt",
  "num-traits 0.2.14",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-debug-derive",
  "sp-std",
@@ -8256,7 +8256,7 @@ name = "sp-authority-discovery"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-application-crypto",
  "sp-runtime",
@@ -8268,7 +8268,7 @@ name = "sp-authorship"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-inherents",
  "sp-runtime",
  "sp-std",
@@ -8279,7 +8279,7 @@ name = "sp-block-builder"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-inherents",
  "sp-runtime",
@@ -8294,7 +8294,7 @@ dependencies = [
  "futures 0.3.12",
  "log",
  "lru",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sp-api",
  "sp-consensus",
@@ -8322,7 +8322,7 @@ dependencies = [
  "futures-timer 3.0.2",
  "libp2p",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "serde",
  "sp-api",
@@ -8345,7 +8345,7 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "merlin",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-application-crypto",
  "sp-consensus",
@@ -8364,7 +8364,7 @@ name = "sp-consensus-slots"
 version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-arithmetic",
  "sp-runtime",
 ]
@@ -8374,7 +8374,7 @@ name = "sp-consensus-vrf"
 version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "schnorrkel",
  "sp-core",
  "sp-runtime",
@@ -8401,8 +8401,8 @@ dependencies = [
  "log",
  "merlin",
  "num-traits 0.2.14",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "parking_lot 0.11.1",
  "primitive-types",
  "rand 0.7.3",
@@ -8450,7 +8450,7 @@ version = "0.8.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "environmental",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-std",
  "sp-storage",
 ]
@@ -8462,7 +8462,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "finality-grandpa",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-api",
  "sp-application-crypto",
@@ -8477,7 +8477,7 @@ name = "sp-inherents"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sp-core",
  "sp-std",
@@ -8493,7 +8493,7 @@ dependencies = [
  "hash-db",
  "libsecp256k1",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "sp-core",
  "sp-externalities",
@@ -8528,7 +8528,7 @@ dependencies = [
  "derive_more",
  "futures 0.3.12",
  "merlin",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "schnorrkel",
  "serde",
@@ -8541,7 +8541,7 @@ name = "sp-npos-elections"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-arithmetic",
  "sp-core",
@@ -8596,8 +8596,8 @@ dependencies = [
  "hash256-std-hasher",
  "impl-trait-for-tuples 0.2.0",
  "log",
- "parity-scale-codec",
- "parity-util-mem",
+ "tetsy-scale-codec",
+ "tetsy-util-mem",
  "paste",
  "rand 0.7.3",
  "serde",
@@ -8614,7 +8614,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "primitive-types",
  "sp-externalities",
  "sp-runtime-interface-proc-macro",
@@ -8651,7 +8651,7 @@ name = "sp-session"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-core",
  "sp-runtime",
@@ -8664,7 +8664,7 @@ name = "sp-staking"
 version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-runtime",
  "sp-std",
 ]
@@ -8677,7 +8677,7 @@ dependencies = [
  "hash-db",
  "log",
  "num-traits 0.2.14",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "parking_lot 0.11.1",
  "rand 0.7.3",
  "smallvec 1.6.1",
@@ -8702,7 +8702,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-serde",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "ref-cast",
  "serde",
  "sp-debug-derive",
@@ -8728,7 +8728,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-api",
  "sp-inherents",
  "sp-runtime",
@@ -8742,7 +8742,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-std",
  "tracing",
  "tracing-core",
@@ -8757,7 +8757,7 @@ dependencies = [
  "derive_more",
  "futures 0.3.12",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-api",
  "sp-blockchain",
@@ -8772,7 +8772,7 @@ source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2
 dependencies = [
  "hash-db",
  "memory-db",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-core",
  "sp-std",
  "trie-db",
@@ -8797,7 +8797,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-serde",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "serde",
  "sp-runtime",
  "sp-std",
@@ -8809,7 +8809,7 @@ version = "2.0.1"
 source = "git+https://github.com/tetcoin/tetcore#93b231e79f5b4e551c34234e89fa4a2e5e9c1510"
 dependencies = [
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-std",
  "wasmi",
 ]
@@ -9002,7 +9002,7 @@ dependencies = [
  "jsonrpc-core-client",
  "jsonrpc-derive",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-client-api",
  "sc-rpc-api",
  "serde",
@@ -9037,7 +9037,7 @@ dependencies = [
  "futures 0.3.12",
  "hash-db",
  "hex",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sc-client-api",
  "sc-client-db",
  "sc-consensus",
@@ -9183,7 +9183,7 @@ name = "test-parachain-adder"
 version = "0.8.28"
 dependencies = [
  "dlmalloc",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "sp-io",
  "sp-std",
@@ -9198,7 +9198,7 @@ dependencies = [
  "futures 0.3.12",
  "futures-timer 3.0.2",
  "log",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-cli",
  "tetcoin-node-primitives",
  "tetcoin-node-subsystem",
@@ -9228,7 +9228,7 @@ dependencies = [
 name = "test-parachains"
 version = "0.7.22"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "sp-core",
  "test-parachain-adder",
@@ -10075,7 +10075,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d0c32691b6c7e6c14e7f8fd55361a9088b507aa49620fcd06c09b3a1082186b9"
 dependencies = [
  "log",
- "parity-wasm 0.32.0",
+ "tetsy-wasm 0.32.0",
  "rustc-demangle",
 ]
 
@@ -10104,7 +10104,7 @@ dependencies = [
  "memory_units",
  "num-rational",
  "num-traits 0.2.14",
- "parity-wasm 0.41.0",
+ "tetsy-wasm 0.41.0",
  "wasmi-validation",
 ]
 
@@ -10114,7 +10114,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ea78c597064ba73596099281e2f4cfc019075122a65cdda3205af94f0b264d93"
 dependencies = [
- "parity-wasm 0.41.0",
+ "tetsy-wasm 0.41.0",
 ]
 
 [[package]]
@@ -10386,7 +10386,7 @@ dependencies = [
  "noble-treasury",
  "noble-utility",
  "noble-vesting",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "tetcoin-primitives",
  "tetcoin-runtime-common",
@@ -10520,7 +10520,7 @@ dependencies = [
 name = "xcm"
 version = "0.8.22"
 dependencies = [
- "parity-scale-codec",
+ "tetsy-scale-codec",
 ]
 
 [[package]]
@@ -10528,7 +10528,7 @@ name = "xcm-builder"
 version = "0.8.22"
 dependencies = [
  "fabric-support",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "tetcoin-parachain",
  "sp-arithmetic",
  "sp-io",
@@ -10544,7 +10544,7 @@ version = "0.8.22"
 dependencies = [
  "fabric-support",
  "impl-trait-for-tuples 0.2.0",
- "parity-scale-codec",
+ "tetsy-scale-codec",
  "sp-arithmetic",
  "sp-core",
  "sp-io",

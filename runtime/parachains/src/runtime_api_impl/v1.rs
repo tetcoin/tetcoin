@@ -198,7 +198,7 @@ pub fn persisted_validation_data<T: initializer::Config>(
 	para_id: ParaId,
 	assumption: OccupiedCoreAssumption,
 ) -> Option<PersistedValidationData<T::BlockNumber>> {
-	use parity_scale_codec::Decode as _;
+	use tetsy_scale_codec::Decode as _;
 	let relay_parent_number = <fabric_system::Module<T>>::block_number();
 	let relay_storage_root = Hash::decode(&mut &tp_io::storage::root()[..])
 		.expect("storage root must decode to the Hash type; qed");

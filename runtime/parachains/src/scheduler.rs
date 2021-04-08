@@ -45,7 +45,7 @@ use fabric_support::{
 	decl_storage, decl_module, decl_error,
 	weights::Weight,
 };
-use parity_scale_codec::{Encode, Decode};
+use tetsy_scale_codec::{Encode, Decode};
 use tp_runtime::traits::{One, Saturating};
 
 use rand::{SeedableRng, seq::SliceRandom};

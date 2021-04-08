@@ -323,7 +323,7 @@ mod tests {
 
 				// we don't directly check the block's weight post-call. Instead, we check that the
 				// call has returned the appropriate post-dispatch weight for refund, and trust
-				// Substrate to do the right thing with that information.
+				// Tetcore to do the right thing with that information.
 				//
 				// In this case, the weight system can update the actual weight with the same amount,
 				// or return `None` to indicate that the pre-computed weight should not change.
@@ -363,7 +363,7 @@ mod tests {
 
 				// we don't directly check the block's weight post-call. Instead, we check that the
 				// call has returned the appropriate post-dispatch weight for refund, and trust
-				// Substrate to do the right thing with that information.
+				// Tetcore to do the right thing with that information.
 				assert_eq!(
 					post_info.actual_weight.unwrap(),
 					expected_weight,
