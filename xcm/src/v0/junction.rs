@@ -26,8 +26,8 @@ pub enum NetworkId {
 	Any,
 	/// Some named network.
 	Named(Vec<u8>),
-	/// The Polkadot Relay chain
-	Polkadot,
+	/// The Tetcoin Relay chain
+	Tetcoin,
 	/// Kusama.
 	Kusama,
 }
@@ -44,7 +44,7 @@ pub enum Junction {
 	Parent,
 	/// An indexed parachain belonging to and operated by the context.
 	///
-	/// Generally used when the context is a Polkadot Relay-chain.
+	/// Generally used when the context is a Tetcoin Relay-chain.
 	Parachain { #[codec(compact)] id: u32 },
 	/// A 32-byte identifier for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.

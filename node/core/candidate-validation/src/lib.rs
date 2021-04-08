@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Candidate Validation subsystem.
 //!
@@ -23,7 +23,7 @@
 #![deny(unused_crate_dependencies, unused_results)]
 #![warn(missing_docs)]
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	Subsystem, SubsystemContext, SpawnedSubsystem, SubsystemResult, SubsystemError,
 	FromOverseer, OverseerSignal,
 	messages::{
@@ -31,20 +31,20 @@ use polkadot_subsystem::{
 		ValidationFailed, RuntimeApiRequest,
 	},
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_subsystem::errors::RuntimeApiError;
-use polkadot_node_primitives::{ValidationResult, InvalidCandidate};
-use polkadot_primitives::v1::{
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_subsystem::errors::RuntimeApiError;
+use tetcoin_node_primitives::{ValidationResult, InvalidCandidate};
+use tetcoin_primitives::v1::{
 	ValidationCode, PoV, CandidateDescriptor, PersistedValidationData,
 	OccupiedCoreAssumption, Hash, CandidateCommitments,
 };
-use polkadot_parachain::wasm_executor::{
+use tetcoin_parachain::wasm_executor::{
 	self, IsolationStrategy, ValidationError, InvalidCandidate as WasmInvalidCandidate
 };
-use polkadot_parachain::primitives::{ValidationResult as WasmValidationResult, ValidationParams};
+use tetcoin_parachain::primitives::{ValidationResult as WasmValidationResult, ValidationParams};
 
 use parity_scale_codec::Encode;
-use sp_core::traits::SpawnNamed;
+use tet_core::traits::SpawnNamed;
 
 use futures::channel::oneshot;
 use futures::prelude::*;
@@ -569,12 +569,12 @@ impl metrics::Metrics for Metrics {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use polkadot_node_subsystem_test_helpers as test_helpers;
-	use polkadot_primitives::v1::{HeadData, BlockData, UpwardMessage};
-	use sp_core::testing::TaskExecutor;
+	use tetcoin_node_subsystem_test_helpers as test_helpers;
+	use tetcoin_primitives::v1::{HeadData, BlockData, UpwardMessage};
+	use tet_core::testing::TaskExecutor;
 	use futures::executor;
 	use assert_matches::assert_matches;
-	use sp_keyring::Sr25519Keyring;
+	use tp_keyring::Sr25519Keyring;
 
 	struct MockValidationBackend;
 
@@ -597,7 +597,7 @@ mod tests {
 
 	fn collator_sign(descriptor: &mut CandidateDescriptor, collator: Sr25519Keyring) {
 		descriptor.collator = collator.public().into();
-		let payload = polkadot_primitives::v1::collator_signature_payload(
+		let payload = tetcoin_primitives::v1::collator_signature_payload(
 			&descriptor.relay_parent,
 			&descriptor.para_id,
 			&descriptor.persisted_validation_data_hash,

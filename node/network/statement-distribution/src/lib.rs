@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Statement Distribution Subsystem.
 //!
@@ -22,7 +22,7 @@
 #![deny(unused_crate_dependencies)]
 #![warn(missing_docs)]
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	Subsystem, SubsystemResult, SubsystemContext, SpawnedSubsystem,
 	ActiveLeavesUpdate, FromOverseer, OverseerSignal, PerLeafSpan,
 	messages::{
@@ -30,12 +30,12 @@ use polkadot_subsystem::{
 		RuntimeApiMessage, RuntimeApiRequest,
 	},
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
 use node_primitives::SignedFullStatement;
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	Hash, CompactStatement, ValidatorIndex, ValidatorId, SigningContext, ValidatorSignature, CandidateHash,
 };
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	v1 as protocol_v1, View, PeerId, ReputationChange as Rep, NetworkBridgeEvent, OurView,
 };
 
@@ -385,7 +385,7 @@ struct ActiveHeadData {
 	/// The validators at this head.
 	validators: Vec<ValidatorId>,
 	/// The session index this head is at.
-	session_index: sp_staking::SessionIndex,
+	session_index: tp_staking::SessionIndex,
 	/// How many `Seconded` statements we've seen per validator.
 	seconded_counts: HashMap<ValidatorIndex, usize>,
 	/// A Jaeger span for this head, so we can attach data to it.
@@ -395,7 +395,7 @@ struct ActiveHeadData {
 impl ActiveHeadData {
 	fn new(
 		validators: Vec<ValidatorId>,
-		session_index: sp_staking::SessionIndex,
+		session_index: tp_staking::SessionIndex,
 		span: PerLeafSpan,
 	) -> Self {
 		ActiveHeadData {
@@ -1110,16 +1110,16 @@ impl metrics::Metrics for Metrics {
 mod tests {
 	use super::*;
 	use std::sync::Arc;
-	use sp_keyring::Sr25519Keyring;
-	use sp_application_crypto::AppKey;
+	use tp_keyring::Sr25519Keyring;
+	use tp_application_crypto::AppKey;
 	use node_primitives::Statement;
-	use polkadot_primitives::v1::CommittedCandidateReceipt;
+	use tetcoin_primitives::v1::CommittedCandidateReceipt;
 	use assert_matches::assert_matches;
 	use futures::executor::{self, block_on};
-	use sp_keystore::{CryptoStore, SyncCryptoStorePtr, SyncCryptoStore};
-	use sc_keystore::LocalKeystore;
-	use polkadot_node_network_protocol::{view, ObservedRole, our_view};
-	use polkadot_subsystem::JaegerSpan;
+	use tp_keystore::{CryptoStore, SyncCryptoStorePtr, SyncCryptoStore};
+	use tc_keystore::LocalKeystore;
+	use tetcoin_node_network_protocol::{view, ObservedRole, our_view};
+	use tetcoin_subsystem::JaegerSpan;
 
 	#[test]
 	fn active_head_accepts_only_2_seconded_per_validator() {
@@ -1472,8 +1472,8 @@ mod tests {
 			},
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
-		let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+		let pool = tet_core::testing::TaskExecutor::new();
+		let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 		let peer = PeerId::random();
 
 		executor::block_on(async move {
@@ -1562,8 +1562,8 @@ mod tests {
 			(peer_c.clone(), peer_data_from_view(peer_c_view)),
 		].into_iter().collect();
 
-		let pool = sp_core::testing::TaskExecutor::new();
-		let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+		let pool = tet_core::testing::TaskExecutor::new();
+		let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 		executor::block_on(async move {
 			let statement = {
@@ -1664,8 +1664,8 @@ mod tests {
 
 		let session_index = 1;
 
-		let pool = sp_core::testing::TaskExecutor::new();
-		let (ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+		let pool = tet_core::testing::TaskExecutor::new();
+		let (ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 		let bg = async move {
 			let s = StatementDistribution { metrics: Default::default() };

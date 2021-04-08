@@ -1,18 +1,18 @@
 // Copyright 2019-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Money matters.
 pub mod currency {
@@ -54,10 +54,10 @@ pub mod time {
 
 /// Fee-related.
 pub mod fee {
-	pub use sp_runtime::Perbill;
+	pub use tp_runtime::Perbill;
 	use primitives::v0::Balance;
 	use runtime_common::ExtrinsicBaseWeight;
-	use frame_support::weights::{
+	use fabric_support::weights::{
 		WeightToFeePolynomial, WeightToFeeCoefficient, WeightToFeeCoefficients,
 	};
 	use smallvec::smallvec;
@@ -94,7 +94,7 @@ pub mod fee {
 
 #[cfg(test)]
 mod tests {
-	use frame_support::weights::WeightToFeePolynomial;
+	use fabric_support::weights::WeightToFeePolynomial;
 	use runtime_common::{MAXIMUM_BLOCK_WEIGHT, ExtrinsicBaseWeight};
 	use super::fee::WeightToFee;
 	use super::currency::{CENTS, DOLLARS, MILLICENTS};

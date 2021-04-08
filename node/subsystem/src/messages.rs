@@ -1,37 +1,37 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Message types for the overseer and subsystems.
 //!
 //! These messages are intended to define the protocol by which different subsystems communicate with each
 //! other and signals that they receive from an overseer to coordinate their work.
-//! This is intended for use with the `polkadot-overseer` crate.
+//! This is intended for use with the `tetcoin-overseer` crate.
 //!
 //! Subsystems' APIs are defined separately from their implementation, leading to easier mocking.
 
 use futures::channel::{mpsc, oneshot};
 use thiserror::Error;
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	v1 as protocol_v1, NetworkBridgeEvent, ReputationChange, PeerId,
 };
-use polkadot_node_primitives::{
+use tetcoin_node_primitives::{
 	CollationGenerationConfig, SignedFullStatement, ValidationResult,
 	approval::{BlockApprovalMeta, IndirectAssignmentCert, IndirectSignedApprovalVote},
 };
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	AuthorityDiscoveryId, AvailableData, BackedCandidate, BlockNumber, SessionInfo,
 	Header as BlockHeader, CandidateDescriptor, CandidateEvent, CandidateReceipt,
 	CollatorId, CommittedCandidateReceipt, CoreState, ErasureChunk,
@@ -41,7 +41,7 @@ use polkadot_primitives::v1::{
 	ValidatorIndex, ValidatorSignature, InboundDownwardMessage, InboundHrmpMessage,
 	CandidateIndex,
 };
-use polkadot_statement_table::v1::Misbehavior;
+use tetcoin_statement_table::v1::Misbehavior;
 use std::{sync::Arc, collections::btree_map::BTreeMap};
 
 /// Subsystem messages where each message is always bound to a relay parent.
@@ -418,7 +418,7 @@ pub enum RuntimeApiRequest {
 	/// Sends back `true` if the validation outputs pass all acceptance criteria checks.
 	CheckValidationOutputs(
 		ParaId,
-		polkadot_primitives::v1::CandidateCommitments,
+		tetcoin_primitives::v1::CandidateCommitments,
 		RuntimeApiSender<bool>,
 	),
 	/// Get the session index that a child of the block will have.

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use std::collections::{HashMap, HashSet};
 
@@ -20,16 +20,16 @@ use super::{LOG_TARGET,  Result};
 
 use futures::{select, FutureExt};
 
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	CollatorId, CoreIndex, CoreState, Hash, Id as ParaId, CandidateReceipt, PoV, ValidatorId,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	jaeger, PerLeafSpan,
 	FromOverseer, OverseerSignal, SubsystemContext,
 	messages::{AllMessages, CollatorProtocolMessage, NetworkBridgeMessage},
 };
-use polkadot_node_network_protocol::{v1 as protocol_v1, View, PeerId, NetworkBridgeEvent, RequestId, OurView};
-use polkadot_node_subsystem_util::{
+use tetcoin_node_network_protocol::{v1 as protocol_v1, View, PeerId, NetworkBridgeEvent, RequestId, OurView};
+use tetcoin_node_subsystem_util::{
 	validator_discovery,
 	request_validators_ctx,
 	request_validator_groups_ctx,
@@ -738,18 +738,18 @@ mod tests {
 	use assert_matches::assert_matches;
 	use futures::{executor, future, Future, channel::mpsc};
 
-	use sp_core::crypto::Pair;
-	use sp_keyring::Sr25519Keyring;
+	use tet_core::crypto::Pair;
+	use tp_keyring::Sr25519Keyring;
 
-	use polkadot_primitives::v1::{
+	use tetcoin_primitives::v1::{
 		BlockData, CandidateDescriptor, CollatorPair, ScheduledCore,
 		ValidatorIndex, GroupRotationInfo, AuthorityDiscoveryId,
 		SessionIndex, SessionInfo,
 	};
-	use polkadot_subsystem::{ActiveLeavesUpdate, messages::{RuntimeApiMessage, RuntimeApiRequest}, JaegerSpan};
-	use polkadot_node_subsystem_util::TimeoutExt;
-	use polkadot_subsystem_testhelpers as test_helpers;
-	use polkadot_node_network_protocol::{view, our_view};
+	use tetcoin_subsystem::{ActiveLeavesUpdate, messages::{RuntimeApiMessage, RuntimeApiRequest}, JaegerSpan};
+	use tetcoin_node_subsystem_util::TimeoutExt;
+	use tetcoin_subsystem_testhelpers as test_helpers;
+	use tetcoin_node_network_protocol::{view, our_view};
 
 	#[derive(Default)]
 	struct TestCandidateBuilder {
@@ -921,7 +921,7 @@ mod tests {
 		let _ = env_logger::builder()
 			.is_test(true)
 			.filter(
-				Some("polkadot_collator_protocol"),
+				Some("tetcoin_collator_protocol"),
 				log::LevelFilter::Trace,
 			)
 			.filter(
@@ -930,7 +930,7 @@ mod tests {
 			)
 			.try_init();
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 
 		let (context, virtual_overseer) = test_helpers::make_subsystem_context(pool.clone());
 
@@ -1142,7 +1142,7 @@ mod tests {
 			CollatorProtocolMessage::NetworkBridgeUpdateV1(
 				NetworkBridgeEvent::PeerConnected(
 					peer.clone(),
-					polkadot_node_network_protocol::ObservedRole::Authority,
+					tetcoin_node_network_protocol::ObservedRole::Authority,
 				),
 			),
 		).await;

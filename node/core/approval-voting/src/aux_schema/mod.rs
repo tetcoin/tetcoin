@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Auxiliary DB schema, accessors, and writers for on-disk persisted approval storage
 //! data.
@@ -30,16 +30,16 @@
 //! In the future, we may use a temporary DB which doesn't need to be wiped, but for the
 //! time being we share the same DB with the rest of Substrate.
 
-// TODO https://github.com/paritytech/polkadot/issues/1975: remove this
+// TODO https://github.com/tetcoin/tetcoin/issues/1975: remove this
 #![allow(unused)]
 
-use sc_client_api::backend::AuxStore;
-use polkadot_node_primitives::approval::{DelayTranche, RelayVRF};
-use polkadot_primitives::v1::{
+use tc_client_api::backend::AuxStore;
+use tetcoin_node_primitives::approval::{DelayTranche, RelayVRF};
+use tetcoin_primitives::v1::{
 	ValidatorIndex, GroupIndex, CandidateReceipt, SessionIndex, CoreIndex,
 	BlockNumber, Hash, CandidateHash,
 };
-use sp_consensus_slots::Slot;
+use tp_consensus_slots::Slot;
 use parity_scale_codec::{Encode, Decode};
 
 use std::collections::{BTreeMap, HashMap};
@@ -110,7 +110,7 @@ pub(crate) struct BlockEntry {
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub(crate) struct StoredBlockRange(BlockNumber, BlockNumber);
 
-// TODO https://github.com/paritytech/polkadot/issues/1975: probably in lib.rs
+// TODO https://github.com/tetcoin/tetcoin/issues/1975: probably in lib.rs
 #[derive(Debug, Clone, Encode, Decode, PartialEq)]
 pub(crate) struct OurAssignment { }
 
@@ -121,7 +121,7 @@ pub(crate) fn canonicalize(
 	canon_number: BlockNumber,
 	canon_hash: Hash,
 )
-	-> sp_blockchain::Result<()>
+	-> tp_blockchain::Result<()>
 {
 	let range = match load_stored_blocks(store)? {
 		None => return Ok(()),
@@ -147,7 +147,7 @@ pub(crate) fn canonicalize(
 		block_hash: Hash,
 		deleted_block_keys: &mut Vec<_>,
 		visited_candidates: &mut HashMap<CandidateHash, CandidateEntry>,
-	| -> sp_blockchain::Result<Vec<Hash>> {
+	| -> tp_blockchain::Result<Vec<Hash>> {
 		let block_entry = match load_block_entry(store, &block_hash)? {
 			None => return Ok(Vec::new()),
 			Some(b) => b,
@@ -292,7 +292,7 @@ pub(crate) fn canonicalize(
 
 /// Clear the aux store of everything.
 pub(crate) fn clear(store: &impl AuxStore)
-	-> sp_blockchain::Result<()>
+	-> tp_blockchain::Result<()>
 {
 	let range = match load_stored_blocks(store)? {
 		None => return Ok(()),
@@ -335,13 +335,13 @@ pub(crate) fn clear(store: &impl AuxStore)
 }
 
 fn load_decode<D: Decode>(store: &impl AuxStore, key: &[u8])
-	-> sp_blockchain::Result<Option<D>>
+	-> tp_blockchain::Result<Option<D>>
 {
 	match store.get_aux(key)? {
 		None => Ok(None),
 		Some(raw) => D::decode(&mut &raw[..])
 			.map(Some)
-			.map_err(|e| sp_blockchain::Error::Storage(
+			.map_err(|e| tp_blockchain::Error::Storage(
 				format!("Failed to decode item in approvals DB: {:?}", e)
 			)),
 	}
@@ -372,7 +372,7 @@ pub(crate) fn add_block_entry(
 	entry: BlockEntry,
 	n_validators: usize,
 	candidate_info: impl Fn(&CandidateHash) -> Option<NewCandidateInfo>,
-) -> sp_blockchain::Result<()> {
+) -> tp_blockchain::Result<()> {
 	let session = entry.session;
 
 	let new_block_range = {
@@ -471,28 +471,28 @@ pub(crate) fn add_block_entry(
 
 /// Load the stored-blocks key from the state.
 pub(crate) fn load_stored_blocks(store: &impl AuxStore)
-	-> sp_blockchain::Result<Option<StoredBlockRange>>
+	-> tp_blockchain::Result<Option<StoredBlockRange>>
 {
 	load_decode(store, STORED_BLOCKS_KEY)
 }
 
 /// Load a blocks-at-height entry for a given block number.
 pub(crate) fn load_blocks_at_height(store: &impl AuxStore, block_number: BlockNumber)
-	-> sp_blockchain::Result<Vec<Hash>> {
+	-> tp_blockchain::Result<Vec<Hash>> {
 	load_decode(store, &blocks_at_height_key(block_number))
 		.map(|x| x.unwrap_or_default())
 }
 
 /// Load a block entry from the aux store.
 pub(crate) fn load_block_entry(store: &impl AuxStore, block_hash: &Hash)
-	-> sp_blockchain::Result<Option<BlockEntry>>
+	-> tp_blockchain::Result<Option<BlockEntry>>
 {
 	load_decode(store, &block_entry_key(block_hash))
 }
 
 /// Load a candidate entry from the aux store.
 pub(crate) fn load_candidate_entry(store: &impl AuxStore, candidate_hash: &CandidateHash)
-	-> sp_blockchain::Result<Option<CandidateEntry>>
+	-> tp_blockchain::Result<Option<CandidateEntry>>
 {
 	load_decode(store, &candidate_entry_key(candidate_hash))
 }

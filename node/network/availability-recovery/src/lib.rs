@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Availability Recovery Subsystem of Polkadot.
+//! Availability Recovery Subsystem of Tetcoin.
 
 #![warn(missing_docs)]
 
@@ -28,12 +28,12 @@ use lru::LruCache;
 use rand::{seq::SliceRandom, thread_rng};
 use streamunordered::{StreamUnordered, StreamYield};
 
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	AuthorityDiscoveryId, AvailableData, CandidateReceipt, CandidateHash,
 	Hash, ErasureChunk, ValidatorId, ValidatorIndex,
 	SessionInfo, SessionIndex, BlakeTwo256, HashT,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	SubsystemContext, SubsystemResult, SubsystemError, Subsystem, SpawnedSubsystem, FromOverseer,
 	OverseerSignal, ActiveLeavesUpdate,
 	errors::RecoveryError,
@@ -41,14 +41,14 @@ use polkadot_subsystem::{
 		AvailabilityStoreMessage, AvailabilityRecoveryMessage, AllMessages, NetworkBridgeMessage,
 	},
 };
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	v1 as protocol_v1, NetworkBridgeEvent, PeerId, ReputationChange as Rep, RequestId,
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	Timeout, TimeoutExt,
 	request_session_info_ctx,
 };
-use polkadot_erasure_coding::{branches, branch_hash, recovery_threshold, obtain_chunks_v1};
+use tetcoin_erasure_coding::{branches, branch_hash, recovery_threshold, obtain_chunks_v1};
 mod error;
 
 #[cfg(test)]
@@ -266,7 +266,7 @@ impl Interaction {
 			// break and issue a FromInteraction::Concluded(RecoveryError::Invalid).
 			// Otherwise, issue a FromInteraction::Concluded(Ok(())).
 			if self.received_chunks.len() >= self.threshold {
-				let concluded = match polkadot_erasure_coding::reconstruct_v1(
+				let concluded = match tetcoin_erasure_coding::reconstruct_v1(
 					self.validators.len(),
 					self.received_chunks.values().map(|c| (&c.chunk[..], c.index as usize)),
 				) {

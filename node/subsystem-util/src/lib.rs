@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Utility module for subsystems
 //!
@@ -24,24 +24,24 @@
 
 #![warn(missing_docs)]
 
-use polkadot_node_subsystem::{
+use tetcoin_node_subsystem::{
 	errors::RuntimeApiError,
 	messages::{AllMessages, RuntimeApiMessage, RuntimeApiRequest, RuntimeApiSender, BoundToRelayParent},
 	FromOverseer, SpawnedSubsystem, Subsystem, SubsystemContext, SubsystemError, SubsystemResult,
 };
-use polkadot_node_jaeger::JaegerSpan;
+use tetcoin_node_jaeger::JaegerSpan;
 use futures::{channel::{mpsc, oneshot}, prelude::*, select, stream::Stream};
 use futures_timer::Delay;
 use parity_scale_codec::Encode;
 use pin_project::pin_project;
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	CandidateEvent, CommittedCandidateReceipt, CoreState, EncodeAs, PersistedValidationData,
 	GroupRotationInfo, Hash, Id as ParaId, OccupiedCoreAssumption,
 	SessionIndex, Signed, SigningContext, ValidationCode, ValidatorId, ValidatorIndex, SessionInfo,
 };
-use sp_core::{traits::SpawnNamed, Public};
-use sp_application_crypto::AppKey;
-use sp_keystore::{CryptoStore, SyncCryptoStorePtr, Error as KeystoreError};
+use tet_core::{traits::SpawnNamed, Public};
+use tp_application_crypto::AppKey;
+use tp_keystore::{CryptoStore, SyncCryptoStorePtr, Error as KeystoreError};
 use std::{
 	collections::{HashMap, hash_map::Entry}, convert::{TryFrom, TryInto}, marker::Unpin, pin::Pin, task::{Poll, Context},
 	time::Duration, fmt, sync::Arc,
@@ -54,8 +54,8 @@ pub use metered_channel as metered;
 
 /// These reexports are required so that external crates can use the `delegated_subsystem` macro properly.
 pub mod reexports {
-	pub use sp_core::traits::SpawnNamed;
-	pub use polkadot_node_subsystem::{
+	pub use tet_core::traits::SpawnNamed;
+	pub use tetcoin_node_subsystem::{
 		SpawnedSubsystem,
 		Subsystem,
 		SubsystemContext,
@@ -395,7 +395,7 @@ impl<ToJob> JobHandle<ToJob> {
 /// This module reexports Prometheus types and defines the [`Metrics`] trait.
 pub mod metrics {
 	/// Reexport Substrate Prometheus types.
-	pub use substrate_prometheus_endpoint as prometheus;
+	pub use tetcore_prometheus_endpoint as prometheus;
 
 
 	/// Subsystem- or job-specific Prometheus metrics.
@@ -767,9 +767,9 @@ where
 		metrics: &Job::Metrics,
 		err_tx: &mut Option<mpsc::Sender<(Option<Hash>, JobsError<Job::Error>)>>,
 	) -> bool {
-		use polkadot_node_subsystem::ActiveLeavesUpdate;
-		use polkadot_node_subsystem::FromOverseer::{Communication, Signal};
-		use polkadot_node_subsystem::OverseerSignal::{ActiveLeaves, BlockFinalized, Conclude};
+		use tetcoin_node_subsystem::ActiveLeavesUpdate;
+		use tetcoin_node_subsystem::FromOverseer::{Communication, Signal};
+		use tetcoin_node_subsystem::OverseerSignal::{ActiveLeaves, BlockFinalized, Conclude};
 
 		match incoming {
 			Ok(Signal(ActiveLeaves(ActiveLeavesUpdate {
@@ -1045,14 +1045,14 @@ mod tests {
 	use super::*;
 	use executor::block_on;
 	use thiserror::Error;
-	use polkadot_node_subsystem::{
+	use tetcoin_node_subsystem::{
 		messages::{AllMessages, CandidateSelectionMessage}, ActiveLeavesUpdate, FromOverseer, OverseerSignal,
 		SpawnedSubsystem, JaegerSpan,
 	};
 	use assert_matches::assert_matches;
 	use futures::{channel::mpsc, executor, StreamExt, future, Future, FutureExt, SinkExt};
-	use polkadot_primitives::v1::Hash;
-	use polkadot_node_subsystem_test_helpers::{self as test_helpers, make_subsystem_context};
+	use tetcoin_primitives::v1::Hash;
+	use tetcoin_node_subsystem_test_helpers::{self as test_helpers, make_subsystem_context};
 	use std::{pin::Pin, sync::{Arc, atomic::{AtomicUsize, Ordering}}, time::Duration};
 
 	// basic usage: in a nutshell, when you want to define a subsystem, just focus on what its jobs do;
@@ -1149,7 +1149,7 @@ mod tests {
 			)
 			.try_init();
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (context, overseer_handle) = make_subsystem_context(pool.clone());
 		let (err_tx, err_rx) = mpsc::channel(16);
 
@@ -1230,7 +1230,7 @@ mod tests {
 
 	#[test]
 	fn test_subsystem_impl_and_name_derivation() {
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (context, _) = make_subsystem_context::<CandidateSelectionMessage, _>(pool.clone());
 
 		let SpawnedSubsystem { name, .. } =

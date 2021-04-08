@@ -1,22 +1,22 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Polkadot CLI library.
+//! Tetcoin CLI library.
 
-use sc_cli::{RuntimeVersion, SubstrateCli};
+use tc_cli::{RuntimeVersion, SubstrateCli};
 use structopt::StructOpt;
 
 /// Sub-commands supported by the collator.
@@ -44,7 +44,7 @@ pub struct ExportGenesisWasmCommand {}
 pub struct RunCmd {
 	#[allow(missing_docs)]
 	#[structopt(flatten)]
-	pub base: sc_cli::RunCmd,
+	pub base: tc_cli::RunCmd,
 
 	/// Id of the parachain this collator collates for.
 	#[structopt(long)]
@@ -63,7 +63,7 @@ pub struct Cli {
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Parity Polkadot".into()
+		"Parity Tetcoin".into()
 	}
 
 	fn impl_version() -> String {
@@ -79,7 +79,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/paritytech/polkadot/issues/new".into()
+		"https://github.com/tetcoin/tetcoin/issues/new".into()
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -87,29 +87,29 @@ impl SubstrateCli for Cli {
 	}
 
 	fn executable_name() -> String {
-		"polkadot".into()
+		"tetcoin".into()
 	}
 
-	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
+	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn tc_service::ChainSpec>, String> {
 		let id = if id.is_empty() { "rococo" } else { id };
 		Ok(match id {
 			"rococo-staging" => {
-				Box::new(polkadot_service::chain_spec::rococo_staging_testnet_config()?)
+				Box::new(tetcoin_service::chain_spec::rococo_staging_testnet_config()?)
 			}
 			"rococo-local" => {
-				Box::new(polkadot_service::chain_spec::rococo_local_testnet_config()?)
+				Box::new(tetcoin_service::chain_spec::rococo_local_testnet_config()?)
 			}
-			"rococo" => Box::new(polkadot_service::chain_spec::rococo_config()?),
+			"rococo" => Box::new(tetcoin_service::chain_spec::rococo_config()?),
 			path => {
 				let path = std::path::PathBuf::from(path);
-				Box::new(polkadot_service::RococoChainSpec::from_json_file(path)?)
+				Box::new(tetcoin_service::RococoChainSpec::from_json_file(path)?)
 			}
 		})
 	}
 
 	fn native_runtime_version(
-		_spec: &Box<dyn polkadot_service::ChainSpec>,
+		_spec: &Box<dyn tetcoin_service::ChainSpec>,
 	) -> &'static RuntimeVersion {
-		&polkadot_service::rococo_runtime::VERSION
+		&tetcoin_service::rococo_runtime::VERSION
 	}
 }

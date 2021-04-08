@@ -1,6 +1,6 @@
 # .gitlab-ci.yml
 #
-# polkadot
+# tetcoin
 #
 # pipelines can be triggered manually in the web
 # setting DEPLOY_TAG will only deploy the tagged image
@@ -15,7 +15,7 @@ stages:
   - publish
   - deploy
 
-image:                             paritytech/ci-linux:production
+image:                             tetcoin/ci-linux:production
 
 workflow:
   rules:
@@ -69,7 +69,7 @@ default:
     # either to blocked or to forever running pipeline. It was decided to run these jobs from UI
     # and on schedule.
     #
-    # $PIPELINE should be passed in https://gitlab.parity.io/parity/polkadot/-/pipeline_schedules
+    # $PIPELINE should be passed in https://gitlab.parity.io/parity/tetcoin/-/pipeline_schedules
     # or other trigger to avoid running these jobs and run just those allowing this variable.
     - if: $PIPELINE == "rococo"
       when: never
@@ -98,7 +98,7 @@ default:
 
 check-runtime:
   stage:                           test
-  image:                           paritytech/tools:latest
+  image:                           tetcoin/tools:latest
   <<:                              *kubernetes-env
   <<:                              *rules-pr-only
   variables:
@@ -110,7 +110,7 @@ check-runtime:
 
 check-line-width:
   stage:                           test
-  image:                           paritytech/tools:latest
+  image:                           tetcoin/tools:latest
   <<:                              *kubernetes-env
   <<:                              *rules-pr-only
   script:
@@ -138,7 +138,7 @@ test-linux-stable:
     TARGET: native
   artifacts:
     paths:
-      - ./target/release/polkadot
+      - ./target/release/tetcoin
   script:
     - ./scripts/gitlab/test_linux_stable.sh
     - sccache -s
@@ -150,7 +150,7 @@ check-web-wasm:
   <<:                              *compiler-info
   script:
     # WASM support is in progress. As more and more crates support WASM, we should
-    # add entries here. See https://github.com/paritytech/polkadot/issues/625
+    # add entries here. See https://github.com/tetcoin/tetcoin/issues/625
     - ./scripts/gitlab/check_web_wasm.sh
     - sccache -s
 
@@ -175,7 +175,7 @@ check-transaction-versions:
     - job:                         test-linux-stable
       artifacts:                   false
   before_script:
-    - npm install --ignore-scripts -g @polkadot/metadata-cmp
+    - npm install --ignore-scripts -g @tetcoin/metadata-cmp
     - git fetch origin release
   script:
     - scripts/gitlab/check_extrinsics_ordering.sh
@@ -183,16 +183,16 @@ check-transaction-versions:
 .pack-artifacts:                   &pack-artifacts
   - mkdir -p ./artifacts
   - VERSION="${CI_COMMIT_REF_NAME}" # will be tag or branch name
-  - mv ./target/release/polkadot ./artifacts/.
-  - sha256sum ./artifacts/polkadot | tee ./artifacts/polkadot.sha256
+  - mv ./target/release/tetcoin ./artifacts/.
+  - sha256sum ./artifacts/tetcoin | tee ./artifacts/tetcoin.sha256
   - if [ "${CI_COMMIT_TAG}" ]; then
       EXTRATAG="latest";
     else
-      EXTRATAG="$(./artifacts/polkadot --version |
-        sed -n -r 's/^polkadot ([0-9.]+.*-[0-9a-f]{7,13})-.*$/\1/p')";
-      EXTRATAG="${CI_COMMIT_REF_NAME}-${EXTRATAG}-$(cut -c 1-8 ./artifacts/polkadot.sha256)";
+      EXTRATAG="$(./artifacts/tetcoin --version |
+        sed -n -r 's/^tetcoin ([0-9.]+.*-[0-9a-f]{7,13})-.*$/\1/p')";
+      EXTRATAG="${CI_COMMIT_REF_NAME}-${EXTRATAG}-$(cut -c 1-8 ./artifacts/tetcoin.sha256)";
     fi
-  - echo "Polkadot version = ${VERSION} (EXTRATAG ${EXTRATAG})"
+  - echo "Tetcoin version = ${VERSION} (EXTRATAG ${EXTRATAG})"
   - echo -n ${VERSION} > ./artifacts/VERSION
   - echo -n ${EXTRATAG} > ./artifacts/EXTRATAG
   - cp -r scripts/docker/* ./artifacts
@@ -248,7 +248,7 @@ generate-impl-guide:
     - test -s ./artifacts/EXTRATAG || exit 1
     - VERSION="$(cat ./artifacts/VERSION)"
     - EXTRATAG="$(cat ./artifacts/EXTRATAG)"
-    - echo "Polkadot version = ${VERSION} (EXTRATAG ${EXTRATAG})"
+    - echo "Tetcoin version = ${VERSION} (EXTRATAG ${EXTRATAG})"
   script:
     - test "$Docker_Hub_User_Parity" -a "$Docker_Hub_Pass_Parity" ||
         ( echo "no docker credentials provided"; exit 1 )
@@ -270,7 +270,7 @@ generate-impl-guide:
     # only VERSION information is needed for the deployment
     - find ./artifacts/ -depth -not -name VERSION -not -name artifacts -delete
 
-publish-docker-polkadot:
+publish-docker-tetcoin:
   stage:                           publish
   <<:                              *build-push-docker-image
   # Don't run on releases - this is handled by the Github Action here:
@@ -287,7 +287,7 @@ publish-docker-polkadot:
   variables:
     GIT_STRATEGY:                  none
     # DOCKERFILE:                  scripts/docker/Dockerfile
-    IMAGE_NAME:                    docker.io/parity/polkadot
+    IMAGE_NAME:                    docker.io/parity/tetcoin
 
 publish-docker-rococo:
   stage:                           publish
@@ -309,11 +309,11 @@ publish-s3-release:
     - job:                         build-linux-release
       artifacts:                   true
   <<:                              *kubernetes-env
-  image:                           paritytech/awscli:latest
+  image:                           tetcoin/awscli:latest
   variables:
     GIT_STRATEGY:                  none
     BUCKET:                        "releases.parity.io"
-    PREFIX:                        "polkadot/${ARCH}-${DOCKER_OS}"
+    PREFIX:                        "tetcoin/${ARCH}-${DOCKER_OS}"
   before_script:
     - *check-versions
   script:
@@ -329,10 +329,10 @@ publish-s3-release:
     - |
       cat <<-EOM
       |
-      |  polkadot binary paths:
+      |  tetcoin binary paths:
       |
-      |  - https://${BUCKET}/${PREFIX}/${EXTRATAG}/polkadot
-      |  - https://${BUCKET}/${PREFIX}/${VERSION}/polkadot
+      |  - https://${BUCKET}/${PREFIX}/${EXTRATAG}/tetcoin
+      |  - https://${BUCKET}/${PREFIX}/${VERSION}/tetcoin
       |
       EOM
   after_script:
@@ -345,8 +345,8 @@ deploy-polkasync-kusama:
   stage:                           deploy
   <<:                              *rules-build
   variables:
-    POLKADOT_CI_COMMIT_NAME:       "${CI_COMMIT_REF_NAME}"
-    POLKADOT_CI_COMMIT_REF:        "${CI_COMMIT_REF}"
+    TETCOIN_CI_COMMIT_NAME:       "${CI_COMMIT_REF_NAME}"
+    TETCOIN_CI_COMMIT_REF:        "${CI_COMMIT_REF}"
   allow_failure:                   true
   trigger:                         "parity/infrastructure/parity-testnet"
 
@@ -354,7 +354,7 @@ deploy-polkasync-kusama:
 
 check-labels:
   stage:                           .post
-  image:                           paritytech/tools:latest
+  image:                           tetcoin/tools:latest
   <<:                              *rules-pr-only
   <<:                              *kubernetes-env
   script:

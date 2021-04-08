@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! A pallet for proposing a parachain for Rococo.
 //!
@@ -29,39 +29,39 @@
 //!
 //! When deregistering a parachain, we basically reverse the operations.
 
-use frame_support::{
+use fabric_support::{
 	decl_event, decl_error, decl_module, traits::{Get, ReservableCurrency, EnsureOrigin, Currency},
 	decl_storage, ensure, IterableStorageMap,
 };
 use primitives::v1::{Id as ParaId, HeadData, ValidationCode};
-use polkadot_parachain::primitives::AccountIdConversion;
-use frame_system::{ensure_signed, EnsureOneOf, EnsureSigned};
-use sp_runtime::Either;
-use sp_staking::SessionIndex;
-use sp_std::vec::Vec;
+use tetcoin_parachain::primitives::AccountIdConversion;
+use fabric_system::{ensure_signed, EnsureOneOf, EnsureSigned};
+use tp_runtime::Either;
+use tp_staking::SessionIndex;
+use tetcore_std::vec::Vec;
 use runtime_parachains::paras::ParaGenesisArgs;
 
 type EnsurePriviledgedOrSigned<T> = EnsureOneOf<
-	<T as frame_system::Config>::AccountId,
+	<T as fabric_system::Config>::AccountId,
 	<T as Config>::PriviledgedOrigin,
-	EnsureSigned<<T as frame_system::Config>::AccountId>
+	EnsureSigned<<T as fabric_system::Config>::AccountId>
 >;
 
-type Session<T> = pallet_session::Module<T>;
+type Session<T> = noble_session::Module<T>;
 
-type BalanceOf<T> = <T as pallet_balances::Config>::Balance;
+type BalanceOf<T> = <T as noble_balances::Config>::Balance;
 
 /// Configuration for the parachain proposer.
-pub trait Config: pallet_session::Config
-	+ pallet_balances::Config
-	+ pallet_balances::Config
+pub trait Config: noble_session::Config
+	+ noble_balances::Config
+	+ noble_balances::Config
 	+ runtime_parachains::paras::Config
 	+ runtime_parachains::dmp::Config
 	+ runtime_parachains::ump::Config
 	+ runtime_parachains::hrmp::Config
 {
 	/// The overreaching event type.
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 
 	/// The maximum name length of a parachain.
 	type MaxNameLength: Get<u32>;
@@ -70,7 +70,7 @@ pub trait Config: pallet_session::Config
 	type ProposeDeposit: Get<BalanceOf<Self>>;
 
 	/// Priviledged origin that can approve/cancel/deregister parachain and proposals.
-	type PriviledgedOrigin: EnsureOrigin<<Self as frame_system::Config>::Origin>;
+	type PriviledgedOrigin: EnsureOrigin<<Self as fabric_system::Config>::Origin>;
 }
 
 /// A proposal for adding a parachain to the relay chain.
@@ -98,7 +98,7 @@ struct RegisteredParachainInfo<AccountId, ValidatorId> {
 }
 
 decl_event! {
-	pub enum Event<T> where ValidatorId = <T as pallet_session::Config>::ValidatorId {
+	pub enum Event<T> where ValidatorId = <T as noble_session::Config>::ValidatorId {
 		/// A parachain was proposed for registration.
 		ParachainProposed(Vec<u8>, ParaId),
 		/// A parachain was approved and is scheduled for being activated.
@@ -157,7 +157,7 @@ decl_storage! {
 }
 
 decl_module! {
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		/// The maximum name length of a parachain.
@@ -219,7 +219,7 @@ decl_module! {
 				}
 			)?;
 
-			pallet_balances::Module::<T>::reserve(&who, T::ProposeDeposit::get())?;
+			noble_balances::Module::<T>::reserve(&who, T::ProposeDeposit::get())?;
 
 			let proposal = Proposal {
 				name: name.clone(),
@@ -273,7 +273,7 @@ decl_module! {
 			Proposals::<T>::remove(&para_id);
 			ParachainValidationCode::remove(&para_id);
 
-			pallet_balances::Module::<T>::unreserve(&proposal.proposer, T::ProposeDeposit::get());
+			noble_balances::Module::<T>::unreserve(&proposal.proposer, T::ProposeDeposit::get());
 		}
 
 		/// Deregister a parachain that was already successfully registered in the relay chain.
@@ -294,7 +294,7 @@ decl_module! {
 			info.validators.into_iter().for_each(|v| ValidatorsToRetire::<T>::append(v));
 			runtime_parachains::schedule_para_cleanup::<T>(para_id);
 
-			pallet_balances::Module::<T>::unreserve(&info.proposer, T::ProposeDeposit::get());
+			noble_balances::Module::<T>::unreserve(&info.proposer, T::ProposeDeposit::get());
 		}
 
 		/// Add new validators to the set.
@@ -314,7 +314,7 @@ decl_module! {
 
 impl<T: Config> Module<T> {
 	/// Returns wether the given `para_id` approval is approved or already scheduled.
-	fn is_approved_or_scheduled(para_id: ParaId) -> frame_support::dispatch::DispatchResult {
+	fn is_approved_or_scheduled(para_id: ParaId) -> fabric_support::dispatch::DispatchResult {
 		if ApprovedProposals::get().iter().any(|p| *p == para_id) {
 			return Err(Error::<T>::ParachainAlreadyApproved.into())
 		}
@@ -327,7 +327,7 @@ impl<T: Config> Module<T> {
 	}
 }
 
-impl<T: Config> pallet_session::SessionManager<T::ValidatorId> for Module<T> {
+impl<T: Config> noble_session::SessionManager<T::ValidatorId> for Module<T> {
 	fn new_session(new_index: SessionIndex) -> Option<Vec<T::ValidatorId>> {
 		if new_index <= 1 {
 			return None;
@@ -378,7 +378,7 @@ impl<T: Config> pallet_session::SessionManager<T::ValidatorId> for Module<T> {
 			Self::deposit_event(RawEvent::ParachainRegistered(*id));
 
 			// Add some funds to the Parachain
-			let _ = pallet_balances::Module::<T>::deposit_creating(&id.into_account(), proposal.balance);
+			let _ = noble_balances::Module::<T>::deposit_creating(&id.into_account(), proposal.balance);
 
 			let info = RegisteredParachainInfo {
 				proposer: proposal.proposer,
@@ -389,19 +389,19 @@ impl<T: Config> pallet_session::SessionManager<T::ValidatorId> for Module<T> {
 	}
 }
 
-impl<T: Config> pallet_session::historical::SessionManager<T::ValidatorId, ()> for Module<T> {
+impl<T: Config> noble_session::historical::SessionManager<T::ValidatorId, ()> for Module<T> {
 	fn new_session(
 		new_index: SessionIndex,
 	) -> Option<Vec<(T::ValidatorId, ())>> {
-		<Self as pallet_session::SessionManager<_>>::new_session(new_index)
+		<Self as noble_session::SessionManager<_>>::new_session(new_index)
 			.map(|r| r.into_iter().map(|v| (v, Default::default())).collect())
 	}
 
 	fn start_session(start_index: SessionIndex) {
-		<Self as pallet_session::SessionManager<_>>::start_session(start_index)
+		<Self as noble_session::SessionManager<_>>::start_session(start_index)
 	}
 
 	fn end_session(end_index: SessionIndex) {
-		<Self as pallet_session::SessionManager<_>>::end_session(end_index)
+		<Self as noble_session::SessionManager<_>>::end_session(end_index)
 	}
 }

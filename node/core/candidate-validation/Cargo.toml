@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-core-candidate-validation"
+name = "tetcoin-node-core-candidate-validation"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -9,17 +9,17 @@ futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
 
-sp-core = { package = "sp-core", git = "https://github.com/paritytech/substrate", branch = "master" }
+tet-core = { package = "tet-core", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
 
-polkadot-primitives = { path = "../../../primitives" }
-polkadot-parachain = { path = "../../../parachain" }
-polkadot-node-primitives = { path = "../../primitives" }
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util" }
+tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-parachain = { path = "../../../parachain" }
+tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 
 [dev-dependencies]
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 futures = { version = "0.3.12", features = ["thread-pool"] }
 assert_matches = "1.4.0"
-polkadot-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }

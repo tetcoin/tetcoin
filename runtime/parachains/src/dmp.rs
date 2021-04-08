@@ -1,26 +1,26 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
 	configuration::{self, HostConfiguration},
 	initializer,
 };
-use frame_support::{decl_module, decl_storage, StorageMap, weights::Weight, traits::Get};
-use sp_std::{fmt, prelude::*};
-use sp_runtime::traits::{BlakeTwo256, Hash as HashT, SaturatedConversion};
+use fabric_support::{decl_module, decl_storage, StorageMap, weights::Weight, traits::Get};
+use tetcore_std::{fmt, prelude::*};
+use tp_runtime::traits::{BlakeTwo256, Hash as HashT, SaturatedConversion};
 use primitives::v1::{Id as ParaId, DownwardMessage, InboundDownwardMessage, Hash};
 
 /// An error sending a downward message.
@@ -62,7 +62,7 @@ impl fmt::Debug for ProcessedDownwardMessagesAcceptanceErr {
 	}
 }
 
-pub trait Config: frame_system::Config + configuration::Config {}
+pub trait Config: fabric_system::Config + configuration::Config {}
 
 decl_storage! {
 	trait Store for Module<T: Config> as Dmp {
@@ -85,7 +85,7 @@ decl_storage! {
 
 decl_module! {
 	/// The DMP module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin { }
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin { }
 }
 
 /// Routines and getters related to downward message passing.
@@ -148,7 +148,7 @@ impl<T: Config> Module<T> {
 
 		let inbound = InboundDownwardMessage {
 			msg,
-			sent_at: <frame_system::Module<T>>::block_number(),
+			sent_at: <fabric_system::Module<T>>::block_number(),
 		};
 
 		// obtain the new link in the MQC and update the head.
@@ -227,8 +227,8 @@ impl<T: Config> Module<T> {
 mod tests {
 	use super::*;
 	use primitives::v1::BlockNumber;
-	use frame_support::StorageValue;
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::StorageValue;
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 	use parity_scale_codec::Encode;
 	use crate::mock::{Configuration, new_test_ext, System, Dmp, GenesisConfig as MockGenesisConfig};
 

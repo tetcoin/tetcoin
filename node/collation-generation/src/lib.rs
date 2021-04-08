@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The collation generation subsystem is the interface between polkadot and the collators.
+//! The collation generation subsystem is the interface between tetcoin and the collators.
 
 #![deny(missing_docs)]
 
@@ -26,22 +26,22 @@ use futures::{
 	sink::SinkExt,
 	stream::StreamExt,
 };
-use polkadot_node_primitives::CollationGenerationConfig;
-use polkadot_node_subsystem::{
+use tetcoin_node_primitives::CollationGenerationConfig;
+use tetcoin_node_subsystem::{
 	messages::{AllMessages, CollationGenerationMessage, CollatorProtocolMessage},
 	FromOverseer, SpawnedSubsystem, Subsystem, SubsystemContext, SubsystemResult,
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	request_availability_cores_ctx, request_persisted_validation_data_ctx,
 	request_validators_ctx,
 	metrics::{self, prometheus},
 };
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	collator_signature_payload, AvailableData, CandidateCommitments,
 	CandidateDescriptor, CandidateReceipt, CoreState, Hash, OccupiedCoreAssumption,
 	PersistedValidationData, PoV,
 };
-use sp_core::crypto::Pair;
+use tet_core::crypto::Pair;
 use std::sync::Arc;
 
 mod error;
@@ -117,9 +117,9 @@ impl CollationGenerationSubsystem {
 	where
 		Context: SubsystemContext<Message = CollationGenerationMessage>,
 	{
-		use polkadot_node_subsystem::ActiveLeavesUpdate;
-		use polkadot_node_subsystem::FromOverseer::{Communication, Signal};
-		use polkadot_node_subsystem::OverseerSignal::{ActiveLeaves, BlockFinalized, Conclude};
+		use tetcoin_node_subsystem::ActiveLeavesUpdate;
+		use tetcoin_node_subsystem::FromOverseer::{Communication, Signal};
+		use tetcoin_node_subsystem::OverseerSignal::{ActiveLeaves, BlockFinalized, Conclude};
 
 		match incoming {
 			Ok(Signal(ActiveLeaves(ActiveLeavesUpdate { activated, .. }))) => {
@@ -213,7 +213,7 @@ async fn handle_new_activations<Context: SubsystemContext>(
 					(scheduled_core, OccupiedCoreAssumption::Free)
 				}
 				CoreState::Occupied(_occupied_core) => {
-					// TODO: https://github.com/paritytech/polkadot/issues/1573
+					// TODO: https://github.com/tetcoin/tetcoin/issues/1573
 					tracing::trace!(
 						target: LOG_TARGET,
 						core_idx = %core_idx,
@@ -367,8 +367,8 @@ fn erasure_root(
 		pov: Arc::new(pov),
 	};
 
-	let chunks = polkadot_erasure_coding::obtain_chunks_v1(n_validators, &available_data)?;
-	Ok(polkadot_erasure_coding::branches(&chunks).root())
+	let chunks = tetcoin_erasure_coding::obtain_chunks_v1(n_validators, &available_data)?;
+	Ok(tetcoin_erasure_coding::branches(&chunks).root())
 }
 
 #[derive(Clone)]
@@ -457,14 +457,14 @@ mod tests {
 			task::{Context as FuturesContext, Poll},
 			Future,
 		};
-		use polkadot_node_primitives::Collation;
-		use polkadot_node_subsystem::messages::{
+		use tetcoin_node_primitives::Collation;
+		use tetcoin_node_subsystem::messages::{
 			AllMessages, RuntimeApiMessage, RuntimeApiRequest,
 		};
-		use polkadot_node_subsystem_test_helpers::{
+		use tetcoin_node_subsystem_test_helpers::{
 			subsystem_test_harness, TestSubsystemContextHandle,
 		};
-		use polkadot_primitives::v1::{
+		use tetcoin_primitives::v1::{
 			BlockData, BlockNumber, CollatorPair, Id as ParaId,
 			PersistedValidationData, PoV, ScheduledCore,
 		};

@@ -1,28 +1,28 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! This module is responsible for maintaining a consistent initialization order for all other
 //! parachains modules. It's also responsible for finalization and session change notifications.
 //!
 //! This module can throw fatal errors if session-change notifications are received after initialization.
 
-use sp_std::prelude::*;
-use frame_support::weights::Weight;
+use tetcore_std::prelude::*;
+use fabric_support::weights::Weight;
 use primitives::v1::ValidatorId;
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error, traits::Randomness,
 };
 use parity_scale_codec::{Encode, Decode};
@@ -45,7 +45,7 @@ pub struct SessionChangeNotification<BlockNumber> {
 	/// A secure random seed for the session, gathered from BABE.
 	pub random_seed: [u8; 32],
 	/// New session index.
-	pub session_index: sp_staking::SessionIndex,
+	pub session_index: tp_staking::SessionIndex,
 }
 
 impl<BlockNumber: Default + From<u32>> Default for SessionChangeNotification<BlockNumber> {
@@ -65,11 +65,11 @@ impl<BlockNumber: Default + From<u32>> Default for SessionChangeNotification<Blo
 struct BufferedSessionChange {
 	validators: Vec<ValidatorId>,
 	queued: Vec<ValidatorId>,
-	session_index: sp_staking::SessionIndex,
+	session_index: tp_staking::SessionIndex,
 }
 
 pub trait Config:
-	frame_system::Config
+	fabric_system::Config
 	+ configuration::Config
 	+ paras::Config
 	+ scheduler::Config
@@ -111,7 +111,7 @@ decl_error! {
 
 decl_module! {
 	/// The initializer module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		fn on_initialize(now: T::BlockNumber) -> Weight {
@@ -170,7 +170,7 @@ decl_module! {
 
 impl<T: Config> Module<T> {
 	fn apply_new_session(
-		session_index: sp_staking::SessionIndex,
+		session_index: tp_staking::SessionIndex,
 		validators: Vec<ValidatorId>,
 		queued: Vec<ValidatorId>,
 	) {
@@ -179,7 +179,7 @@ impl<T: Config> Module<T> {
 		let random_seed = {
 			let mut buf = [0u8; 32];
 			let random_hash = T::Randomness::random(&b"paras"[..]);
-			let len = sp_std::cmp::min(32, random_hash.as_ref().len());
+			let len = tetcore_std::cmp::min(32, random_hash.as_ref().len());
 			buf[..len].copy_from_slice(&random_hash.as_ref()[..len]);
 			buf
 		};
@@ -212,7 +212,7 @@ impl<T: Config> Module<T> {
 	/// at the end of the block. If `queued` is `None`, the `validators` are considered queued.
 	fn on_new_session<'a, I: 'a>(
 		_changed: bool,
-		session_index: sp_staking::SessionIndex,
+		session_index: tp_staking::SessionIndex,
 		validators: I,
 		queued: Option<I>,
 	)
@@ -233,11 +233,11 @@ impl<T: Config> Module<T> {
 	}
 }
 
-impl<T: Config> sp_runtime::BoundToRuntimeAppPublic for Module<T> {
+impl<T: Config> tp_runtime::BoundToRuntimeAppPublic for Module<T> {
 	type Public = ValidatorId;
 }
 
-impl<T: pallet_session::Config + Config> pallet_session::OneSessionHandler<T::AccountId> for Module<T> {
+impl<T: noble_session::Config + Config> noble_session::OneSessionHandler<T::AccountId> for Module<T> {
 	type Key = ValidatorId;
 
 	fn on_genesis_session<'a, I: 'a>(_validators: I)
@@ -249,7 +249,7 @@ impl<T: pallet_session::Config + Config> pallet_session::OneSessionHandler<T::Ac
 	fn on_new_session<'a, I: 'a>(changed: bool, validators: I, queued: I)
 		where I: Iterator<Item=(&'a T::AccountId, Self::Key)>
 	{
-		let session_index = <pallet_session::Module<T>>::current_index();
+		let session_index = <noble_session::Module<T>>::current_index();
 		<Module<T>>::on_new_session(changed, session_index, validators, Some(queued));
 	}
 
@@ -261,7 +261,7 @@ mod tests {
 	use super::*;
 	use crate::mock::{new_test_ext, Initializer, System};
 
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 
 	#[test]
 	fn session_change_before_initialize_is_still_buffered_after() {

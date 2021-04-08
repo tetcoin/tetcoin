@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-network-bridge"
+name = "tetcoin-network-bridge"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -9,17 +9,17 @@ async-trait = "0.1.42"
 futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
-polkadot-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { path = "../../../primitives" }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
-sc-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-network = { git = "https://github.com/paritytech/substrate", branch = "master" }
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-node-network-protocol = { path = "../protocol" }
+tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-node-network-protocol = { path = "../protocol" }
 
 [dev-dependencies]
 assert_matches = "1.4.0"
 parking_lot = "0.11.1"
-polkadot-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util"}
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util"}
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

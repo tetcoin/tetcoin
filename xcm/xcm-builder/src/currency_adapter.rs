@@ -1,23 +1,23 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-use sp_std::{result, convert::TryInto, marker::PhantomData};
+use tetcore_std::{result, convert::TryInto, marker::PhantomData};
 use xcm::v0::{Error, Result, MultiAsset, MultiLocation};
-use sp_arithmetic::traits::SaturatedConversion;
-use frame_support::traits::{ExistenceRequirement::AllowDeath, WithdrawReasons};
+use tp_arithmetic::traits::SaturatedConversion;
+use fabric_support::traits::{ExistenceRequirement::AllowDeath, WithdrawReasons};
 use xcm_executor::traits::{MatchesFungible, LocationConversion, TransactAsset};
 
 pub struct CurrencyAdapter<Currency, Matcher, AccountIdConverter, AccountId>(
@@ -30,7 +30,7 @@ pub struct CurrencyAdapter<Currency, Matcher, AccountIdConverter, AccountId>(
 impl<
 	Matcher: MatchesFungible<Currency::Balance>,
 	AccountIdConverter: LocationConversion<AccountId>,
-	Currency: frame_support::traits::Currency<AccountId>,
+	Currency: fabric_support::traits::Currency<AccountId>,
 	AccountId,	// can't get away without it since Currency is generic over it.
 > TransactAsset for CurrencyAdapter<Currency, Matcher, AccountIdConverter, AccountId> {
 

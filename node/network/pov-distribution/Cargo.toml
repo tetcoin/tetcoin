@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-pov-distribution"
+name = "tetcoin-pov-distribution"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -10,17 +10,17 @@ thiserror = "1.0.23"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
 
-polkadot-primitives = { path = "../../../primitives" }
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util" }
-polkadot-node-network-protocol = { path = "../../network/protocol" }
+tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
+tetcoin-node-network-protocol = { path = "../../network/protocol" }
 
 [dev-dependencies]
 assert_matches = "1.4.0"
 env_logger = "0.8.1"
 log = "0.4.13"
 
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
-polkadot-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }

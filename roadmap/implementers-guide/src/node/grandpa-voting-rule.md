@@ -1,6 +1,6 @@
 # GRANDPA Voting Rule
 
-[GRANDPA](https://w3f-research.readthedocs.io/en/latest/polkadot/finality.html) is the finality engine of Polkadot.
+[GRANDPA](https://w3f-research.readthedocs.io/en/latest/tetcoin/finality.html) is the finality engine of Tetcoin.
 
 One broad goal of finality, which applies across many different blockchains, is that there should exist only one finalized block at each height in the finalized chain. Before a block at a given height is finalized, it may compete with other forks.
 

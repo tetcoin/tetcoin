@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! # Parachain Crowdloaning module
 //!
@@ -66,30 +66,30 @@
 //! order to win a later auction, then it is the parachain's duty to ensure that the right amount of
 //! funds ultimately end up in module's fund sub-account.
 
-use frame_support::{
+use fabric_support::{
 	decl_module, decl_storage, decl_event, decl_error, ensure,
 	storage::child,
 	traits::{
 		Currency, Get, OnUnbalanced, ExistenceRequirement::AllowDeath
 	},
 };
-use frame_system::ensure_signed;
-use sp_runtime::{ModuleId, DispatchResult,
+use fabric_system::ensure_signed;
+use tp_runtime::{ModuleId, DispatchResult,
 	traits::{AccountIdConversion, Hash, Saturating, Zero, CheckedAdd, Bounded}
 };
 use crate::slots;
 use parity_scale_codec::{Encode, Decode};
-use sp_std::vec::Vec;
+use tetcore_std::vec::Vec;
 use primitives::v1::{Id as ParaId, HeadData};
 
 pub type BalanceOf<T> =
-	<<T as slots::Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+	<<T as slots::Config>::Currency as Currency<<T as fabric_system::Config>::AccountId>>::Balance;
 #[allow(dead_code)]
 pub type NegativeImbalanceOf<T> =
-	<<T as slots::Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::NegativeImbalance;
+	<<T as slots::Config>::Currency as Currency<<T as fabric_system::Config>::AccountId>>::NegativeImbalance;
 
 pub trait Config: slots::Config {
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 
 	/// ModuleID for the crowdloan module. An appropriate value could be ```ModuleId(*b"py/cfund")```
 	type ModuleId: Get<ModuleId>;
@@ -188,7 +188,7 @@ decl_storage! {
 
 decl_event! {
 	pub enum Event<T> where
-		<T as frame_system::Config>::AccountId,
+		<T as fabric_system::Config>::AccountId,
 		Balance = BalanceOf<T>,
 	{
 		/// Create a new crowdloaning campaign. [fund_index]
@@ -279,7 +279,7 @@ decl_module! {
 
 			ensure!(first_slot < last_slot, Error::<T>::LastSlotBeforeFirstSlot);
 			ensure!(last_slot <= first_slot + 3u32.into(), Error::<T>::LastSlotTooFarInFuture);
-			ensure!(end > <frame_system::Module<T>>::block_number(), Error::<T>::CannotEndInPast);
+			ensure!(end > <fabric_system::Module<T>>::block_number(), Error::<T>::CannotEndInPast);
 
 			let index = FundCount::get();
 			let next_index = index.checked_add(1).ok_or(Error::<T>::Overflow)?;
@@ -317,7 +317,7 @@ decl_module! {
 			ensure!(fund.raised <= fund.cap, Error::<T>::CapExceeded);
 
 			// Make sure crowdloan has not ended
-			let now = <frame_system::Module<T>>::block_number();
+			let now = <fabric_system::Module<T>>::block_number();
 			ensure!(fund.end > now, Error::<T>::ContributionPeriodOver);
 
 			T::Currency::transfer(&who, &Self::fund_account_id(index), value, AllowDeath)?;
@@ -405,7 +405,7 @@ decl_module! {
 			ensure!(fund.parachain.is_none(), Error::<T>::AlreadyOnboard);
 			fund.parachain = Some(para_id);
 
-			let fund_origin = frame_system::RawOrigin::Signed(Self::fund_account_id(index)).into();
+			let fund_origin = fabric_system::RawOrigin::Signed(Self::fund_account_id(index)).into();
 			<slots::Module<T>>::fix_deploy_data(
 				fund_origin,
 				index,
@@ -434,7 +434,7 @@ decl_module! {
 			ensure!(T::Currency::free_balance(&account) >= fund.raised, Error::<T>::FundsNotReturned);
 
 			// This fund just ended. Withdrawal period begins.
-			let now = <frame_system::Module<T>>::block_number();
+			let now = <fabric_system::Module<T>>::block_number();
 			fund.end = now;
 
 			<Funds<T>>::insert(index, &fund);
@@ -449,7 +449,7 @@ decl_module! {
 
 			let mut fund = Self::funds(index).ok_or(Error::<T>::InvalidFundIndex)?;
 			ensure!(fund.parachain.is_none(), Error::<T>::FundNotRetired);
-			let now = <frame_system::Module<T>>::block_number();
+			let now = <fabric_system::Module<T>>::block_number();
 
 			// `fund.end` can represent the end of a failed crowdsale or the beginning of retirement
 			ensure!(now >= fund.end, Error::<T>::FundNotEnded);
@@ -478,7 +478,7 @@ decl_module! {
 
 			let fund = Self::funds(index).ok_or(Error::<T>::InvalidFundIndex)?;
 			ensure!(fund.parachain.is_none(), Error::<T>::HasActiveParachain);
-			let now = <frame_system::Module<T>>::block_number();
+			let now = <fabric_system::Module<T>>::block_number();
 			ensure!(
 				now >= fund.end.saturating_add(T::RetirementPeriod::get()),
 				Error::<T>::InRetirementPeriod
@@ -504,7 +504,7 @@ decl_module! {
 			}
 		}
 
-		fn on_initialize(n: T::BlockNumber) -> frame_support::weights::Weight {
+		fn on_initialize(n: T::BlockNumber) -> fabric_support::weights::Weight {
 			if let Some(n) = <slots::Module<T>>::is_ending(n) {
 				let auction_index = <slots::Module<T>>::auction_counter();
 				if n.is_zero() {
@@ -579,15 +579,15 @@ mod tests {
 	use super::*;
 
 	use std::{collections::HashMap, cell::RefCell};
-	use frame_support::{
+	use fabric_support::{
 		impl_outer_origin, impl_outer_event, assert_ok, assert_noop, parameter_types,
 		traits::{OnInitialize, OnFinalize},
 	};
-	use sp_core::H256;
+	use tet_core::H256;
 	use primitives::v1::{Id as ParaId, ValidationCode};
 	// The testing primitives are very useful for avoiding having to work with signatures
 	// or public keys. `u64` is used as the `AccountId` and no `Signature`s are requried.
-	use sp_runtime::{
+	use tp_runtime::{
 		Permill, testing::Header,
 		traits::{BlakeTwo256, IdentityLookup},
 	};
@@ -607,9 +607,9 @@ mod tests {
 
 	impl_outer_event! {
 		pub enum Event for Test {
-			frame_system<T>,
-			pallet_balances<T>,
-			pallet_treasury<T>,
+			fabric_system<T>,
+			noble_balances<T>,
+			noble_treasury<T>,
 			runtime_common_slots<T>,
 			runtime_common_crowdloan<T>,
 		}
@@ -624,7 +624,7 @@ mod tests {
 		pub const BlockHashCount: u32 = 250;
 	}
 
-	impl frame_system::Config for Test {
+	impl fabric_system::Config for Test {
 		type BaseCallFilter = ();
 		type BlockWeights = ();
 		type BlockLength = ();
@@ -642,7 +642,7 @@ mod tests {
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
 		type PalletInfo = ();
-		type AccountData = pallet_balances::AccountData<u64>;
+		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
 		type SystemWeightInfo = ();
@@ -651,7 +651,7 @@ mod tests {
 	parameter_types! {
 		pub const ExistentialDeposit: u64 = 1;
 	}
-	impl pallet_balances::Config for Test {
+	impl noble_balances::Config for Test {
 		type Balance = u64;
 		type Event = Event;
 		type DustRemoval = ();
@@ -668,10 +668,10 @@ mod tests {
 		pub const Burn: Permill = Permill::from_percent(50);
 		pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
 	}
-	impl pallet_treasury::Config for Test {
-		type Currency = pallet_balances::Module<Test>;
-		type ApproveOrigin = frame_system::EnsureRoot<u64>;
-		type RejectOrigin = frame_system::EnsureRoot<u64>;
+	impl noble_treasury::Config for Test {
+		type Currency = noble_balances::Module<Test>;
+		type ApproveOrigin = fabric_system::EnsureRoot<u64>;
+		type RejectOrigin = fabric_system::EnsureRoot<u64>;
 		type Event = Event;
 		type OnSlash = ();
 		type ProposalBond = ProposalBond;
@@ -765,20 +765,20 @@ mod tests {
 		type RemoveKeysLimit = RemoveKeysLimit;
 	}
 
-	type System = frame_system::Module<Test>;
-	type Balances = pallet_balances::Module<Test>;
+	type System = fabric_system::Module<Test>;
+	type Balances = noble_balances::Module<Test>;
 	type Slots = slots::Module<Test>;
-	type Treasury = pallet_treasury::Module<Test>;
+	type Treasury = noble_treasury::Module<Test>;
 	type Crowdloan = Module<Test>;
-	type RandomnessCollectiveFlip = pallet_randomness_collective_flip::Module<Test>;
-	use pallet_balances::Error as BalancesError;
+	type RandomnessCollectiveFlip = noble_randomness_collective_flip::Module<Test>;
+	use noble_balances::Error as BalancesError;
 	use slots::Error as SlotsError;
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup.
-	pub fn new_test_ext() -> sp_io::TestExternalities {
-		let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
-		pallet_balances::GenesisConfig::<Test>{
+	pub fn new_test_ext() -> tp_io::TestExternalities {
+		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+		noble_balances::GenesisConfig::<Test>{
 			balances: vec![(1, 1000), (2, 2000), (3, 3000), (4, 4000)],
 		}.assimilate_storage(&mut t).unwrap();
 		t.into()
@@ -929,7 +929,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into()
 			));
@@ -940,7 +940,7 @@ mod tests {
 			assert_eq!(
 				fund.deploy_data,
 				Some(DeployData {
-					code_hash: <Test as frame_system::Config>::Hash::default(),
+					code_hash: <Test as fabric_system::Config>::Hash::default(),
 					code_size: 0,
 					initial_head_data: vec![0].into(),
 				}),
@@ -959,7 +959,7 @@ mod tests {
 			assert_noop!(Crowdloan::fix_deploy_data(
 				Origin::signed(2),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into()),
 				Error::<Test>::InvalidOrigin
@@ -969,7 +969,7 @@ mod tests {
 			assert_noop!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				1,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into()),
 				Error::<Test>::InvalidFundIndex
@@ -979,7 +979,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -987,7 +987,7 @@ mod tests {
 			assert_noop!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![1].into()),
 				Error::<Test>::ExistingDeployData
@@ -1007,7 +1007,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1053,7 +1053,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1081,7 +1081,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1124,7 +1124,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1331,7 +1331,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1360,7 +1360,7 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1399,14 +1399,14 @@ mod tests {
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(1),
 				0,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
 			assert_ok!(Crowdloan::fix_deploy_data(
 				Origin::signed(2),
 				1,
-				<Test as frame_system::Config>::Hash::default(),
+				<Test as fabric_system::Config>::Hash::default(),
 				0,
 				vec![0].into(),
 			));
@@ -1445,25 +1445,25 @@ mod tests {
 mod benchmarking {
 	use super::{*, Module as Crowdloan};
 	use crate::slots::Module as Slots;
-	use frame_system::RawOrigin;
-	use frame_support::{
+	use fabric_system::RawOrigin;
+	use fabric_support::{
 		assert_ok,
 		traits::OnInitialize,
 	};
-	use sp_runtime::traits::Bounded;
-	use sp_std::prelude::*;
+	use tp_runtime::traits::Bounded;
+	use tetcore_std::prelude::*;
 
-	use frame_benchmarking::{benchmarks, whitelisted_caller, account, whitelist_account};
+	use fabric_benchmarking::{benchmarks, whitelisted_caller, account, whitelist_account};
 
 	// TODO: replace with T::Parachains::MAX_CODE_SIZE
 	const MAX_CODE_SIZE: u32 = 10;
 	const MAX_HEAD_DATA_SIZE: u32 = 10;
 
 	fn assert_last_event<T: Config>(generic_event: <T as Config>::Event) {
-		let events = frame_system::Module::<T>::events();
-		let system_event: <T as frame_system::Config>::Event = generic_event.into();
+		let events = fabric_system::Module::<T>::events();
+		let system_event: <T as fabric_system::Config>::Event = generic_event.into();
 		// compare to the last event record
-		let frame_system::EventRecord { event, .. } = &events[events.len() - 1];
+		let fabric_system::EventRecord { event, .. } = &events[events.len() - 1];
 		assert_eq!(event, &system_event);
 	}
 
@@ -1620,7 +1620,7 @@ mod benchmarking {
 			let caller: T::AccountId = whitelisted_caller();
 			let contributor = account("contributor", 0, 0);
 			contribute_fund::<T>(&contributor, fund_index);
-			frame_system::Module::<T>::set_block_number(200u32.into());
+			fabric_system::Module::<T>::set_block_number(200u32.into());
 		}: _(RawOrigin::Signed(caller), contributor.clone(), fund_index)
 		verify {
 			assert_last_event::<T>(RawEvent::Withdrew(contributor, fund_index, T::MinContribution::get()).into());
@@ -1636,7 +1636,7 @@ mod benchmarking {
 			}
 
 			let caller: T::AccountId = whitelisted_caller();
-			frame_system::Module::<T>::set_block_number(T::RetirementPeriod::get().saturating_add(200u32.into()));
+			fabric_system::Module::<T>::set_block_number(T::RetirementPeriod::get().saturating_add(200u32.into()));
 		}: _(RawOrigin::Signed(caller.clone()), fund_index)
 		verify {
 			assert_last_event::<T>(RawEvent::Dissolved(fund_index).into());

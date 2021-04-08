@@ -1,41 +1,41 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Polkadot runtime. This can be compiled with `#[no_std]`, ready for Wasm.
+//! The Tetcoin runtime. This can be compiled with `#[no_std]`, ready for Wasm.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
 #![recursion_limit = "256"]
 
-use pallet_transaction_payment::CurrencyAdapter;
-use sp_std::prelude::*;
-use sp_std::collections::btree_map::BTreeMap;
+use noble_transaction_payment::CurrencyAdapter;
+use tetcore_std::prelude::*;
+use tetcore_std::collections::btree_map::BTreeMap;
 use parity_scale_codec::Encode;
 
-use polkadot_runtime_parachains::configuration as parachains_configuration;
-use polkadot_runtime_parachains::inclusion as parachains_inclusion;
-use polkadot_runtime_parachains::inclusion_inherent as parachains_inclusion_inherent;
-use polkadot_runtime_parachains::initializer as parachains_initializer;
-use polkadot_runtime_parachains::session_info as parachains_session_info;
-use polkadot_runtime_parachains::paras as parachains_paras;
-use polkadot_runtime_parachains::dmp as parachains_dmp;
-use polkadot_runtime_parachains::ump as parachains_ump;
-use polkadot_runtime_parachains::hrmp as parachains_hrmp;
-use polkadot_runtime_parachains::scheduler as parachains_scheduler;
-use polkadot_runtime_parachains::runtime_api_impl::v1 as runtime_impl;
+use tetcoin_runtime_parachains::configuration as parachains_configuration;
+use tetcoin_runtime_parachains::inclusion as parachains_inclusion;
+use tetcoin_runtime_parachains::inclusion_inherent as parachains_inclusion_inherent;
+use tetcoin_runtime_parachains::initializer as parachains_initializer;
+use tetcoin_runtime_parachains::session_info as parachains_session_info;
+use tetcoin_runtime_parachains::paras as parachains_paras;
+use tetcoin_runtime_parachains::dmp as parachains_dmp;
+use tetcoin_runtime_parachains::ump as parachains_ump;
+use tetcoin_runtime_parachains::hrmp as parachains_hrmp;
+use tetcoin_runtime_parachains::scheduler as parachains_scheduler;
+use tetcoin_runtime_parachains::runtime_api_impl::v1 as runtime_impl;
 
 use primitives::v1::{
 	AccountId, AccountIndex, Balance, BlockNumber, CandidateEvent, CommittedCandidateReceipt,
@@ -47,7 +47,7 @@ use runtime_common::{
 	claims, SlowAdjustingFeeUpdate, paras_sudo_wrapper,
 	BlockHashCount, BlockWeights, BlockLength,
 };
-use sp_runtime::{
+use tp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	ApplyExtrinsicResult, Perbill, KeyTypeId,
 	transaction_validity::{
@@ -59,30 +59,30 @@ use sp_runtime::{
 		Extrinsic as ExtrinsicT, SaturatedConversion, Verify,
 	},
 };
-use sp_version::RuntimeVersion;
-use pallet_grandpa::{AuthorityId as GrandpaId, fg_primitives};
+use tp_version::RuntimeVersion;
+use noble_grandpa::{AuthorityId as GrandpaId, fg_primitives};
 #[cfg(any(feature = "std", test))]
-use sp_version::NativeVersion;
-use sp_core::OpaqueMetadata;
-use sp_staking::SessionIndex;
-use frame_support::{
+use tp_version::NativeVersion;
+use tet_core::OpaqueMetadata;
+use tp_staking::SessionIndex;
+use fabric_support::{
 	parameter_types, construct_runtime, debug,
 	traits::{KeyOwnerProofSystem, Randomness},
 	weights::Weight,
 };
 use authority_discovery_primitives::AuthorityId as AuthorityDiscoveryId;
-use pallet_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
-use pallet_session::historical as session_historical;
-use polkadot_runtime_parachains::reward_points::RewardValidatorsWithEraPoints;
+use noble_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
+use noble_session::historical as session_historical;
+use tetcoin_runtime_parachains::reward_points::RewardValidatorsWithEraPoints;
 
 #[cfg(feature = "std")]
-pub use pallet_staking::StakerStatus;
+pub use noble_staking::StakerStatus;
 #[cfg(any(feature = "std", test))]
-pub use sp_runtime::BuildStorage;
-pub use pallet_timestamp::Call as TimestampCall;
-pub use pallet_balances::Call as BalancesCall;
+pub use tp_runtime::BuildStorage;
+pub use noble_timestamp::Call as TimestampCall;
+pub use noble_balances::Call as BalancesCall;
 pub use paras_sudo_wrapper::Call as ParasSudoWrapperCall;
-pub use pallet_sudo::Call as SudoCall;
+pub use noble_sudo::Call as SudoCall;
 
 /// Constant values used within the runtime.
 pub mod constants;
@@ -94,8 +94,8 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 /// Runtime version (Test).
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("polkadot-test-runtime"),
-	impl_name: create_runtime_str!("parity-polkadot-test-runtime"),
+	spec_name: create_runtime_str!("tetcoin-test-runtime"),
+	impl_name: create_runtime_str!("parity-tetcoin-test-runtime"),
 	authoring_version: 2,
 	spec_version: 1055,
 	impl_version: 0,
@@ -112,7 +112,7 @@ pub fn native_version() -> NativeVersion {
 	}
 }
 
-sp_api::decl_runtime_apis! {
+tp_api::decl_runtime_apis! {
 	pub trait GetLastTimestamp {
 		/// Returns the last timestamp of a runtime.
 		fn get_last_timestamp() -> u64;
@@ -124,7 +124,7 @@ parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 }
 
-impl frame_system::Config for Runtime {
+impl fabric_system::Config for Runtime {
 	type BaseCallFilter = ();
 	type BlockWeights = BlockWeights;
 	type BlockLength = BlockLength;
@@ -142,14 +142,14 @@ impl frame_system::Config for Runtime {
 	type BlockHashCount = BlockHashCount;
 	type Version = Version;
 	type PalletInfo = PalletInfo;
-	type AccountData = pallet_balances::AccountData<Balance>;
+	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
 	type SystemWeightInfo = ();
 	type SS58Prefix = SS58Prefix;
 }
 
-impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime where
+impl<C> fabric_system::offchain::SendTransactionTypes<C> for Runtime where
 	Call: From<C>,
 {
 	type OverarchingCall = Call;
@@ -161,23 +161,23 @@ parameter_types! {
 	pub storage ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
 }
 
-impl pallet_babe::Config for Runtime {
+impl noble_babe::Config for Runtime {
 	type EpochDuration = EpochDuration;
 	type ExpectedBlockTime = ExpectedBlockTime;
 
 	// session module is the trigger
-	type EpochChangeTrigger = pallet_babe::ExternalTrigger;
+	type EpochChangeTrigger = noble_babe::ExternalTrigger;
 
 	type KeyOwnerProofSystem = ();
 
 	type KeyOwnerProof = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::Proof;
 
 	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::IdentificationTuple;
 
 	type HandleEquivocation = ();
@@ -189,7 +189,7 @@ parameter_types! {
 	pub storage IndexDeposit: Balance = 1 * DOLLARS;
 }
 
-impl pallet_indices::Config for Runtime {
+impl noble_indices::Config for Runtime {
 	type AccountIndex = AccountIndex;
 	type Currency = Balances;
 	type Deposit = IndexDeposit;
@@ -202,7 +202,7 @@ parameter_types! {
 	pub storage MaxLocks: u32 = 50;
 }
 
-impl pallet_balances::Config for Runtime {
+impl noble_balances::Config for Runtime {
 	type Balance = Balance;
 	type DustRemoval = ();
 	type Event = Event;
@@ -216,7 +216,7 @@ parameter_types! {
 	pub storage TransactionByteFee: Balance = 10 * MILLICENTS;
 }
 
-impl pallet_transaction_payment::Config for Runtime {
+impl noble_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = WeightToFee;
@@ -227,7 +227,7 @@ parameter_types! {
 	pub storage SlotDuration: u64 = SLOT_DURATION;
 	pub storage MinimumPeriod: u64 = SlotDuration::get() / 2;
 }
-impl pallet_timestamp::Config for Runtime {
+impl noble_timestamp::Config for Runtime {
 	type Moment = u64;
 	type OnTimestampSet = Babe;
 	type MinimumPeriod = MinimumPeriod;
@@ -238,9 +238,9 @@ parameter_types! {
 	pub storage UncleGenerations: u32 = 0;
 }
 
-// TODO: substrate#2986 implement this properly
-impl pallet_authorship::Config for Runtime {
-	type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Babe>;
+// TODO: tetcore#2986 implement this properly
+impl noble_authorship::Config for Runtime {
+	type FindAuthor = noble_session::FindAccountFromAuthorIndex<Self, Babe>;
 	type UncleGenerations = UncleGenerations;
 	type FilterUncle = ();
 	type EventHandler = Staking;
@@ -265,10 +265,10 @@ parameter_types! {
 	pub storage DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
 }
 
-impl pallet_session::Config for Runtime {
+impl noble_session::Config for Runtime {
 	type Event = Event;
 	type ValidatorId = AccountId;
-	type ValidatorIdOf = pallet_staking::StashOf<Self>;
+	type ValidatorIdOf = noble_staking::StashOf<Self>;
 	type ShouldEndSession = Babe;
 	type NextSessionRotation = Babe;
 	type SessionManager = Staking;
@@ -278,12 +278,12 @@ impl pallet_session::Config for Runtime {
 	type WeightInfo = ();
 }
 
-impl pallet_session::historical::Config for Runtime {
-	type FullIdentification = pallet_staking::Exposure<AccountId, Balance>;
-	type FullIdentificationOf = pallet_staking::ExposureOf<Runtime>;
+impl noble_session::historical::Config for Runtime {
+	type FullIdentification = noble_staking::Exposure<AccountId, Balance>;
+	type FullIdentificationOf = noble_staking::ExposureOf<Runtime>;
 }
 
-pallet_staking_reward_curve::build! {
+noble_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
 		min_inflation: 0_025_000,
 		max_inflation: 0_100_000,
@@ -298,9 +298,9 @@ parameter_types! {
 	// Six sessions in an era (6 hours).
 	pub storage SessionsPerEra: SessionIndex = 6;
 	// 28 eras for unbonding (7 days).
-	pub storage BondingDuration: pallet_staking::EraIndex = 28;
+	pub storage BondingDuration: noble_staking::EraIndex = 28;
 	// 27 eras in which slashes can be cancelled (a bit less than 7 days).
-	pub storage SlashDeferDuration: pallet_staking::EraIndex = 27;
+	pub storage SlashDeferDuration: noble_staking::EraIndex = 27;
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub storage MaxNominatorRewardedPerValidator: u32 = 64;
 	pub storage ElectionLookahead: BlockNumber = 0;
@@ -309,10 +309,10 @@ parameter_types! {
 	pub MinSolutionScoreBump: Perbill = Perbill::from_rational_approximation(5u32, 10_000);
 }
 
-impl pallet_staking::Config for Runtime {
+impl noble_staking::Config for Runtime {
 	type Currency = Balances;
 	type UnixTime = Timestamp;
-	type CurrencyToVote = frame_support::traits::U128CurrencyToVote;
+	type CurrencyToVote = fabric_support::traits::U128CurrencyToVote;
 	type RewardRemainder = ();
 	type Event = Event;
 	type Slash = ();
@@ -321,7 +321,7 @@ impl pallet_staking::Config for Runtime {
 	type BondingDuration = BondingDuration;
 	type SlashDeferDuration = SlashDeferDuration;
 	// A majority of the council can cancel the slash.
-	type SlashCancelOrigin = frame_system::EnsureNever<()>;
+	type SlashCancelOrigin = fabric_system::EnsureNever<()>;
 	type SessionInterface = Self;
 	type RewardCurve = RewardCurve;
 	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
@@ -336,7 +336,7 @@ impl pallet_staking::Config for Runtime {
 
 }
 
-impl pallet_grandpa::Config for Runtime {
+impl noble_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 
@@ -355,14 +355,14 @@ impl pallet_grandpa::Config for Runtime {
 	type WeightInfo = ();
 }
 
-impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
+impl<LocalCall> fabric_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
 	Call: From<LocalCall>,
 {
-	fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+	fn create_transaction<C: fabric_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
 		call: Call,
 		public: <Signature as Verify>::Signer,
 		account: AccountId,
-		nonce: <Runtime as frame_system::Config>::Index,
+		nonce: <Runtime as fabric_system::Config>::Index,
 	) -> Option<(Call, <UncheckedExtrinsic as ExtrinsicT>::SignaturePayload)> {
 		let period = BlockHashCount::get()
 			.checked_next_power_of_two()
@@ -374,13 +374,13 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			.saturating_sub(1);
 		let tip = 0;
 		let extra: SignedExtra = (
-			frame_system::CheckSpecVersion::<Runtime>::new(),
-			frame_system::CheckTxVersion::<Runtime>::new(),
-			frame_system::CheckGenesis::<Runtime>::new(),
-			frame_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
-			frame_system::CheckNonce::<Runtime>::from(nonce),
-			frame_system::CheckWeight::<Runtime>::new(),
-			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+			fabric_system::CheckSpecVersion::<Runtime>::new(),
+			fabric_system::CheckTxVersion::<Runtime>::new(),
+			fabric_system::CheckGenesis::<Runtime>::new(),
+			fabric_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
+			fabric_system::CheckNonce::<Runtime>::from(nonce),
+			fabric_system::CheckWeight::<Runtime>::new(),
+			noble_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
 		);
 		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
 			debug::warn!("Unable to create signed payload: {:?}", e);
@@ -394,7 +394,7 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 	}
 }
 
-impl frame_system::offchain::SigningTypes for Runtime {
+impl fabric_system::offchain::SigningTypes for Runtime {
 	type Public = <Signature as Verify>::Signer;
 	type Signature = Signature;
 }
@@ -403,14 +403,14 @@ parameter_types! {
 	pub storage OffencesWeightSoftLimit: Weight = Perbill::from_percent(60) * BlockWeights::get().max_block;
 }
 
-impl pallet_offences::Config for Runtime {
+impl noble_offences::Config for Runtime {
 	type Event = Event;
-	type IdentificationTuple = pallet_session::historical::IdentificationTuple<Self>;
+	type IdentificationTuple = noble_session::historical::IdentificationTuple<Self>;
 	type OnOffenceHandler = Staking;
 	type WeightSoftLimit = OffencesWeightSoftLimit;
 }
 
-impl pallet_authority_discovery::Config for Runtime {}
+impl noble_authority_discovery::Config for Runtime {}
 
 parameter_types! {
 	pub storage LeasePeriod: BlockNumber = 100_000;
@@ -425,7 +425,7 @@ impl claims::Config for Runtime {
 	type Event = Event;
 	type VestingSchedule = Vesting;
 	type Prefix = Prefix;
-	type MoveClaimOrigin = frame_system::EnsureRoot<AccountId>;
+	type MoveClaimOrigin = fabric_system::EnsureRoot<AccountId>;
 	type WeightInfo = claims::TestWeightInfo;
 }
 
@@ -433,7 +433,7 @@ parameter_types! {
 	pub storage MinVestedTransfer: Balance = 100 * DOLLARS;
 }
 
-impl pallet_vesting::Config for Runtime {
+impl noble_vesting::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type BlockNumberToBalance = ConvertInto;
@@ -441,7 +441,7 @@ impl pallet_vesting::Config for Runtime {
 	type WeightInfo = ();
 }
 
-impl pallet_sudo::Config for Runtime {
+impl noble_sudo::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 }
@@ -487,31 +487,31 @@ construct_runtime! {
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
 		// Basic stuff; balances is uncallable initially.
-		System: frame_system::{Module, Call, Storage, Config, Event<T>},
-		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Storage},
+		System: fabric_system::{Module, Call, Storage, Config, Event<T>},
+		RandomnessCollectiveFlip: noble_randomness_collective_flip::{Module, Storage},
 
 		// Must be before session.
-		Babe: pallet_babe::{Module, Call, Storage, Config, Inherent},
+		Babe: noble_babe::{Module, Call, Storage, Config, Inherent},
 
-		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
-		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
-		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Module, Storage},
+		Timestamp: noble_timestamp::{Module, Call, Storage, Inherent},
+		Indices: noble_indices::{Module, Call, Storage, Config<T>, Event<T>},
+		Balances: noble_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: noble_transaction_payment::{Module, Storage},
 
 		// Consensus support.
-		Authorship: pallet_authorship::{Module, Call, Storage},
-		Staking: pallet_staking::{Module, Call, Storage, Config<T>, Event<T>, ValidateUnsigned},
-		Offences: pallet_offences::{Module, Call, Storage, Event},
+		Authorship: noble_authorship::{Module, Call, Storage},
+		Staking: noble_staking::{Module, Call, Storage, Config<T>, Event<T>, ValidateUnsigned},
+		Offences: noble_offences::{Module, Call, Storage, Event},
 		Historical: session_historical::{Module},
-		Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
-		Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
-		AuthorityDiscovery: pallet_authority_discovery::{Module, Call, Config},
+		Session: noble_session::{Module, Call, Storage, Event, Config<T>},
+		Grandpa: noble_grandpa::{Module, Call, Storage, Config, Event},
+		AuthorityDiscovery: noble_authority_discovery::{Module, Call, Config},
 
 		// Claims. Usable initially.
 		Claims: claims::{Module, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
 
 		// Vesting. Usable initially, but removed once all vesting is finished.
-		Vesting: pallet_vesting::{Module, Call, Storage, Event<T>, Config<T>},
+		Vesting: noble_vesting::{Module, Call, Storage, Event<T>, Config<T>},
 
 		// Parachains runtime modules
 		ParachainsConfiguration: parachains_configuration::{Module, Call, Storage, Config<T>},
@@ -523,12 +523,12 @@ construct_runtime! {
 		ParasSudoWrapper: paras_sudo_wrapper::{Module, Call},
 		SessionInfo: parachains_session_info::{Module, Call, Storage},
 
-		Sudo: pallet_sudo::{Module, Call, Storage, Config<T>, Event<T>},
+		Sudo: noble_sudo::{Module, Call, Storage, Config<T>, Event<T>},
 	}
 }
 
 /// The address format for describing accounts.
-pub type Address = sp_runtime::MultiAddress<AccountId, AccountIndex>;
+pub type Address = tp_runtime::MultiAddress<AccountId, AccountIndex>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.
@@ -539,28 +539,28 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-	frame_system::CheckSpecVersion<Runtime>,
-	frame_system::CheckTxVersion<Runtime>,
-	frame_system::CheckGenesis<Runtime>,
-	frame_system::CheckMortality<Runtime>,
-	frame_system::CheckNonce<Runtime>,
-	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment::<Runtime>,
+	fabric_system::CheckSpecVersion<Runtime>,
+	fabric_system::CheckTxVersion<Runtime>,
+	fabric_system::CheckGenesis<Runtime>,
+	fabric_system::CheckMortality<Runtime>,
+	fabric_system::CheckNonce<Runtime>,
+	fabric_system::CheckWeight<Runtime>,
+	noble_transaction_payment::ChargeTransactionPayment::<Runtime>,
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
 /// Extrinsic type that has already been checked.
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Nonce, Call>;
 /// Executive: handles dispatch to the various modules.
-pub type Executive = frame_executive::Executive<Runtime, Block, frame_system::ChainContext<Runtime>, Runtime, AllModules>;
+pub type Executive = fabric_executive::Executive<Runtime, Block, fabric_system::ChainContext<Runtime>, Runtime, AllModules>;
 /// The payload being signed in transactions.
 pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 
 pub type Hash = <Block as BlockT>::Hash;
 pub type Extrinsic = <Block as BlockT>::Extrinsic;
 
-sp_api::impl_runtime_apis! {
-	impl sp_api::Core<Block> for Runtime {
+tp_api::impl_runtime_apis! {
+	impl tp_api::Core<Block> for Runtime {
 		fn version() -> RuntimeVersion {
 			VERSION
 		}
@@ -574,7 +574,7 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_api::Metadata<Block> for Runtime {
+	impl tp_api::Metadata<Block> for Runtime {
 		fn metadata() -> OpaqueMetadata {
 			Runtime::metadata().into()
 		}
@@ -703,7 +703,7 @@ sp_api::impl_runtime_apis! {
 		fn submit_report_equivocation_unsigned_extrinsic(
 			_equivocation_proof: fg_primitives::EquivocationProof<
 				<Block as BlockT>::Hash,
-				sp_runtime::traits::NumberFor<Block>,
+				tp_runtime::traits::NumberFor<Block>,
 			>,
 			_key_owner_proof: fg_primitives::OpaqueKeyOwnershipProof,
 		) -> Option<()> {
@@ -724,7 +724,7 @@ sp_api::impl_runtime_apis! {
 			// probability of a slot being empty), is done in accordance to the
 			// slot duration and expected target block time, for safely
 			// resisting network delays of maximum two seconds.
-			// <https://research.web3.foundation/en/latest/polkadot/BABE/Babe/#6-practical-results>
+			// <https://research.web3.foundation/en/latest/tetcoin/BABE/Babe/#6-practical-results>
 			babe_primitives::BabeGenesisConfiguration {
 				slot_duration: Babe::slot_duration(),
 				epoch_length: EpochDuration::get(),
@@ -762,25 +762,25 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_session::SessionKeys<Block> for Runtime {
+	impl tp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			SessionKeys::generate(seed)
 		}
 
 		fn decode_session_keys(
 			encoded: Vec<u8>,
-		) -> Option<Vec<(Vec<u8>, sp_core::crypto::KeyTypeId)>> {
+		) -> Option<Vec<(Vec<u8>, tet_core::crypto::KeyTypeId)>> {
 			SessionKeys::decode_into_raw_public_keys(&encoded)
 		}
 	}
 
-	impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
+	impl fabric_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
 		fn account_nonce(account: AccountId) -> Nonce {
 			System::account_nonce(account)
 		}
 	}
 
-	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
+	impl noble_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
 		Block,
 		Balance,
 	> for Runtime {

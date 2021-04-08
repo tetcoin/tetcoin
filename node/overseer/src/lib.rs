@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! # Overseer
 //!
@@ -76,10 +76,10 @@ use futures::{
 use futures_timer::Delay;
 use oorandom::Rand32;
 
-use polkadot_primitives::v1::{Block, BlockNumber, Hash};
+use tetcoin_primitives::v1::{Block, BlockNumber, Hash};
 use client::{BlockImportNotification, BlockchainEvents, FinalityNotification};
 
-use polkadot_subsystem::messages::{
+use tetcoin_subsystem::messages::{
 	CandidateValidationMessage, CandidateBackingMessage,
 	CandidateSelectionMessage, ChainApiMessage, StatementDistributionMessage,
 	AvailabilityDistributionMessage, BitfieldSigningMessage, BitfieldDistributionMessage,
@@ -87,12 +87,12 @@ use polkadot_subsystem::messages::{
 	AvailabilityStoreMessage, NetworkBridgeMessage, AllMessages, CollationGenerationMessage,
 	CollatorProtocolMessage, AvailabilityRecoveryMessage, ApprovalDistributionMessage,
 };
-pub use polkadot_subsystem::{
+pub use tetcoin_subsystem::{
 	Subsystem, SubsystemContext, OverseerSignal, FromOverseer, SubsystemError, SubsystemResult,
 	SpawnedSubsystem, ActiveLeavesUpdate, DummySubsystem, JaegerSpan, jaeger,
 };
-use polkadot_node_subsystem_util::{TimeoutExt, metrics::{self, prometheus}, metered, Metronome};
-use polkadot_node_primitives::SpawnNamed;
+use tetcoin_node_subsystem_util::{TimeoutExt, metrics::{self, prometheus}, metered, Metronome};
+use tetcoin_node_primitives::SpawnNamed;
 
 // A capacity of bounded channels inside the overseer.
 const CHANNEL_CAPACITY: usize = 1024;
@@ -652,7 +652,7 @@ impl<CV, CB, CS, SD, AD, AR, BS, BD, P, PoVD, RA, AS, NB, CA, CG, CP, ApD>
 	/// you provide a "random" type for the first generic parameter:
 	///
 	/// ```
-	/// polkadot_overseer::AllSubsystems::<()>::dummy();
+	/// tetcoin_overseer::AllSubsystems::<()>::dummy();
 	/// ```
 	pub fn dummy() -> AllSubsystems<
 		DummySubsystem,
@@ -1294,8 +1294,8 @@ where
 	/// # use std::time::Duration;
 	/// # use futures::{executor, pin_mut, select, FutureExt};
 	/// # use futures_timer::Delay;
-	/// # use polkadot_overseer::{Overseer, AllSubsystems};
-	/// # use polkadot_subsystem::{
+	/// # use tetcoin_overseer::{Overseer, AllSubsystems};
+	/// # use tetcoin_subsystem::{
 	/// #     Subsystem, DummySubsystem, SpawnedSubsystem, SubsystemContext,
 	/// #     messages::CandidateValidationMessage,
 	/// # };
@@ -1321,7 +1321,7 @@ where
 	/// }
 	///
 	/// # fn main() { executor::block_on(async move {
-	/// let spawner = sp_core::testing::TaskExecutor::new();
+	/// let spawner = tet_core::testing::TaskExecutor::new();
 	/// let all_subsystems = AllSubsystems::<()>::dummy().replace_candidate_validation(ValidationSubsystem);
 	/// let (overseer, _handler) = Overseer::new(
 	///     vec![],
@@ -1840,7 +1840,7 @@ where
 				let _ = self.approval_distribution_subsystem.send_message(msg).await;
 			},
 			AllMessages::ApprovalVoting(_msg) => {
-				// FIXME: https://github.com/paritytech/polkadot/issues/1975
+				// FIXME: https://github.com/tetcoin/tetcoin/issues/1975
 			},
 		}
 
@@ -1960,13 +1960,13 @@ mod tests {
 	use std::collections::HashMap;
 	use futures::{executor, pin_mut, select, FutureExt, pending};
 
-	use polkadot_primitives::v1::{BlockData, CollatorPair, PoV, CandidateHash};
-	use polkadot_subsystem::{messages::RuntimeApiRequest, JaegerSpan};
-	use polkadot_node_primitives::{Collation, CollationGenerationConfig};
-	use polkadot_node_network_protocol::{PeerId, ReputationChange, NetworkBridgeEvent};
-	use polkadot_node_subsystem_util::metered;
+	use tetcoin_primitives::v1::{BlockData, CollatorPair, PoV, CandidateHash};
+	use tetcoin_subsystem::{messages::RuntimeApiRequest, JaegerSpan};
+	use tetcoin_node_primitives::{Collation, CollationGenerationConfig};
+	use tetcoin_node_network_protocol::{PeerId, ReputationChange, NetworkBridgeEvent};
+	use tetcoin_node_subsystem_util::metered;
 
-	use sp_core::crypto::Pair as _;
+	use tet_core::crypto::Pair as _;
 
 	use super::*;
 
@@ -2066,7 +2066,7 @@ mod tests {
 	// Checks that a minimal configuration of two jobs can run and exchange messages.
 	#[test]
 	fn overseer_works() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let (s1_tx, s1_rx) = metered::channel::<usize>(64, "overseer_test");
@@ -2123,7 +2123,7 @@ mod tests {
 	// Checks activated/deactivated metrics are updated properly.
 	#[test]
 	fn overseer_metrics_work() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let first_block_hash = [1; 32].into();
@@ -2199,7 +2199,7 @@ mod tests {
 	// Should immediately conclude the overseer itself.
 	#[test]
 	fn overseer_ends_on_subsystem_exit() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let all_subsystems = AllSubsystems::<()>::dummy()
@@ -2281,7 +2281,7 @@ mod tests {
 	// notifications on imported blocks triggers expected `StartWork` and `StopWork` heartbeats.
 	#[test]
 	fn overseer_start_stop_works() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let first_block_hash = [1; 32].into();
@@ -2374,7 +2374,7 @@ mod tests {
 	// notifications on imported blocks triggers expected `StartWork` and `StopWork` heartbeats.
 	#[test]
 	fn overseer_finalize_works() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let first_block_hash = [1; 32].into();
@@ -2474,7 +2474,7 @@ mod tests {
 
 	#[test]
 	fn do_not_send_empty_leaves_update_on_block_finalization() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let imported_block = BlockInfo {
@@ -2699,7 +2699,7 @@ mod tests {
 	// Checks that `stop`, `broadcast_signal` and `broadcast_message` are implemented correctly.
 	#[test]
 	fn overseer_all_subsystems_receive_signals_and_messages() {
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		executor::block_on(async move {
 			let stop_signals_received = Arc::new(atomic::AtomicUsize::new(0));

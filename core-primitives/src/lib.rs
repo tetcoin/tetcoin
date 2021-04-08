@@ -1,33 +1,33 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-//! Core Polkadot types.
+//! Core Tetcoin types.
 //!
-//! These core Polkadot types are used by the relay chain and the Parachains.
+//! These core Tetcoin types are used by the relay chain and the Parachains.
 
-use sp_runtime::{generic, MultiSignature, traits::{Verify, IdentifyAccount}};
+use tp_runtime::{generic, MultiSignature, traits::{Verify, IdentifyAccount}};
 use parity_scale_codec::{Encode, Decode};
 #[cfg(feature = "std")]
 use parity_util_mem::MallocSizeOf;
 
-pub use sp_runtime::traits::{BlakeTwo256, Hash as HashT};
+pub use tp_runtime::traits::{BlakeTwo256, Hash as HashT};
 
-/// The block number type used by Polkadot.
+/// The block number type used by Tetcoin.
 /// 32-bits will allow for 136 years of blocks assuming 1 block per second.
 pub type BlockNumber = u32;
 
@@ -53,7 +53,7 @@ pub type AccountIndex = u32;
 pub type ChainId = u32;
 
 /// A hash of some data used by the relay chain.
-pub type Hash = sp_core::H256;
+pub type Hash = tet_core::H256;
 
 /// Unit type wrapper around [`Hash`] that represents a candidate hash.
 ///
@@ -91,7 +91,7 @@ pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 pub type BlockId = generic::BlockId<Block>;
 
 /// Opaque, encoded, unchecked extrinsic.
-pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
+pub use tp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 
 /// The information that goes alongside a transfer_into_parachain operation. Entirely opaque, it
 /// will generally be used for identifying the reason for the transfer. Typically it will hold the
@@ -103,11 +103,11 @@ pub type Remark = [u8; 32];
 /// A message sent from the relay-chain down to a parachain.
 ///
 /// The size of the message is limited by the `config.max_downward_message_size` parameter.
-pub type DownwardMessage = sp_std::vec::Vec<u8>;
+pub type DownwardMessage = tetcore_std::vec::Vec<u8>;
 
 /// A wrapped version of `DownwardMessage`. The difference is that it has attached the block number when
 /// the message was sent.
-#[derive(Encode, Decode, Clone, sp_runtime::RuntimeDebug, PartialEq)]
+#[derive(Encode, Decode, Clone, tp_runtime::RuntimeDebug, PartialEq)]
 #[cfg_attr(feature = "std", derive(MallocSizeOf))]
 pub struct InboundDownwardMessage<BlockNumber = crate::BlockNumber> {
 	/// The block number at which this messages was put into the downward message queue.
@@ -117,7 +117,7 @@ pub struct InboundDownwardMessage<BlockNumber = crate::BlockNumber> {
 }
 
 /// An HRMP message seen from the perspective of a recipient.
-#[derive(Encode, Decode, Clone, sp_runtime::RuntimeDebug, PartialEq)]
+#[derive(Encode, Decode, Clone, tp_runtime::RuntimeDebug, PartialEq)]
 #[cfg_attr(feature = "std", derive(MallocSizeOf))]
 pub struct InboundHrmpMessage<BlockNumber = crate::BlockNumber> {
 	/// The block number at which this message was sent.
@@ -125,17 +125,17 @@ pub struct InboundHrmpMessage<BlockNumber = crate::BlockNumber> {
 	/// enacted.
 	pub sent_at: BlockNumber,
 	/// The message payload.
-	pub data: sp_std::vec::Vec<u8>,
+	pub data: tetcore_std::vec::Vec<u8>,
 }
 
 /// An HRMP message seen from the perspective of a sender.
-#[derive(Encode, Decode, Clone, sp_runtime::RuntimeDebug, PartialEq, Eq, Hash)]
+#[derive(Encode, Decode, Clone, tp_runtime::RuntimeDebug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "std", derive(MallocSizeOf))]
 pub struct OutboundHrmpMessage<Id> {
 	/// The para that will get this message in its downward message queue.
 	pub recipient: Id,
 	/// The message payload.
-	pub data: sp_std::vec::Vec<u8>,
+	pub data: tetcore_std::vec::Vec<u8>,
 }
 
 /// V1 primitives.

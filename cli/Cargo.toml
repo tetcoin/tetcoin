@@ -1,8 +1,8 @@
 [package]
-name = "polkadot-cli"
+name = "tetcoin-cli"
 version = "0.8.28"
 authors = ["Parity Technologies <admin@parity.io>"]
-description = "Polkadot Relay-chain Client Node"
+description = "Tetcoin Relay-chain Client Node"
 edition = "2018"
 
 [package.metadata.wasm-pack.profile.release]
@@ -21,32 +21,33 @@ wasm-bindgen = { version = "0.2.69", optional = true }
 wasm-bindgen-futures = { version = "0.4.19", optional = true }
 futures = "0.3.12"
 
-service = { package = "polkadot-service", path = "../node/service", default-features = false, optional = true }
-polkadot-parachain = { path = "../parachain", optional = true }
+service = { package = "tetcoin-service", path = "../node/service", default-features = false, optional = true }
+tetcoin-parachain = { path = "../parachain", optional = true }
 
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tracing-futures = "0.2.4"
-frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
-sc-cli = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
-sc-service = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
-browser-utils = { package = "substrate-browser-utils", git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
+fabric-benchmarking-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+tc-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+# browser-utils = { package = "tetcore-browser-utils", git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+browser-utils = { package = "tetcore-browser-utils", version = "0.8.1" , optional = true }
 
 # this crate is used only to enable `trie-memory-tracker` feature
-# see https://github.com/paritytech/substrate/pull/6745
-sp-trie = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+# see https://github.com/tetcoin/tetcore/pull/6745
+tp-trie = { version = "2.0.2", default-features = false }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/paritytech/substrate", branch = "master" }
+build-script-utils = { version = "2.0.1 }
 
 [features]
-default = [ "wasmtime", "db", "cli", "full-node", "trie-memory-tracker", "polkadot-parachain" ]
-wasmtime = [ "sc-cli/wasmtime", "polkadot-parachain/wasmtime" ]
+default = [ "wasmtime", "db", "cli", "full-node", "trie-memory-tracker", "tetcoin-parachain" ]
+wasmtime = [ "tc-cli/wasmtime", "tetcoin-parachain/wasmtime" ]
 db = [ "service/db" ]
 cli = [
 	"structopt",
-	"sc-cli",
-	"sc-service",
-	"frame-benchmarking-cli",
+	"tc-cli",
+	"tc-service",
+	"fabric-benchmarking-cli",
 ]
 browser = [
 	"wasm-bindgen",
@@ -55,6 +56,6 @@ browser = [
 	"service",
 ]
 runtime-benchmarks = [ "service/runtime-benchmarks" ]
-trie-memory-tracker = [ "sp-trie/memory-tracker" ]
+trie-memory-tracker = [ "tp-trie/memory-tracker" ]
 full-node = [ "service/full-node" ]
 real-overseer = [ "service/real-overseer" ]

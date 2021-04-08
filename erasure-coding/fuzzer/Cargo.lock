@@ -421,8 +421,8 @@ name = "erasure_coding_fuzzer"
 version = "0.1.0"
 dependencies = [
  "honggfuzz",
- "polkadot-erasure-coding",
- "polkadot-primitives",
+ "tetcoin-erasure-coding",
+ "tetcoin-primitives",
 ]
 
 [[package]]
@@ -444,9 +444,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-metadata"
+name = "fabric-metadata"
 version = "12.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "serde",
@@ -455,13 +455,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-support"
+name = "fabric-support"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "bitflags",
- "frame-metadata",
- "frame-support-procedural",
+ "fabric-metadata",
+ "fabric-support-procedural",
  "impl-trait-for-tuples",
  "log",
  "once_cell",
@@ -480,22 +480,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-support-procedural"
+name = "fabric-support-procedural"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
- "frame-support-procedural-tools",
+ "fabric-support-procedural-tools",
  "proc-macro2 1.0.24",
  "quote 1.0.7",
  "syn 1.0.51",
 ]
 
 [[package]]
-name = "frame-support-procedural-tools"
+name = "fabric-support-procedural-tools"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
- "frame-support-procedural-tools-derive",
+ "fabric-support-procedural-tools-derive",
  "proc-macro-crate",
  "proc-macro2 1.0.24",
  "quote 1.0.7",
@@ -503,9 +503,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-support-procedural-tools-derive"
+name = "fabric-support-procedural-tools-derive"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.7",
@@ -513,11 +513,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "frame-system"
+name = "fabric-system"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
- "frame-support",
+ "fabric-support",
  "impl-trait-for-tuples",
  "parity-scale-codec",
  "serde",
@@ -1262,7 +1262,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
-name = "polkadot-core-primitives"
+name = "tetcoin-core-primitives"
 version = "0.7.30"
 dependencies = [
  "parity-scale-codec",
@@ -1272,11 +1272,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-erasure-coding"
+name = "tetcoin-erasure-coding"
 version = "0.8.26"
 dependencies = [
  "parity-scale-codec",
- "polkadot-primitives",
+ "tetcoin-primitives",
  "reed-solomon-erasure",
  "sp-core",
  "sp-trie",
@@ -1284,7 +1284,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-parachain"
+name = "tetcoin-parachain"
 version = "0.8.26"
 dependencies = [
  "derive_more",
@@ -1292,8 +1292,8 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "parking_lot 0.11.1",
- "polkadot-core-primitives",
- "sc-executor",
+ "tetcoin-core-primitives",
+ "tc-executor",
  "serde",
  "shared_memory",
  "sp-core",
@@ -1306,14 +1306,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-primitives"
+name = "tetcoin-primitives"
 version = "0.8.26"
 dependencies = [
  "bitvec",
- "frame-system",
+ "fabric-system",
  "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain",
+ "tetcoin-core-primitives",
+ "tetcoin-parachain",
  "serde",
  "sp-api",
  "sp-application-crypto",
@@ -1617,9 +1617,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
 
 [[package]]
-name = "sc-executor"
+name = "tc-executor"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "derive_more",
  "lazy_static",
@@ -1628,8 +1628,8 @@ dependencies = [
  "parity-scale-codec",
  "parity-wasm",
  "parking_lot 0.10.2",
- "sc-executor-common",
- "sc-executor-wasmi",
+ "tc-executor-common",
+ "tc-executor-wasmi",
  "sp-api",
  "sp-core",
  "sp-externalities",
@@ -1645,9 +1645,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "sc-executor-common"
+name = "tc-executor-common"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "derive_more",
  "log",
@@ -1662,13 +1662,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "sc-executor-wasmi"
+name = "tc-executor-wasmi"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "log",
  "parity-scale-codec",
- "sc-executor-common",
+ "tc-executor-common",
  "sp-allocator",
  "sp-core",
  "sp-runtime-interface",
@@ -1847,7 +1847,7 @@ checksum = "7acad6f34eb9e8a259d3283d1e8c1d34d7415943d4895f65cc73813c7396fc85"
 [[package]]
 name = "sp-allocator"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "derive_more",
  "log",
@@ -1859,7 +1859,7 @@ dependencies = [
 [[package]]
 name = "sp-api"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "hash-db",
  "parity-scale-codec",
@@ -1874,7 +1874,7 @@ dependencies = [
 [[package]]
 name = "sp-api-proc-macro"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "blake2-rfc",
  "proc-macro-crate",
@@ -1886,7 +1886,7 @@ dependencies = [
 [[package]]
 name = "sp-application-crypto"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "serde",
@@ -1898,7 +1898,7 @@ dependencies = [
 [[package]]
 name = "sp-arithmetic"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "integer-sqrt",
  "num-traits 0.2.14",
@@ -1911,7 +1911,7 @@ dependencies = [
 [[package]]
 name = "sp-authority-discovery"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "sp-api",
@@ -1923,7 +1923,7 @@ dependencies = [
 [[package]]
 name = "sp-core"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "base58",
  "blake2-rfc",
@@ -1955,7 +1955,7 @@ dependencies = [
  "sp-runtime-interface",
  "sp-std",
  "sp-storage",
- "substrate-bip39",
+ "tetcore-bip39",
  "thiserror",
  "tiny-bip39",
  "tiny-keccak",
@@ -1967,7 +1967,7 @@ dependencies = [
 [[package]]
 name = "sp-debug-derive"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.7",
@@ -1977,7 +1977,7 @@ dependencies = [
 [[package]]
 name = "sp-externalities"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "environmental",
  "parity-scale-codec",
@@ -1988,7 +1988,7 @@ dependencies = [
 [[package]]
 name = "sp-inherents"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "parking_lot 0.10.2",
@@ -2000,7 +2000,7 @@ dependencies = [
 [[package]]
 name = "sp-io"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "futures",
  "hash-db",
@@ -2024,7 +2024,7 @@ dependencies = [
 [[package]]
 name = "sp-keystore"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -2040,7 +2040,7 @@ dependencies = [
 [[package]]
 name = "sp-panic-handler"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "backtrace",
 ]
@@ -2048,7 +2048,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "either",
  "hash256-std-hasher",
@@ -2069,7 +2069,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "primitive-types",
@@ -2085,7 +2085,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface-proc-macro"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "Inflector",
  "proc-macro-crate",
@@ -2097,7 +2097,7 @@ dependencies = [
 [[package]]
 name = "sp-serializer"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "serde",
  "serde_json",
@@ -2106,7 +2106,7 @@ dependencies = [
 [[package]]
 name = "sp-staking"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "parity-scale-codec",
  "sp-runtime",
@@ -2116,7 +2116,7 @@ dependencies = [
 [[package]]
 name = "sp-state-machine"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "hash-db",
  "log",
@@ -2138,12 +2138,12 @@ dependencies = [
 [[package]]
 name = "sp-std"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 
 [[package]]
 name = "sp-storage"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
@@ -2156,7 +2156,7 @@ dependencies = [
 [[package]]
 name = "sp-tasks"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "log",
  "sp-core",
@@ -2169,7 +2169,7 @@ dependencies = [
 [[package]]
 name = "sp-tracing"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "log",
  "parity-scale-codec",
@@ -2182,7 +2182,7 @@ dependencies = [
 [[package]]
 name = "sp-trie"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "hash-db",
  "memory-db",
@@ -2196,7 +2196,7 @@ dependencies = [
 [[package]]
 name = "sp-version"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
@@ -2208,7 +2208,7 @@ dependencies = [
 [[package]]
 name = "sp-wasm-interface"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
+source = "git+https://github.com/tetcoin/tetcore?branch=master#cff25fbc37c9fc564f8816eefdcd8dce15e1606b"
 dependencies = [
  "impl-trait-for-tuples",
  "parity-scale-codec",
@@ -2223,7 +2223,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
-name = "substrate-bip39"
+name = "tetcore-bip39"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bed6646a0159b9935b5d045611560eeef842b78d7adc3ba36f5ca325a13a0236"

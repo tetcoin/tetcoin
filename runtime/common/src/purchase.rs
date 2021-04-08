@@ -1,5 +1,5 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
 // Substrate is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,20 +17,20 @@
 //! Module to process purchase of DOTs.
 
 use parity_scale_codec::{Encode, Decode};
-use sp_runtime::{Permill, RuntimeDebug, DispatchResult, DispatchError, AnySignature};
-use sp_runtime::traits::{Zero, CheckedAdd, Verify, Saturating};
-use frame_support::{decl_event, decl_storage, decl_module, decl_error, ensure};
-use frame_support::traits::{
+use tp_runtime::{Permill, RuntimeDebug, DispatchResult, DispatchError, AnySignature};
+use tp_runtime::traits::{Zero, CheckedAdd, Verify, Saturating};
+use fabric_support::{decl_event, decl_storage, decl_module, decl_error, ensure};
+use fabric_support::traits::{
 	EnsureOrigin, Currency, ExistenceRequirement, VestingSchedule, Get
 };
-use frame_system::ensure_signed;
-use sp_core::sr25519;
-use sp_std::prelude::*;
+use fabric_system::ensure_signed;
+use tet_core::sr25519;
+use tetcore_std::prelude::*;
 
 /// Configuration trait.
-pub trait Config: frame_system::Config {
+pub trait Config: fabric_system::Config {
 	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 	/// Balances Pallet
 	type Currency: Currency<Self::AccountId>;
 	/// Vesting Pallet
@@ -47,7 +47,7 @@ pub trait Config: frame_system::Config {
 	type MaxUnlocked: Get<BalanceOf<Self>>;
 }
 
-type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as fabric_system::Config>::AccountId>>::Balance;
 
 /// The kind of a statement an account needs to make for a claim to be valid.
 #[derive(Encode, Decode, Clone, Copy, Eq, PartialEq, RuntimeDebug)]
@@ -103,9 +103,9 @@ pub struct AccountStatus<Balance> {
 
 decl_event!(
 	pub enum Event<T> where
-		AccountId = <T as frame_system::Config>::AccountId,
+		AccountId = <T as fabric_system::Config>::AccountId,
 		Balance = BalanceOf<T>,
-		BlockNumber = <T as frame_system::Config>::BlockNumber,
+		BlockNumber = <T as fabric_system::Config>::BlockNumber,
 	{
 		/// A [new] account was created.
 		AccountCreated(AccountId),
@@ -332,7 +332,7 @@ decl_module! {
 		#[weight = T::DbWeight::get().writes(1)]
 		fn set_unlock_block(origin, unlock_block: T::BlockNumber) {
 			T::ConfigurationOrigin::ensure_origin(origin)?;
-			ensure!(unlock_block > frame_system::Module::<T>::block_number(), Error::<T>::InvalidUnlockBlock);
+			ensure!(unlock_block > fabric_system::Module::<T>::block_number(), Error::<T>::InvalidUnlockBlock);
 			// Possibly this is worse than having the caller account be the payment account?
 			UnlockBlock::<T>::set(unlock_block);
 			Self::deposit_event(RawEvent::UnlockBlockUpdated(unlock_block));
@@ -346,7 +346,7 @@ impl<T: Config> Module<T> {
 		ensure!(signature.len() == 64, Error::<T>::InvalidSignature);
 		let signature: AnySignature = sr25519::Signature::from_slice(signature).into();
 
-		// In Polkadot, the AccountId is always the same as the 32 byte public key.
+		// In Tetcoin, the AccountId is always the same as the 32 byte public key.
 		let account_bytes: [u8; 32] = account_to_bytes(who)?;
 		let public_key = sr25519::Public::from_raw(account_bytes);
 
@@ -373,36 +373,36 @@ fn account_to_bytes<AccountId>(account: &AccountId) -> Result<[u8; 32], Dispatch
 
 /// WARNING: Executing this function will clear all storage used by this pallet.
 /// Be sure this is what you want...
-pub fn remove_pallet<T>() -> frame_support::weights::Weight
-	where T: frame_system::Config
+pub fn remove_pallet<T>() -> fabric_support::weights::Weight
+	where T: fabric_system::Config
 {
-	use frame_support::migration::remove_storage_prefix;
+	use fabric_support::migration::remove_storage_prefix;
 	remove_storage_prefix(b"Purchase", b"Accounts", b"");
 	remove_storage_prefix(b"Purchase", b"PaymentAccount", b"");
 	remove_storage_prefix(b"Purchase", b"Statement", b"");
 	remove_storage_prefix(b"Purchase", b"UnlockBlock", b"");
 
-	<T as frame_system::Config>::BlockWeights::get().max_block
+	<T as fabric_system::Config>::BlockWeights::get().max_block
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
 
-	use sp_core::{H256, Pair, Public, crypto::AccountId32, ed25519};
+	use tet_core::{H256, Pair, Public, crypto::AccountId32, ed25519};
 	// The testing primitives are very useful for avoiding having to work with signatures
 	// or public keys. `u64` is used as the `AccountId` and no `Signature`s are required.
-	use sp_runtime::{
+	use tp_runtime::{
 		MultiSignature,
 		traits::{BlakeTwo256, IdentityLookup, Identity, Verify, IdentifyAccount, Dispatchable},
 		testing::Header
 	};
-	use frame_support::{
+	use fabric_support::{
 		impl_outer_origin, impl_outer_dispatch, assert_ok, assert_noop, parameter_types,
 		ord_parameter_types, dispatch::DispatchError::BadOrigin,
 	};
-	use frame_support::traits::Currency;
-	use pallet_balances::Error as BalancesError;
+	use fabric_support::traits::Currency;
+	use noble_balances::Error as BalancesError;
 
 	impl_outer_origin! {
 		pub enum Origin for Test {}
@@ -425,7 +425,7 @@ mod tests {
 	parameter_types! {
 		pub const BlockHashCount: u32 = 250;
 	}
-	impl frame_system::Config for Test {
+	impl fabric_system::Config for Test {
 		type BaseCallFilter = ();
 		type BlockWeights = ();
 		type BlockLength = ();
@@ -443,7 +443,7 @@ mod tests {
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
 		type PalletInfo = ();
-		type AccountData = pallet_balances::AccountData<u64>;
+		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
 		type SystemWeightInfo = ();
@@ -454,7 +454,7 @@ mod tests {
 		pub const ExistentialDeposit: u64 = 1;
 	}
 
-	impl pallet_balances::Config for Test {
+	impl noble_balances::Config for Test {
 		type Balance = u64;
 		type Event = ();
 		type DustRemoval = ();
@@ -468,7 +468,7 @@ mod tests {
 		pub const MinVestedTransfer: u64 = 0;
 	}
 
-	impl pallet_vesting::Config for Test {
+	impl noble_vesting::Config for Test {
 		type Event = ();
 		type Currency = Balances;
 		type BlockNumberToBalance = Identity;
@@ -492,23 +492,23 @@ mod tests {
 		type Event = ();
 		type Currency = Balances;
 		type VestingSchedule = Vesting;
-		type ValidityOrigin = frame_system::EnsureSignedBy<ValidityOrigin, AccountId>;
-		type ConfigurationOrigin = frame_system::EnsureSignedBy<ConfigurationOrigin, AccountId>;
+		type ValidityOrigin = fabric_system::EnsureSignedBy<ValidityOrigin, AccountId>;
+		type ConfigurationOrigin = fabric_system::EnsureSignedBy<ConfigurationOrigin, AccountId>;
 		type MaxStatementLength = MaxStatementLength;
 		type UnlockedProportion = UnlockedProportion;
 		type MaxUnlocked = MaxUnlocked;
 	}
 
-	type System = frame_system::Module<Test>;
-	type Balances = pallet_balances::Module<Test>;
-	type Vesting = pallet_vesting::Module<Test>;
+	type System = fabric_system::Module<Test>;
+	type Balances = noble_balances::Module<Test>;
+	type Vesting = noble_vesting::Module<Test>;
 	type Purchase = Module<Test>;
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup. It also executes our `setup` function which sets up this pallet for use.
-	pub fn new_test_ext() -> sp_io::TestExternalities {
-		let t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
-		let mut ext = sp_io::TestExternalities::new(t);
+	pub fn new_test_ext() -> tp_io::TestExternalities {
+		let t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+		let mut ext = tp_io::TestExternalities::new(t);
 		ext.execute_with(|| setup());
 		ext
 	}
@@ -957,7 +957,7 @@ mod tests {
 			);
 			// Vesting lock is removed in whole on block 101 (100 blocks after block 1)
 			System::set_block_number(100);
-			let vest_call = Call::Vesting(pallet_vesting::Call::<Test>::vest());
+			let vest_call = Call::Vesting(noble_vesting::Call::<Test>::vest());
 			assert_ok!(vest_call.clone().dispatch(Origin::signed(alice())));
 			assert_ok!(vest_call.clone().dispatch(Origin::signed(bob())));
 			assert_eq!(<Test as Config>::VestingSchedule::vesting_balance(&alice()), Some(45));
@@ -1022,7 +1022,7 @@ mod tests {
 	}
 
 	#[test]
-	fn remove_pallet_works() {
+	fn remove_noble_works() {
 		new_test_ext().execute_with(|| {
 			let account_status = AccountStatus {
 				validity: AccountValidity::Completed,

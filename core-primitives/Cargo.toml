@@ -1,22 +1,22 @@
 [package]
-name = "polkadot-core-primitives"
+name = "tetcoin-core-primitives"
 version = "0.7.30"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-std = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 parity-util-mem = { version = "0.9.0", default-features = false, optional = true }
 
 [features]
 default = [ "std" ]
 std = [
-	"sp-core/std",
-	"sp-runtime/std",
-	"sp-std/std",
+	"tet-core/std",
+	"tp-runtime/std",
+	"tetcore-std/std",
 	"parity-scale-codec/std",
 	"parity-util-mem",
 ]

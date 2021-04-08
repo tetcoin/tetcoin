@@ -1,18 +1,18 @@
 // Copyright 2020-2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 
@@ -22,16 +22,16 @@ use assert_matches::assert_matches;
 use futures::executor;
 use tracing::trace;
 
-use sp_keyring::Sr25519Keyring;
+use tp_keyring::Sr25519Keyring;
 
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	AuthorityDiscoveryId, BlockData, CoreState, GroupRotationInfo, Id as ParaId,
 	ScheduledCore, ValidatorIndex, SessionIndex, SessionInfo,
 };
-use polkadot_subsystem::{messages::{RuntimeApiMessage, RuntimeApiRequest}, JaegerSpan};
-use polkadot_node_subsystem_test_helpers as test_helpers;
-use polkadot_node_subsystem_util::TimeoutExt;
-use polkadot_node_network_protocol::{view, our_view};
+use tetcoin_subsystem::{messages::{RuntimeApiMessage, RuntimeApiRequest}, JaegerSpan};
+use tetcoin_node_subsystem_test_helpers as test_helpers;
+use tetcoin_node_subsystem_util::TimeoutExt;
+use tetcoin_node_network_protocol::{view, our_view};
 
 fn make_pov(data: Vec<u8>) -> PoV {
 	PoV { block_data: BlockData(data) }
@@ -65,7 +65,7 @@ fn test_harness<T: Future<Output = ()>>(
 	let _ = env_logger::builder()
 		.is_test(true)
 		.filter(
-			Some("polkadot_pov_distribution"),
+			Some("tetcoin_pov_distribution"),
 			log::LevelFilter::Trace,
 		)
 		.filter(
@@ -74,7 +74,7 @@ fn test_harness<T: Future<Output = ()>>(
 		)
 		.try_init();
 
-	let pool = sp_core::testing::TaskExecutor::new();
+	let pool = tet_core::testing::TaskExecutor::new();
 
 	let (context, virtual_overseer) = test_helpers::make_subsystem_context(pool.clone());
 
@@ -607,8 +607,8 @@ fn distributes_to_those_awaiting_and_completes_local() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 	let mut descriptor = CandidateDescriptor::default();
 	descriptor.pov_hash = pov_hash;
 
@@ -690,8 +690,8 @@ fn we_inform_peers_with_same_view_we_are_awaiting() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 	let mut descriptor = CandidateDescriptor::default();
 	descriptor.pov_hash = pov_hash;
 
@@ -864,8 +864,8 @@ fn peer_view_change_leads_to_us_informing() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		handle_network_update(
@@ -937,8 +937,8 @@ fn peer_complete_fetch_and_is_rewarded() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		// Peer A answers our request before peer B.
@@ -1027,8 +1027,8 @@ fn peer_punished_for_sending_bad_pov() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		// Peer A answers our request: right relay parent, awaited hash, wrong PoV.
@@ -1092,8 +1092,8 @@ fn peer_punished_for_sending_unexpected_pov() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		// Peer A answers our request: right relay parent, awaited hash, wrong PoV.
@@ -1155,8 +1155,8 @@ fn peer_punished_for_sending_pov_out_of_our_view() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		// Peer A answers our request: right relay parent, awaited hash, wrong PoV.
@@ -1215,8 +1215,8 @@ fn peer_reported_for_awaiting_too_much() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		let max_plausibly_awaited = n_validators * 2;
@@ -1302,8 +1302,8 @@ fn peer_reported_for_awaiting_outside_their_view() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		let pov_hash = make_pov(vec![1, 2, 3]).hash();
@@ -1366,8 +1366,8 @@ fn peer_reported_for_awaiting_outside_our_view() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		let pov_hash = make_pov(vec![1, 2, 3]).hash();
@@ -1445,8 +1445,8 @@ fn peer_complete_fetch_leads_to_us_completing_others() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		handle_network_update(
@@ -1529,8 +1529,8 @@ fn peer_completing_request_no_longer_awaiting() {
 		connection_requests: Default::default(),
 	};
 
-	let pool = sp_core::testing::TaskExecutor::new();
-	let (mut ctx, mut handle) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+	let pool = tet_core::testing::TaskExecutor::new();
+	let (mut ctx, mut handle) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 	executor::block_on(async move {
 		handle_network_update(

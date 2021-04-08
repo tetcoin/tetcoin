@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The availability distribution
 //!
@@ -27,24 +27,24 @@
 use parity_scale_codec::{Decode, Encode};
 use futures::{channel::oneshot, FutureExt, TryFutureExt};
 
-use sp_core::crypto::Public;
-use sp_keystore::{CryptoStore, SyncCryptoStorePtr};
+use tet_core::crypto::Public;
+use tp_keystore::{CryptoStore, SyncCryptoStorePtr};
 
-use polkadot_erasure_coding::branch_hash;
-use polkadot_node_network_protocol::{
+use tetcoin_erasure_coding::branch_hash;
+use tetcoin_node_network_protocol::{
 	v1 as protocol_v1, NetworkBridgeEvent, PeerId, ReputationChange as Rep, View, OurView,
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_primitives::v1::{
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_primitives::v1::{
 	BlakeTwo256, CoreState, ErasureChunk, Hash, HashT,
 	SessionIndex, ValidatorId, ValidatorIndex, PARACHAIN_KEY_TYPE_ID, CandidateHash,
 	CandidateDescriptor,
 };
-use polkadot_subsystem::messages::{
+use tetcoin_subsystem::messages::{
 	AllMessages, AvailabilityDistributionMessage, AvailabilityStoreMessage, ChainApiMessage,
 	NetworkBridgeMessage, RuntimeApiMessage, RuntimeApiRequest,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	jaeger, errors::{ChainApiError, RuntimeApiError}, PerLeafSpan,
 	ActiveLeavesUpdate, FromOverseer, OverseerSignal, SpawnedSubsystem, Subsystem, SubsystemContext, SubsystemError,
 };

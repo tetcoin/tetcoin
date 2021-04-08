@@ -1,22 +1,22 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-use sp_std::{prelude::*, mem, collections::{btree_map::BTreeMap, btree_set::BTreeSet}};
+use tetcore_std::{prelude::*, mem, collections::{btree_map::BTreeMap, btree_set::BTreeSet}};
 use xcm::v0::{MultiAsset, MultiLocation, AssetInstance};
-use sp_runtime::RuntimeDebug;
+use tp_runtime::RuntimeDebug;
 
 /// Classification of an asset being concrete or abstract.
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, RuntimeDebug)]
@@ -176,7 +176,7 @@ impl Assets {
 	/// ```
 	pub fn min<'a, M, I>(&self, assets: I) -> Self
 	where
-		M: 'a + sp_std::borrow::Borrow<MultiAsset>,
+		M: 'a + tetcore_std::borrow::Borrow<MultiAsset>,
 		I: IntoIterator<Item = M>,
 	{
 		let mut result = Assets::default();

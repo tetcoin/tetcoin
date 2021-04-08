@@ -425,7 +425,7 @@ only the `Proposer` does so. Likewise, any arbitrary subsystem could send a `Req
 distinction is that no subsystem currently does so.
 
 The proposer is an atypical subsystem in that, unlike most of them, it is not primarily driven by
-the `Overseer`, but instead by the `sp_consensus::Environment` and `sp_consensus::Proposer` traits
+the `Overseer`, but instead by the `tp_consensus::Environment` and `tp_consensus::Proposer` traits
 from Substrate. It doesn't make much sense to diagram this flow because it's very linear:
 
 - Substrate creates a `Proposer` from the `ProposerFactory` once per upcoming block, using the `parent_header: Header`.

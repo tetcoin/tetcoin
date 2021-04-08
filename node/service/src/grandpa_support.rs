@@ -1,24 +1,24 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Polkadot-specific GRANDPA integration utilities.
+//! Tetcoin-specific GRANDPA integration utilities.
 
 #[cfg(feature = "full-node")]
-use polkadot_primitives::v1::Hash;
-use sp_runtime::traits::{Block as BlockT, NumberFor};
+use tetcoin_primitives::v1::Hash;
+use tp_runtime::traits::{Block as BlockT, NumberFor};
 
 /// A custom GRANDPA voting rule that "pauses" voting (i.e. keeps voting for the
 /// same last finalized block) after a given block at height `N` has been
@@ -29,7 +29,7 @@ pub(crate) struct PauseAfterBlockFor<N>(pub(crate) N, pub(crate) N);
 impl<Block, B> grandpa::VotingRule<Block, B> for PauseAfterBlockFor<NumberFor<Block>>
 where
 	Block: BlockT,
-	B: sp_blockchain::HeaderBackend<Block>,
+	B: tp_blockchain::HeaderBackend<Block>,
 {
 	fn restrict_vote(
 		&self,
@@ -38,8 +38,8 @@ where
 		best_target: &Block::Header,
 		current_target: &Block::Header,
 	) -> Option<(Block::Hash, NumberFor<Block>)> {
-		use sp_runtime::generic::BlockId;
-		use sp_runtime::traits::Header as _;
+		use tp_runtime::generic::BlockId;
+		use tp_runtime::traits::Header as _;
 
 		// walk backwards until we find the target block
 		let find_target = |target_number: NumberFor<Block>, current_header: &Block::Header| {
@@ -98,10 +98,10 @@ where
 #[cfg(feature = "full-node")]
 pub(crate) fn kusama_hard_forks() -> Vec<(
 	grandpa_primitives::SetId,
-	(Hash, polkadot_primitives::v1::BlockNumber),
+	(Hash, tetcoin_primitives::v1::BlockNumber),
 	grandpa_primitives::AuthorityList,
 )> {
-	use sp_core::crypto::Ss58Codec;
+	use tet_core::crypto::Ss58Codec;
 	use std::str::FromStr;
 
 	let forks = vec![
@@ -234,12 +234,12 @@ pub(crate) fn kusama_hard_forks() -> Vec<(
 #[cfg(test)]
 mod tests {
 	use grandpa::VotingRule;
-	use polkadot_test_client::{
-		TestClientBuilder, TestClientBuilderExt, DefaultTestClientBuilderExt, InitPolkadotBlockBuilder,
+	use tetcoin_test_client::{
+		TestClientBuilder, TestClientBuilderExt, DefaultTestClientBuilderExt, InitTetcoinBlockBuilder,
 		ClientBlockImportExt,
 	};
-	use sp_blockchain::HeaderBackend;
-	use sp_runtime::{generic::BlockId, traits::Header};
+	use tp_blockchain::HeaderBackend;
+	use tp_runtime::{generic::BlockId, traits::Header};
 	use consensus_common::BlockOrigin;
 	use std::sync::Arc;
 
@@ -254,7 +254,7 @@ mod tests {
 
 			move |n| {
 				for _ in 0..n {
-					let block = client.init_polkadot_block_builder().build().unwrap().block;
+					let block = client.init_tetcoin_block_builder().build().unwrap().block;
 					client.import(BlockOrigin::Own, block).unwrap();
 				}
 			}

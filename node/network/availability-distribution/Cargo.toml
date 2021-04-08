@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-availability-distribution"
+name = "tetcoin-availability-distribution"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -9,21 +9,21 @@ futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
 parity-scale-codec = { version = "2.0.0", features = ["std"]  }
-polkadot-primitives = { path = "../../../primitives" }
-polkadot-erasure-coding = { path = "../../../erasure-coding" }
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-node-network-protocol = { path = "../../network/protocol" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util" }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master", features = ["std"]  }
-sp-keystore = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-erasure-coding = { path = "../../../erasure-coding" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-node-network-protocol = { path = "../../network/protocol" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", features = ["std"]  }
+tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 thiserror = "1.0.23"
 
 [dev-dependencies]
-polkadot-subsystem-testhelpers = { package = "polkadot-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master", features = ["std"] }
-sp-application-crypto = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-tracing = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-keystore = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", features = ["std"] }
+tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 assert_matches = "1.4.0"
 maplit = "1.0"

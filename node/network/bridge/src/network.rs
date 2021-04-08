@@ -1,18 +1,18 @@
 // Copyright 2020-2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use std::pin::Pin;
 use std::sync::Arc;
@@ -23,12 +23,12 @@ use futures::stream::BoxStream;
 
 use parity_scale_codec::Encode;
 
-use sc_network::Event as NetworkEvent;
+use tc_network::Event as NetworkEvent;
 
 use super::LOG_TARGET;
-use polkadot_node_network_protocol::{peer_set::PeerSet, PeerId, ReputationChange};
-use polkadot_primitives::v1::{Block, Hash};
-use polkadot_subsystem::{SubsystemError, SubsystemResult};
+use tetcoin_node_network_protocol::{peer_set::PeerSet, PeerId, ReputationChange};
+use tetcoin_primitives::v1::{Block, Hash};
+use tetcoin_subsystem::{SubsystemError, SubsystemResult};
 
 /// Send a message to the network.
 ///
@@ -89,7 +89,7 @@ pub enum NetworkAction {
 ///
 pub trait Network: Send + 'static {
 	/// Get a stream of all events occurring on the network. This may include events unrelated
-	/// to the Polkadot protocol - the user of this function should filter only for events related
+	/// to the Tetcoin protocol - the user of this function should filter only for events related
 	/// to the [`VALIDATION_PROTOCOL_NAME`](VALIDATION_PROTOCOL_NAME)
 	/// or [`COLLATION_PROTOCOL_NAME`](COLLATION_PROTOCOL_NAME)
 	fn event_stream(&mut self) -> BoxStream<'static, NetworkEvent>;
@@ -129,9 +129,9 @@ pub trait Network: Send + 'static {
 	}
 }
 
-impl Network for Arc<sc_network::NetworkService<Block, Hash>> {
+impl Network for Arc<tc_network::NetworkService<Block, Hash>> {
 	fn event_stream(&mut self) -> BoxStream<'static, NetworkEvent> {
-		sc_network::NetworkService::event_stream(self, "polkadot-network-bridge").boxed()
+		tc_network::NetworkService::event_stream(self, "tetcoin-network-bridge").boxed()
 	}
 
 	#[tracing::instrument(level = "trace", skip(self), fields(subsystem = LOG_TARGET))]
@@ -141,7 +141,7 @@ impl Network for Arc<sc_network::NetworkService<Block, Hash>> {
 		use futures::task::{Context, Poll};
 
 		// wrapper around a NetworkService to make it act like a sink.
-		struct ActionSink<'b>(&'b sc_network::NetworkService<Block, Hash>);
+		struct ActionSink<'b>(&'b tc_network::NetworkService<Block, Hash>);
 
 		impl<'b> Sink<NetworkAction> for ActionSink<'b> {
 			type Error = SubsystemError;

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Rococo runtime for v1 parachains.
 
@@ -20,9 +20,9 @@
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
 #![recursion_limit = "256"]
 
-use pallet_transaction_payment::CurrencyAdapter;
-use sp_std::prelude::*;
-use sp_std::collections::btree_map::BTreeMap;
+use noble_transaction_payment::CurrencyAdapter;
+use tetcore_std::prelude::*;
+use tetcore_std::collections::btree_map::BTreeMap;
 use parity_scale_codec::Encode;
 use primitives::v1::{
 	AccountId, AccountIndex, Balance, BlockNumber, Hash, Nonce, Signature, Moment,
@@ -38,10 +38,10 @@ use runtime_parachains::{
 	self,
 	runtime_api_impl::v1 as runtime_api_impl,
 };
-use frame_support::{
+use fabric_support::{
 	parameter_types, construct_runtime, debug, traits::{KeyOwnerProofSystem, Filter, EnsureOrigin}, weights::Weight,
 };
-use sp_runtime::{
+use tp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	ApplyExtrinsicResult, KeyTypeId, Perbill,
 	transaction_validity::{TransactionValidity, TransactionSource, TransactionPriority},
@@ -50,17 +50,17 @@ use sp_runtime::{
 		Extrinsic as ExtrinsicT, SaturatedConversion, Verify,
 	},
 };
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+use noble_im_online::sr25519::AuthorityId as ImOnlineId;
 use authority_discovery_primitives::AuthorityId as AuthorityDiscoveryId;
 #[cfg(any(feature = "std", test))]
-use sp_version::NativeVersion;
-use sp_version::RuntimeVersion;
-use pallet_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
-use pallet_grandpa::{AuthorityId as GrandpaId, fg_primitives};
-use sp_core::OpaqueMetadata;
-use sp_staking::SessionIndex;
-use pallet_session::historical as session_historical;
-use frame_system::{EnsureRoot, EnsureOneOf, EnsureSigned};
+use tp_version::NativeVersion;
+use tp_version::RuntimeVersion;
+use noble_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
+use noble_grandpa::{AuthorityId as GrandpaId, fg_primitives};
+use tet_core::OpaqueMetadata;
+use tp_staking::SessionIndex;
+use noble_session::historical as session_historical;
+use fabric_system::{EnsureRoot, EnsureOneOf, EnsureSigned};
 use runtime_common::{paras_sudo_wrapper, paras_registrar};
 
 use runtime_parachains::origin as parachains_origin;
@@ -75,9 +75,9 @@ use runtime_parachains::ump as parachains_ump;
 use runtime_parachains::hrmp as parachains_hrmp;
 use runtime_parachains::scheduler as parachains_scheduler;
 
-pub use pallet_balances::Call as BalancesCall;
+pub use noble_balances::Call as BalancesCall;
 
-use polkadot_parachain::primitives::Id as ParaId;
+use tetcoin_parachain::primitives::Id as ParaId;
 use xcm::v0::{MultiLocation, NetworkId};
 use xcm_executor::traits::IsConcrete;
 use xcm_builder::{
@@ -105,7 +105,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	#[cfg(not(feature = "disable-runtime-api"))]
 	apis: RUNTIME_API_VERSIONS,
 	#[cfg(feature = "disable-runtime-api")]
-	apis: sp_version::create_apis_vec![[]],
+	apis: tp_version::create_apis_vec![[]],
 	transaction_version: 0,
 };
 
@@ -119,7 +119,7 @@ pub fn native_version() -> NativeVersion {
 }
 
 /// The address format for describing accounts.
-pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
+pub type Address = tp_runtime::MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.
@@ -130,13 +130,13 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-	frame_system::CheckSpecVersion<Runtime>,
-	frame_system::CheckTxVersion<Runtime>,
-	frame_system::CheckGenesis<Runtime>,
-	frame_system::CheckMortality<Runtime>,
-	frame_system::CheckNonce<Runtime>,
-	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	fabric_system::CheckSpecVersion<Runtime>,
+	fabric_system::CheckTxVersion<Runtime>,
+	fabric_system::CheckGenesis<Runtime>,
+	fabric_system::CheckMortality<Runtime>,
+	fabric_system::CheckNonce<Runtime>,
+	fabric_system::CheckWeight<Runtime>,
+	noble_transaction_payment::ChargeTransactionPayment<Runtime>,
 );
 
 /// Unchecked extrinsic type as expected by this runtime.
@@ -144,7 +144,7 @@ pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signatu
 /// Extrinsic type that has already been checked.
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Nonce, Call>;
 /// Executive: handles dispatch to the various modules.
-pub type Executive = frame_executive::Executive<Runtime, Block, frame_system::ChainContext<Runtime>, Runtime, AllModules>;
+pub type Executive = fabric_executive::Executive<Runtime, Block, fabric_system::ChainContext<Runtime>, Runtime, AllModules>;
 /// The payload being signed in transactions.
 pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 
@@ -165,24 +165,24 @@ construct_runtime! {
 		NodeBlock = primitives::v1::Block,
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
-		System: frame_system::{Module, Call, Storage, Config, Event<T>},
+		System: fabric_system::{Module, Call, Storage, Config, Event<T>},
 
 		// Must be before session.
-		Babe: pallet_babe::{Module, Call, Storage, Config, Inherent, ValidateUnsigned},
+		Babe: noble_babe::{Module, Call, Storage, Config, Inherent, ValidateUnsigned},
 
-		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
-		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>},
-		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Module, Storage},
+		Timestamp: noble_timestamp::{Module, Call, Storage, Inherent},
+		Indices: noble_indices::{Module, Call, Storage, Config<T>, Event<T>},
+		Balances: noble_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: noble_transaction_payment::{Module, Storage},
 
 		// Consensus support.
-		Authorship: pallet_authorship::{Module, Call, Storage},
-		Offences: pallet_offences::{Module, Call, Storage, Event},
+		Authorship: noble_authorship::{Module, Call, Storage},
+		Offences: noble_offences::{Module, Call, Storage, Event},
 		Historical: session_historical::{Module},
-		Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
-		Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event, ValidateUnsigned},
-		ImOnline: pallet_im_online::{Module, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		AuthorityDiscovery: pallet_authority_discovery::{Module, Call, Config},
+		Session: noble_session::{Module, Call, Storage, Event, Config<T>},
+		Grandpa: noble_grandpa::{Module, Call, Storage, Config, Event, ValidateUnsigned},
+		ImOnline: noble_im_online::{Module, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		AuthorityDiscovery: noble_authority_discovery::{Module, Call, Config},
 
 		// Parachains modules.
 		ParachainsOrigin: parachains_origin::{Module, Origin},
@@ -201,7 +201,7 @@ construct_runtime! {
 		ParasSudoWrapper: paras_sudo_wrapper::{Module, Call},
 
 		// Sudo
-		Sudo: pallet_sudo::{Module, Call, Storage, Event<T>, Config<T>},
+		Sudo: noble_sudo::{Module, Call, Storage, Event<T>, Config<T>},
 
 		// Propose parachain pallet.
 		ProposeParachain: propose_parachain::{Module, Call, Storage, Event<T>},
@@ -220,7 +220,7 @@ parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 }
 
-impl frame_system::Config for Runtime {
+impl fabric_system::Config for Runtime {
 	type BaseCallFilter = BaseFilter;
 	type BlockWeights = BlockWeights;
 	type BlockLength = BlockLength;
@@ -238,7 +238,7 @@ impl frame_system::Config for Runtime {
 	type BlockHashCount = BlockHashCount;
 	type Version = Version;
 	type PalletInfo = PalletInfo;
-	type AccountData = pallet_balances::AccountData<Balance>;
+	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
 	type SystemWeightInfo = ();
@@ -255,16 +255,16 @@ parameter_types! {
 
 /// Submits a transaction with the node's public and signature type. Adheres to the signed extension
 /// format of the chain.
-impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
+impl<LocalCall> fabric_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
 	Call: From<LocalCall>,
 {
-	fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+	fn create_transaction<C: fabric_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
 		call: Call,
 		public: <Signature as Verify>::Signer,
 		account: AccountId,
-		nonce: <Runtime as frame_system::Config>::Index,
+		nonce: <Runtime as fabric_system::Config>::Index,
 	) -> Option<(Call, <UncheckedExtrinsic as ExtrinsicT>::SignaturePayload)> {
-		use sp_runtime::traits::StaticLookup;
+		use tp_runtime::traits::StaticLookup;
 		// take the biggest period possible.
 		let period = BlockHashCount::get()
 			.checked_next_power_of_two()
@@ -278,13 +278,13 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			.saturating_sub(1);
 		let tip = 0;
 		let extra: SignedExtra = (
-			frame_system::CheckSpecVersion::<Runtime>::new(),
-			frame_system::CheckTxVersion::<Runtime>::new(),
-			frame_system::CheckGenesis::<Runtime>::new(),
-			frame_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
-			frame_system::CheckNonce::<Runtime>::from(nonce),
-			frame_system::CheckWeight::<Runtime>::new(),
-			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+			fabric_system::CheckSpecVersion::<Runtime>::new(),
+			fabric_system::CheckTxVersion::<Runtime>::new(),
+			fabric_system::CheckGenesis::<Runtime>::new(),
+			fabric_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
+			fabric_system::CheckNonce::<Runtime>::from(nonce),
+			fabric_system::CheckWeight::<Runtime>::new(),
+			noble_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
 		);
 		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
 			debug::warn!("Unable to create signed payload: {:?}", e);
@@ -293,23 +293,23 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			C::sign(payload, public)
 		})?;
 		let (call, extra, _) = raw_payload.deconstruct();
-		let address = <Runtime as frame_system::Config>::Lookup::unlookup(account);
+		let address = <Runtime as fabric_system::Config>::Lookup::unlookup(account);
 		Some((call, (address, signature, extra)))
 	}
 }
 
-impl frame_system::offchain::SigningTypes for Runtime {
+impl fabric_system::offchain::SigningTypes for Runtime {
 	type Public = <Signature as Verify>::Signer;
 	type Signature = Signature;
 }
 
 /// Special `FullIdentificationOf` implementation that is returning for every input `Some(Default::default())`.
 pub struct FullIdentificationOf;
-impl sp_runtime::traits::Convert<AccountId, Option<()>> for FullIdentificationOf {
+impl tp_runtime::traits::Convert<AccountId, Option<()>> for FullIdentificationOf {
 	fn convert(_: AccountId) -> Option<()> { Some(Default::default()) }
 }
 
-impl pallet_session::historical::Config for Runtime {
+impl noble_session::historical::Config for Runtime {
 	type FullIdentification = ();
 	type FullIdentificationOf = FullIdentificationOf;
 }
@@ -323,7 +323,7 @@ parameter_types! {
 	pub const ImOnlineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
-impl pallet_im_online::Config for Runtime {
+impl noble_im_online::Config for Runtime {
 	type AuthorityId = ImOnlineId;
 	type Event = Event;
 	type ReportUnresponsiveness = Offences;
@@ -337,7 +337,7 @@ parameter_types! {
 	pub const MaxLocks: u32 = 50;
 }
 
-impl pallet_balances::Config for Runtime {
+impl noble_balances::Config for Runtime {
 	type Balance = Balance;
 	type DustRemoval = ();
 	type Event = Event;
@@ -347,7 +347,7 @@ impl pallet_balances::Config for Runtime {
 	type WeightInfo = ();
 }
 
-impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime where
+impl<C> fabric_system::offchain::SendTransactionTypes<C> for Runtime where
 	Call: From<C>,
 {
 	type OverarchingCall = Call;
@@ -364,19 +364,19 @@ parameter_types! {
 	pub OffencesWeightSoftLimit: Weight = Perbill::from_percent(60) * BlockWeights::get().max_block;
 }
 
-impl pallet_offences::Config for Runtime {
+impl noble_offences::Config for Runtime {
 	type Event = Event;
-	type IdentificationTuple = pallet_session::historical::IdentificationTuple<Self>;
+	type IdentificationTuple = noble_session::historical::IdentificationTuple<Self>;
 	type OnOffenceHandler = ();
 	type WeightSoftLimit = OffencesWeightSoftLimit;
 }
 
-impl pallet_authority_discovery::Config for Runtime {}
+impl noble_authority_discovery::Config for Runtime {}
 
 parameter_types! {
 	pub const MinimumPeriod: u64 = SLOT_DURATION / 2;
 }
-impl pallet_timestamp::Config for Runtime {
+impl noble_timestamp::Config for Runtime {
 	type Moment = u64;
 	type OnTimestampSet = Babe;
 	type MinimumPeriod = MinimumPeriod;
@@ -387,7 +387,7 @@ parameter_types! {
 	pub const TransactionByteFee: Balance = 10 * MILLICENTS;
 }
 
-impl pallet_transaction_payment::Config for Runtime {
+impl noble_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ToAuthor<Runtime>>;
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = WeightToFee;
@@ -400,17 +400,17 @@ parameter_types! {
 
 /// Special `ValidatorIdOf` implementation that is just returning the input as result.
 pub struct ValidatorIdOf;
-impl sp_runtime::traits::Convert<AccountId, Option<AccountId>> for ValidatorIdOf {
+impl tp_runtime::traits::Convert<AccountId, Option<AccountId>> for ValidatorIdOf {
 	fn convert(a: AccountId) -> Option<AccountId> { Some(a) }
 }
 
-impl pallet_session::Config for Runtime {
+impl noble_session::Config for Runtime {
 	type Event = Event;
 	type ValidatorId = AccountId;
 	type ValidatorIdOf = ValidatorIdOf;
 	type ShouldEndSession = Babe;
 	type NextSessionRotation = Babe;
-	type SessionManager = pallet_session::historical::NoteHistoricalRoot<Self, ProposeParachain>;
+	type SessionManager = noble_session::historical::NoteHistoricalRoot<Self, ProposeParachain>;
 	type SessionHandler = <SessionKeys as OpaqueKeys>::KeyTypeIdProviders;
 	type Keys = SessionKeys;
 	type DisabledValidatorsThreshold = DisabledValidatorsThreshold;
@@ -421,27 +421,27 @@ parameter_types! {
 	pub const ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
 }
 
-impl pallet_babe::Config for Runtime {
+impl noble_babe::Config for Runtime {
 	type EpochDuration = EpochDurationInBlocks;
 	type ExpectedBlockTime = ExpectedBlockTime;
 
 	// session module is the trigger
-	type EpochChangeTrigger = pallet_babe::ExternalTrigger;
+	type EpochChangeTrigger = noble_babe::ExternalTrigger;
 
 	type KeyOwnerProofSystem = Historical;
 
 	type KeyOwnerProof = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::Proof;
 
 	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::IdentificationTuple;
 
 	type HandleEquivocation =
-		pallet_babe::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
+		noble_babe::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
 
 	type WeightInfo = ();
 }
@@ -450,7 +450,7 @@ parameter_types! {
 	pub const IndexDeposit: Balance = 1 * DOLLARS;
 }
 
-impl pallet_indices::Config for Runtime {
+impl noble_indices::Config for Runtime {
 	type AccountIndex = AccountIndex;
 	type Currency = Balances;
 	type Deposit = IndexDeposit;
@@ -462,7 +462,7 @@ parameter_types! {
 	pub const AttestationPeriod: BlockNumber = 50;
 }
 
-impl pallet_grandpa::Config for Runtime {
+impl noble_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 
@@ -476,7 +476,7 @@ impl pallet_grandpa::Config for Runtime {
 		GrandpaId,
 	)>>::IdentificationTuple;
 
-	type HandleEquivocation = pallet_grandpa::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
+	type HandleEquivocation = noble_grandpa::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
 
 	type WeightInfo = ();
 }
@@ -485,9 +485,9 @@ parameter_types! {
 	pub const UncleGenerations: u32 = 0;
 }
 
-// TODO: substrate#2986 implement this properly
-impl pallet_authorship::Config for Runtime {
-	type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Babe>;
+// TODO: tetcore#2986 implement this properly
+impl noble_authorship::Config for Runtime {
+	type FindAuthor = noble_session::FindAccountFromAuthorIndex<Self, Babe>;
 	type UncleGenerations = UncleGenerations;
 	type FilterUncle = ();
 	type EventHandler = ImOnline;
@@ -515,7 +515,7 @@ impl parachains_paras::Config for Runtime {
 
 parameter_types! {
 	pub const RocLocation: MultiLocation = MultiLocation::Null;
-	pub const RococoNetwork: NetworkId = NetworkId::Polkadot;
+	pub const RococoNetwork: NetworkId = NetworkId::Tetcoin;
 	pub const Ancestry: MultiLocation = MultiLocation::Null;
 }
 
@@ -583,7 +583,7 @@ impl paras_registrar::Config for Runtime {
 	type Origin = Origin;
 }
 
-impl pallet_sudo::Config for Runtime {
+impl noble_sudo::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 }
@@ -624,8 +624,8 @@ impl propose_parachain::Config for Runtime {
 }
 
 #[cfg(not(feature = "disable-runtime-api"))]
-sp_api::impl_runtime_apis! {
-	impl sp_api::Core<Block> for Runtime {
+tp_api::impl_runtime_apis! {
+	impl tp_api::Core<Block> for Runtime {
 		fn version() -> RuntimeVersion {
 			VERSION
 		}
@@ -639,7 +639,7 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_api::Metadata<Block> for Runtime {
+	impl tp_api::Metadata<Block> for Runtime {
 		fn metadata() -> OpaqueMetadata {
 			Runtime::metadata().into()
 		}
@@ -763,7 +763,7 @@ sp_api::impl_runtime_apis! {
 		fn submit_report_equivocation_unsigned_extrinsic(
 			equivocation_proof: fg_primitives::EquivocationProof<
 				<Block as BlockT>::Hash,
-				sp_runtime::traits::NumberFor<Block>,
+				tp_runtime::traits::NumberFor<Block>,
 			>,
 			key_owner_proof: fg_primitives::OpaqueKeyOwnershipProof,
 		) -> Option<()> {
@@ -793,7 +793,7 @@ sp_api::impl_runtime_apis! {
 			// probability of a slot being empty), is done in accordance to the
 			// slot duration and expected target block time, for safely
 			// resisting network delays of maximum two seconds.
-			// <https://research.web3.foundation/en/latest/polkadot/BABE/Babe/#6-practical-results>
+			// <https://research.web3.foundation/en/latest/tetcoin/BABE/Babe/#6-practical-results>
 			babe_primitives::BabeGenesisConfiguration {
 				slot_duration: Babe::slot_duration(),
 				epoch_length: EpochDurationInBlocks::get().into(),
@@ -846,25 +846,25 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_session::SessionKeys<Block> for Runtime {
+	impl tp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			SessionKeys::generate(seed)
 		}
 
 		fn decode_session_keys(
 			encoded: Vec<u8>,
-		) -> Option<Vec<(Vec<u8>, sp_core::crypto::KeyTypeId)>> {
+		) -> Option<Vec<(Vec<u8>, tet_core::crypto::KeyTypeId)>> {
 			SessionKeys::decode_into_raw_public_keys(&encoded)
 		}
 	}
 
-	impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
+	impl fabric_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
 		fn account_nonce(account: AccountId) -> Nonce {
 			System::account_nonce(account)
 		}
 	}
 
-	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
+	impl noble_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
 		Block,
 		Balance,
 	> for Runtime {

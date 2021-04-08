@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Implements the Chain API Subsystem
 //!
@@ -30,16 +30,16 @@
 #![deny(unused_crate_dependencies, unused_results)]
 #![warn(missing_docs)]
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	FromOverseer, OverseerSignal,
 	SpawnedSubsystem, Subsystem, SubsystemResult, SubsystemError, SubsystemContext,
 	messages::ChainApiMessage,
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	metrics::{self, prometheus},
 };
-use polkadot_primitives::v1::{Block, BlockId};
-use sp_blockchain::HeaderBackend;
+use tetcoin_primitives::v1::{Block, BlockId};
+use tp_blockchain::HeaderBackend;
 use std::sync::Arc;
 
 use futures::prelude::*;
@@ -278,10 +278,10 @@ mod tests {
 	use std::collections::BTreeMap;
 	use futures::{future::BoxFuture, channel::oneshot};
 
-	use polkadot_primitives::v1::{Hash, BlockNumber, BlockId, Header};
-	use polkadot_node_subsystem_test_helpers::{make_subsystem_context, TestSubsystemContextHandle};
-	use sp_blockchain::Info as BlockInfo;
-	use sp_core::testing::TaskExecutor;
+	use tetcoin_primitives::v1::{Hash, BlockNumber, BlockId, Header};
+	use tetcoin_node_subsystem_test_helpers::{make_subsystem_context, TestSubsystemContextHandle};
+	use tp_blockchain::Info as BlockInfo;
+	use tet_core::testing::TaskExecutor;
 
 	#[derive(Clone)]
 	struct TestClient {
@@ -366,17 +366,17 @@ mod tests {
 				number_leaves: 0,
 			}
 		}
-		fn number(&self, hash: Hash) -> sp_blockchain::Result<Option<BlockNumber>> {
+		fn number(&self, hash: Hash) -> tp_blockchain::Result<Option<BlockNumber>> {
 			Ok(self.blocks.get(&hash).copied())
 		}
-		fn hash(&self, number: BlockNumber) -> sp_blockchain::Result<Option<Hash>> {
+		fn hash(&self, number: BlockNumber) -> tp_blockchain::Result<Option<Hash>> {
 			Ok(self.finalized_blocks.get(&number).copied())
 		}
-		fn header(&self, id: BlockId) -> sp_blockchain::Result<Option<Header>> {
+		fn header(&self, id: BlockId) -> tp_blockchain::Result<Option<Header>> {
 			match id {
 				// for error path testing
 				BlockId::Hash(hash) if hash.is_zero()  => {
-					Err(sp_blockchain::Error::Backend("Zero hashes are illegal!".into()))
+					Err(tp_blockchain::Error::Backend("Zero hashes are illegal!".into()))
 				}
 				BlockId::Hash(hash) => {
 					Ok(self.headers.get(&hash).cloned())
@@ -384,7 +384,7 @@ mod tests {
 				_ => unreachable!(),
 			}
 		}
-		fn status(&self, _id: BlockId) -> sp_blockchain::Result<sp_blockchain::BlockStatus> {
+		fn status(&self, _id: BlockId) -> tp_blockchain::Result<tp_blockchain::BlockStatus> {
 			unimplemented!()
 		}
 	}

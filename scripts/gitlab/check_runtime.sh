@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Check for any changes in any runtime directories (e.g., ^runtime/polkadot) as
+# Check for any changes in any runtime directories (e.g., ^runtime/tetcoin) as
 # well as directories common to all runtimes (e.g., ^runtime/common). If there
 # are no changes, check if the Substrate git SHA in Cargo.lock has been
 # changed. If so, pull the repo and verify if {spec,impl}_versions have been
@@ -19,7 +19,7 @@ set -e # fail on any error
 #shellcheck source=lib.sh
 . "$(dirname "${0}")/lib.sh"
 
-SUBSTRATE_REPO="https://github.com/paritytech/substrate"
+SUBSTRATE_REPO="https://github.com/tetcoin/tetcore"
 SUBSTRATE_REPO_CARGO="git\+${SUBSTRATE_REPO}"
 SUBSTRATE_VERSIONS_FILE="bin/node/runtime/src/lib.rs"
 
@@ -39,7 +39,7 @@ git fetch --depth="${GIT_DEPTH:-100}" origin master
 
 runtimes=(
   "kusama"
-  "polkadot"
+  "tetcoin"
   "westend"
 )
 
@@ -59,7 +59,7 @@ if ! git diff --name-only "refs/tags/${LATEST_TAG}...${CI_COMMIT_SHA}" \
   | grep -E -q -e "$runtime_regex"
 then
   boldprint "no changes to any runtime source code detected"
-  # continue checking if Cargo.lock was updated with a new substrate reference
+  # continue checking if Cargo.lock was updated with a new tetcore reference
   # and if that change includes a {spec|impl}_version update.
 
   SUBSTRATE_REFS_CHANGED="$(
@@ -67,14 +67,14 @@ then
     | sed -n -r "s~^[\+\-]source = \"${SUBSTRATE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | wc -l
   )"
 
-  # check Cargo.lock for substrate ref change
+  # check Cargo.lock for tetcore ref change
   case "${SUBSTRATE_REFS_CHANGED}" in
     (0)
-      boldprint "substrate refs not changed in Cargo.lock"
+      boldprint "tetcore refs not changed in Cargo.lock"
       exit 0
       ;;
     (2)
-      boldprint "substrate refs updated since ${LATEST_TAG}"
+      boldprint "tetcore refs updated since ${LATEST_TAG}"
       ;;
     (*)
       boldprint "check unsupported: more than one commit targeted in repo ${SUBSTRATE_REPO_CARGO}"
@@ -94,12 +94,12 @@ then
 
 
   boldcat <<EOT
-previous substrate commit id ${SUBSTRATE_PREV_REF}
-new substrate commit id      ${SUBSTRATE_NEW_REF}
+previous tetcore commit id ${SUBSTRATE_PREV_REF}
+new tetcore commit id      ${SUBSTRATE_NEW_REF}
 EOT
 
-  # okay so now need to fetch the substrate repository and check whether spec_version or impl_version has changed there
-  SUBSTRATE_CLONE_DIR="$(mktemp -t -d substrate-XXXXXX)"
+  # okay so now need to fetch the tetcore repository and check whether spec_version or impl_version has changed there
+  SUBSTRATE_CLONE_DIR="$(mktemp -t -d tetcore-XXXXXX)"
   trap 'rm -rf "${SUBSTRATE_CLONE_DIR}"' INT QUIT TERM ABRT EXIT
 
   git clone --depth="${GIT_DEPTH:-100}" --no-tags \
@@ -111,18 +111,18 @@ EOT
     | grep -E '^[\+\-][[:space:]]+(spec|impl)_version: +([0-9]+),$' || exit 0
 
   boldcat <<EOT
-spec_version or or impl_version have changed in substrate after updating Cargo.lock
-please make sure versions are bumped in polkadot accordingly
+spec_version or or impl_version have changed in tetcore after updating Cargo.lock
+please make sure versions are bumped in tetcoin accordingly
 EOT
 
-  # Now check if any of the substrate changes have been tagged D2-breaksapi
+  # Now check if any of the tetcore changes have been tagged D2-breaksapi
   (
     cd "${SUBSTRATE_CLONE_DIR}"
-    substrate_changes="$(sanitised_git_logs "${SUBSTRATE_PREV_REF}" "${SUBSTRATE_NEW_REF}")"
-    echo "$substrate_changes" | while read -r line; do
+    tetcore_changes="$(sanitised_git_logs "${SUBSTRATE_PREV_REF}" "${SUBSTRATE_NEW_REF}")"
+    echo "$tetcore_changes" | while read -r line; do
       pr_id=$(echo "$line" | sed -E 's/.*#([0-9]+)\)$/\1/')
 
-      if has_label 'paritytech/substrate' "$pr_id" 'D2-breaksapi'; then
+      if has_label 'tetcoin/tetcore' "$pr_id" 'D2-breaksapi'; then
         boldprint "Substrate change labelled with D2-breaksapi. Labelling..."
         github_label "D2-breaksapi"
         exit 1
@@ -216,7 +216,7 @@ done
 
 if [ ${#failed_runtime_checks} -gt 0 ]; then
   boldcat <<EOT
-wasm source files changed or the spec version in the substrate reference in
+wasm source files changed or the spec version in the tetcore reference in
 the Cargo.lock but not the spec/impl version. If changes made do not alter
 logic, just bump 'impl_version'. If they do change logic, bump
 'spec_version'.

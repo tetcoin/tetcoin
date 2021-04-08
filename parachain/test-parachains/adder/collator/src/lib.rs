@@ -1,26 +1,26 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Collator for the adder test parachain.
 
 use futures_timer::Delay;
-use polkadot_node_primitives::{Collation, CollatorFn};
-use polkadot_primitives::v1::{CollatorId, CollatorPair, PoV};
+use tetcoin_node_primitives::{Collation, CollatorFn};
+use tetcoin_primitives::v1::{CollatorId, CollatorPair, PoV};
 use parity_scale_codec::{Encode, Decode};
-use sp_core::Pair;
+use tet_core::Pair;
 use std::{
 	collections::HashMap,
 	sync::{Arc, Mutex},
@@ -195,8 +195,8 @@ mod tests {
 	use super::*;
 
 	use futures::executor::block_on;
-	use polkadot_parachain::{primitives::ValidationParams, wasm_executor::IsolationStrategy};
-	use polkadot_primitives::v1::PersistedValidationData;
+	use tetcoin_parachain::{primitives::ValidationParams, wasm_executor::IsolationStrategy};
+	use tetcoin_primitives::v1::PersistedValidationData;
 
 	#[test]
 	fn collator_works() {
@@ -225,7 +225,7 @@ mod tests {
 	}
 
 	fn validate_collation(collator: &Collator, parent_head: HeadData, collation: Collation) {
-		let ret = polkadot_parachain::wasm_executor::validate_candidate(
+		let ret = tetcoin_parachain::wasm_executor::validate_candidate(
 			collator.validation_code(),
 			ValidationParams {
 				parent_head: parent_head.encode().into(),
@@ -236,7 +236,7 @@ mod tests {
 				dmq_mqc_head: Default::default(),
 			},
 			&IsolationStrategy::InProcess,
-			sp_core::testing::TaskExecutor::new(),
+			tet_core::testing::TaskExecutor::new(),
 		)
 		.unwrap();
 

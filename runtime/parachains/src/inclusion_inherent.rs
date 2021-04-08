@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Provides glue code over the scheduler and inclusion modules, and accepting
 //! one inherent per block that can include new para candidates and bitfields.
@@ -21,17 +21,17 @@
 //! as it has no initialization logic and its finalization logic depends only on the details of
 //! this module.
 
-use sp_std::prelude::*;
+use tetcore_std::prelude::*;
 use primitives::v1::{
 	BackedCandidate, SignedAvailabilityBitfields, INCLUSION_INHERENT_IDENTIFIER, Header,
 };
-use frame_support::{
+use fabric_support::{
 	decl_error, decl_module, decl_storage, ensure,
 	dispatch::DispatchResultWithPostInfo,
 	weights::{DispatchClass, Weight},
 	traits::Get,
 };
-use frame_system::ensure_none;
+use fabric_system::ensure_none;
 use crate::{
 	inclusion,
 	scheduler::{self, FreedReason},
@@ -71,7 +71,7 @@ decl_error! {
 
 decl_module! {
 	/// The inclusion inherent module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		fn on_initialize() -> Weight {
@@ -99,7 +99,7 @@ decl_module! {
 			ensure!(!<Included>::exists(), Error::<T>::TooManyInclusionInherents);
 
 			// Check that the submitted parent header indeed corresponds to the previous block hash.
-			let parent_hash = <frame_system::Module<T>>::parent_hash();
+			let parent_hash = <fabric_system::Module<T>>::parent_hash();
 			ensure!(
 				parent_header.hash().as_ref() == parent_hash.as_ref(),
 				Error::<T>::InvalidParentHeader,
@@ -127,7 +127,7 @@ decl_module! {
 			<scheduler::Module<T>>::clear();
 			<scheduler::Module<T>>::schedule(
 				freed,
-				<frame_system::Module<T>>::block_number(),
+				<fabric_system::Module<T>>::block_number(),
 			);
 
 			let backed_candidates = limit_backed_candidates::<T>(backed_candidates);
@@ -173,7 +173,7 @@ fn limit_backed_candidates<T: Config>(
 ) -> Vec<BackedCandidate<T::Hash>> {
 	// the weight of the inclusion inherent is already included in the current block weight,
 	// so our operation is simple: if the block is currently overloaded, make this intrinsic smaller
-	if frame_system::Module::<T>::block_weight().total() > <T as frame_system::Config>::BlockWeights::get().max_block {
+	if fabric_system::Module::<T>::block_weight().total() > <T as fabric_system::Config>::BlockWeights::get().max_block {
 		Vec::new()
 	} else {
 		backed_candidates
@@ -195,17 +195,17 @@ impl<T: Config> ProvideInherent for Module<T> {
 					Header,
 				)| {
 					// Sanity check: session changes can invalidate an inherent, and we _really_ don't want that to happen.
-					// See github.com/paritytech/polkadot/issues/1327
+					// See github.com/tetcoin/tetcoin/issues/1327
 					let (signed_bitfields, backed_candidates) = match Self::inclusion(
-						frame_system::RawOrigin::None.into(),
+						fabric_system::RawOrigin::None.into(),
 						signed_bitfields.clone(),
 						backed_candidates.clone(),
 						parent_header.clone(),
 					) {
 						Ok(_) => (signed_bitfields, backed_candidates),
 						Err(err) => {
-							frame_support::debug::RuntimeLogger::init();
-							frame_support::debug::warn!(
+							fabric_support::debug::RuntimeLogger::init();
+							fabric_support::debug::warn!(
 								target: "runtime_inclusion_inherent",
 								"dropping signed_bitfields and backed_candidates because they produced \
 								an invalid inclusion inherent: {:?}",
@@ -244,7 +244,7 @@ mod tests {
 		fn does_not_truncate_on_exactly_full_block() {
 			new_test_ext(MockGenesisConfig::default()).execute_with(|| {
 				let backed_candidates = vec![BackedCandidate::default()];
-				let max_block_weight = <Test as frame_system::Config>::BlockWeights::get().max_block;
+				let max_block_weight = <Test as fabric_system::Config>::BlockWeights::get().max_block;
 				// if the consumed resources are precisely equal to the max block weight, we do not truncate.
 				System::set_block_consumed_resources(max_block_weight, 0);
 				assert_eq!(limit_backed_candidates::<Test>(backed_candidates).len(), 1);
@@ -255,7 +255,7 @@ mod tests {
 		fn truncates_on_over_full_block() {
 			new_test_ext(MockGenesisConfig::default()).execute_with(|| {
 				let backed_candidates = vec![BackedCandidate::default()];
-				let max_block_weight = <Test as frame_system::Config>::BlockWeights::get().max_block;
+				let max_block_weight = <Test as fabric_system::Config>::BlockWeights::get().max_block;
 				// if the consumed resources are precisely equal to the max block weight, we do not truncate.
 				System::set_block_consumed_resources(max_block_weight + 1, 0);
 				assert_eq!(limit_backed_candidates::<Test>(backed_candidates).len(), 0);
@@ -266,7 +266,7 @@ mod tests {
 		fn all_backed_candidates_get_truncated() {
 			new_test_ext(MockGenesisConfig::default()).execute_with(|| {
 				let backed_candidates = vec![BackedCandidate::default(); 10];
-				let max_block_weight = <Test as frame_system::Config>::BlockWeights::get().max_block;
+				let max_block_weight = <Test as fabric_system::Config>::BlockWeights::get().max_block;
 				// if the consumed resources are precisely equal to the max block weight, we do not truncate.
 				System::set_block_consumed_resources(max_block_weight + 1, 0);
 				assert_eq!(limit_backed_candidates::<Test>(backed_candidates).len(), 0);
@@ -281,7 +281,7 @@ mod tests {
 			new_test_ext, System, GenesisConfig as MockGenesisConfig, Test
 		};
 
-		use frame_support::traits::UnfilteredDispatchable;
+		use fabric_support::traits::UnfilteredDispatchable;
 
 		fn default_header() -> Header {
 			Header {
@@ -313,7 +313,7 @@ mod tests {
 					(backed_candidates.len() as Weight * BACKED_CANDIDATE_WEIGHT);
 
 				// we've used half the block weight; there's plenty of margin
-				let max_block_weight = <Test as frame_system::Config>::BlockWeights::get().max_block;
+				let max_block_weight = <Test as fabric_system::Config>::BlockWeights::get().max_block;
 				let used_block_weight = max_block_weight / 2;
 				System::set_block_consumed_resources(used_block_weight, 0);
 
@@ -353,7 +353,7 @@ mod tests {
 				let expected_weight = MINIMAL_INCLUSION_INHERENT_WEIGHT;
 
 				// oops, looks like this mandatory call pushed the block weight over the limit
-				let max_block_weight = <Test as frame_system::Config>::BlockWeights::get().max_block;
+				let max_block_weight = <Test as fabric_system::Config>::BlockWeights::get().max_block;
 				let used_block_weight = max_block_weight + 1;
 				System::set_block_consumed_resources(used_block_weight, 0);
 

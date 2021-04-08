@@ -1,29 +1,29 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! A simple wrapper allowing `Sudo` to call into `paras` routines.
 
 use crate::WASM_MAGIC;
-use sp_std::prelude::*;
-use frame_support::{
+use tetcore_std::prelude::*;
+use fabric_support::{
 	decl_error, decl_module, ensure,
 	dispatch::DispatchResult,
 	weights::DispatchClass,
 };
-use frame_system::ensure_root;
+use fabric_system::ensure_root;
 use runtime_parachains::{
 	configuration, dmp, ump, hrmp, paras::{self, ParaGenesisArgs},
 };
@@ -50,7 +50,7 @@ decl_error! {
 
 decl_module! {
 	/// A sudo wrapper to call into v1 paras module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		/// Schedule a para to be initialized at the start of the next session.

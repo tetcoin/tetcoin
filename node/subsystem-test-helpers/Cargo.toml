@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-subsystem-test-helpers"
+name = "tetcoin-node-subsystem-test-helpers"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -14,14 +14,14 @@ tracing-futures = "0.2.4"
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 parking_lot = "0.11.1"
 pin-project = "1.0.4"
-polkadot-node-primitives = { path = "../primitives" }
-polkadot-node-subsystem = { path = "../subsystem" }
-polkadot-node-subsystem-util = { path = "../subsystem-util" }
-polkadot-primitives = { path = "../../primitives" }
-polkadot-statement-table = { path = "../../statement-table" }
-sc-network = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcoin-node-primitives = { path = "../primitives" }
+tetcoin-node-subsystem = { path = "../subsystem" }
+tetcoin-node-subsystem-util = { path = "../subsystem-util" }
+tetcoin-primitives = { path = "../../primitives" }
+tetcoin-statement-table = { path = "../../statement-table" }
+tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 smallvec = "1.6.1"
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
 [dev-dependencies]
-polkadot-overseer = { path = "../overseer" }
+tetcoin-overseer = { path = "../overseer" }

@@ -33,12 +33,12 @@ async fn start_inner(chain_spec: String, log_directives: String) -> Result<Clien
 	set_console_error_panic_hook();
 	let telemetry_worker = init_logging_and_telemetry(&log_directives)?;
 
-	let chain_spec = service::PolkadotChainSpec::from_json_bytes(chain_spec.as_bytes().to_vec())
+	let chain_spec = service::TetcoinChainSpec::from_json_bytes(chain_spec.as_bytes().to_vec())
 		.map_err(|e| format!("{:?}", e))?;
 	let telemetry_handle = telemetry_worker.handle();
 	let config = browser_configuration(chain_spec, Some(telemetry_handle)).await?;
 
-	info!("Polkadot browser node");
+	info!("Tetcoin browser node");
 	info!("  version {}", config.impl_version);
 	info!("  by Parity Technologies, 2017-2020");
 	info!("📋 Chain specification: {}", config.chain_spec.name());

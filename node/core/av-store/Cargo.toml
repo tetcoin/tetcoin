@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-core-av-store"
+name = "tetcoin-node-core-av-store"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -15,13 +15,13 @@ tracing-futures = "0.2.4"
 bitvec = "0.20.1"
 
 parity-scale-codec = { version = "2.0.0", features = ["derive"] }
-erasure = { package = "polkadot-erasure-coding", path = "../../../erasure-coding" }
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util" }
-polkadot-overseer = { path = "../../overseer" }
-polkadot-primitives = { path = "../../../primitives" }
+erasure = { package = "tetcoin-erasure-coding", path = "../../../erasure-coding" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
+tetcoin-overseer = { path = "../../overseer" }
+tetcoin-primitives = { path = "../../../primitives" }
 
-sc-service = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 [dev-dependencies]
 log = "0.4.13"
@@ -29,8 +29,8 @@ env_logger = "0.8.2"
 assert_matches = "1.4.0"
 kvdb-memorydb = "0.9.0"
 
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-polkadot-node-subsystem-util = { path = "../../subsystem-util" }
-polkadot-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
+tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 parking_lot = "0.11.1"

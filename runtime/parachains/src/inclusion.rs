@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The inclusion module is responsible for inclusion and availability of scheduled parachains
 //! and parathreads.
@@ -20,21 +20,21 @@
 //! It is responsible for carrying candidates from being backable to being backed, and then from backed
 //! to included.
 
-use sp_std::prelude::*;
+use tetcore_std::prelude::*;
 use primitives::v1::{
 	ValidatorId, CandidateCommitments, CandidateDescriptor, ValidatorIndex, Id as ParaId,
 	AvailabilityBitfield as AvailabilityBitfield, SignedAvailabilityBitfields, SigningContext,
 	BackedCandidate, CoreIndex, GroupIndex, CommittedCandidateReceipt,
 	CandidateReceipt, HeadData, CandidateHash, Hash,
 };
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error, decl_event, ensure, debug,
 	dispatch::DispatchResult, IterableStorageMap, weights::Weight, traits::Get,
 };
 use parity_scale_codec::{Encode, Decode};
 use bitvec::{order::Lsb0 as BitOrderLsb0, vec::BitVec};
-use sp_staking::SessionIndex;
-use sp_runtime::{DispatchError, traits::{One, Saturating}};
+use tp_staking::SessionIndex;
+use tp_runtime::{DispatchError, traits::{One, Saturating}};
 
 use crate::{configuration, paras, dmp, ump, hrmp, scheduler::CoreAssignment};
 
@@ -52,7 +52,7 @@ pub struct AvailabilityBitfieldRecord<N> {
 
 /// A backed candidate pending availability.
 // TODO: split this type and change this to hold a plain `CandidateReceipt`.
-// https://github.com/paritytech/polkadot/issues/1357
+// https://github.com/tetcoin/tetcoin/issues/1357
 #[derive(Encode, Decode, PartialEq)]
 #[cfg_attr(test, derive(Debug))]
 pub struct CandidatePendingAvailability<H, N> {
@@ -110,14 +110,14 @@ pub trait RewardValidators {
 }
 
 pub trait Config:
-	frame_system::Config
+	fabric_system::Config
 	+ paras::Config
 	+ dmp::Config
 	+ ump::Config
 	+ hrmp::Config
 	+ configuration::Config
 {
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 	type RewardValidators: RewardValidators;
 }
 
@@ -195,7 +195,7 @@ decl_error! {
 }
 
 decl_event! {
-	pub enum Event<T> where <T as frame_system::Config>::Hash {
+	pub enum Event<T> where <T as fabric_system::Config>::Hash {
 		/// A candidate was backed. [candidate, head_data]
 		CandidateBacked(CandidateReceipt<Hash>, HeadData),
 		/// A candidate was included. [candidate, head_data]
@@ -208,7 +208,7 @@ decl_event! {
 decl_module! {
 	/// The parachain-candidate inclusion module.
 	pub struct Module<T: Config>
-		for enum Call where origin: <T as frame_system::Config>::Origin
+		for enum Call where origin: <T as fabric_system::Config>::Origin
 	{
 		type Error = Error<T>;
 
@@ -235,7 +235,7 @@ impl<T: Config> Module<T> {
 		for _ in <PendingAvailability<T>>::drain() { }
 		for _ in <AvailabilityBitfields<T>>::drain() { }
 
-		Validators::set(notification.validators.clone()); // substrate forces us to clone, stupidly.
+		Validators::set(notification.validators.clone()); // tetcore forces us to clone, stupidly.
 		CurrentSessionIndex::set(notification.session_index);
 	}
 
@@ -272,7 +272,7 @@ impl<T: Config> Module<T> {
 			let mut last_index = None;
 
 			let signing_context = SigningContext {
-				parent_hash: <frame_system::Module<T>>::parent_hash(),
+				parent_hash: <fabric_system::Module<T>>::parent_hash(),
 				session_index,
 			};
 
@@ -308,7 +308,7 @@ impl<T: Config> Module<T> {
 			}
 		}
 
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		for signed_bitfield in signed_bitfields {
 			for (bit_idx, _)
 				in signed_bitfield.payload().0.iter().enumerate().filter(|(_, is_av)| **is_av)
@@ -377,7 +377,7 @@ impl<T: Config> Module<T> {
 		}
 
 		// TODO: pass available candidates onwards to validity module once implemented.
-		// https://github.com/paritytech/polkadot/issues/1251
+		// https://github.com/tetcoin/tetcoin/issues/1251
 
 		Ok(freed_cores)
 	}
@@ -400,11 +400,11 @@ impl<T: Config> Module<T> {
 		}
 
 		let validators = Validators::get();
-		let parent_hash = <frame_system::Module<T>>::parent_hash();
+		let parent_hash = <fabric_system::Module<T>>::parent_hash();
 
 		// At the moment we assume (and in fact enforce, below) that the relay-parent is always one
 		// before of the block where we include a candidate (i.e. this code path).
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		let relay_parent_number = now - One::one();
 		let check_cx = CandidateCheckContext::<T>::new(now, relay_parent_number);
 
@@ -465,7 +465,7 @@ impl<T: Config> Module<T> {
 						&candidate.candidate.commitments.horizontal_messages,
 					)
 				{
-					frame_support::debug::RuntimeLogger::init();
+					fabric_support::debug::RuntimeLogger::init();
 					log::debug!(
 						target: LOG_TARGET,
 						"Validation outputs checking during inclusion of a candidate {} for parachain `{}` failed: {:?}",
@@ -620,7 +620,7 @@ impl<T: Config> Module<T> {
 	) -> bool {
 		// This function is meant to be called from the runtime APIs against the relay-parent, hence
 		// `relay_parent_number` is equal to `now`.
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		let relay_parent_number = now;
 		let check_cx = CandidateCheckContext::<T>::new(now, relay_parent_number);
 
@@ -633,7 +633,7 @@ impl<T: Config> Module<T> {
 			T::BlockNumber::from(validation_outputs.hrmp_watermark),
 			&validation_outputs.horizontal_messages,
 		) {
-			frame_support::debug::RuntimeLogger::init();
+			fabric_support::debug::RuntimeLogger::init();
 			log::debug!(
 				target: LOG_TARGET,
 				"Validation outputs checking for parachain `{}` failed: {:?}",
@@ -901,10 +901,10 @@ mod tests {
 		SignedAvailabilityBitfield, CompactStatement as Statement, ValidityAttestation, CollatorId,
 		CandidateCommitments, SignedStatement, CandidateDescriptor, ValidationCode,
 	};
-	use sp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use tp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 	use keyring::Sr25519Keyring;
-	use sc_keystore::LocalKeystore;
+	use tc_keystore::LocalKeystore;
 	use crate::mock::{
 		new_test_ext, Configuration, Paras, System, Inclusion,
 		GenesisConfig as MockGenesisConfig, Test,
@@ -1127,7 +1127,7 @@ mod tests {
 	}
 
 	fn make_vdata_hash(para_id: ParaId) -> Option<Hash> {
-		let relay_parent_number = <frame_system::Module<Test>>::block_number() - 1;
+		let relay_parent_number = <fabric_system::Module<Test>>::block_number() - 1;
 		let persisted_validation_data
 			= crate::util::make_persisted_validation_data::<Test>(
 				para_id,

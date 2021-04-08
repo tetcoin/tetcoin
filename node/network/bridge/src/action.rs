@@ -1,32 +1,32 @@
 // Copyright 2020-2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 //
 
 use futures::channel::mpsc;
 
 use parity_scale_codec::Decode;
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	peer_set::PeerSet, v1 as protocol_v1, PeerId, ReputationChange,
 };
-use polkadot_primitives::v1::{AuthorityDiscoveryId, BlockNumber};
-use polkadot_subsystem::messages::NetworkBridgeMessage;
-use polkadot_subsystem::{ActiveLeavesUpdate, FromOverseer, OverseerSignal};
-use sc_network::Event as NetworkEvent;
+use tetcoin_primitives::v1::{AuthorityDiscoveryId, BlockNumber};
+use tetcoin_subsystem::messages::NetworkBridgeMessage;
+use tetcoin_subsystem::{ActiveLeavesUpdate, FromOverseer, OverseerSignal};
+use tc_network::Event as NetworkEvent;
 
-use polkadot_node_network_protocol::ObservedRole;
+use tetcoin_node_network_protocol::ObservedRole;
 
 use super::{WireMessage, LOG_TARGET, MALFORMED_MESSAGE_COST};
 
@@ -80,9 +80,9 @@ pub(crate) enum Action {
 	Nop,
 }
 
-impl From<polkadot_subsystem::SubsystemResult<FromOverseer<NetworkBridgeMessage>>> for Action {
+impl From<tetcoin_subsystem::SubsystemResult<FromOverseer<NetworkBridgeMessage>>> for Action {
 	#[tracing::instrument(level = "trace", fields(subsystem = LOG_TARGET))]
-	fn from(res: polkadot_subsystem::SubsystemResult<FromOverseer<NetworkBridgeMessage>>) -> Self {
+	fn from(res: tetcoin_subsystem::SubsystemResult<FromOverseer<NetworkBridgeMessage>>) -> Self {
 		match res {
 			Ok(FromOverseer::Signal(OverseerSignal::ActiveLeaves(active_leaves))) => {
 				Action::ActiveLeaves(active_leaves)

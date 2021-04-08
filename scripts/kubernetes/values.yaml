@@ -1,20 +1,20 @@
 # set tag manually --set image.tag=latest
 image:
-  repository: parity/polkadot
+  repository: parity/tetcoin
   tag: latest
   pullPolicy: Always
-  basepath: /polkadot
-  executable: /usr/local/bin/polkadot
+  basepath: /tetcoin
+  executable: /usr/local/bin/tetcoin
 
 
-# if set to true a service account for polkadot will be created
+# if set to true a service account for tetcoin will be created
 rbac:
   enable: true
-  name: polkadot
+  name: tetcoin
 
 # name of the statefulset
-app: polkadot
-node_group: polkadot
+app: tetcoin
+node_group: tetcoin
 listen_node_port: true
 
 nodes:

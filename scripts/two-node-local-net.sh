@@ -6,9 +6,9 @@
 
 set -e
 
-# chainspec defaults to polkadot-local if no arguments are passed to this script;
+# chainspec defaults to tetcoin-local if no arguments are passed to this script;
 # if arguments are passed in, the first is the chainspec
-chainspec="${1:-polkadot-local}"
+chainspec="${1:-tetcoin-local}"
 
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 # shellcheck disable=SC1090
@@ -23,10 +23,10 @@ last_modified_rust_file=$(
   cut -d' ' -f2-
 )
 
-polkadot="target/release/polkadot"
+tetcoin="target/release/tetcoin"
 
-# ensure the polkadot binary exists and is up to date
-if [ ! -x "$polkadot" ] || [ "$polkadot" -ot "$last_modified_rust_file" ]; then
+# ensure the tetcoin binary exists and is up to date
+if [ ! -x "$tetcoin" ] || [ "$tetcoin" -ot "$last_modified_rust_file" ]; then
   cargo build --release --features real-overseer
 fi
 
@@ -51,7 +51,7 @@ function flagify() {
 # start a node and label its output
 #
 # This function takes a single argument, the node name.
-# The name must be one of those which can be passed to the polkadot binary, in un-flagged form,
+# The name must be one of those which can be passed to the tetcoin binary, in un-flagged form,
 # one of:
 #   alice, bob, charlie, dave, eve, ferdie, one, two
 function run_node() {
@@ -73,7 +73,7 @@ function run_node() {
   node_offset=$((node_offset+1))
 
   # start the node
-  "$polkadot" \
+  "$tetcoin" \
     --chain "$chainspec" \
     --tmp \
     --port "$port" \

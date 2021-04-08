@@ -1,30 +1,30 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Module to handle parathread/parachain registration and related fund management.
 //! In essence this is a simple wrapper around `paras`.
 
 use crate::WASM_MAGIC;
-use sp_std::{prelude::*, result};
-use frame_support::{
+use tetcore_std::{prelude::*, result};
+use fabric_support::{
 	decl_storage, decl_module, decl_error, ensure,
 	dispatch::DispatchResult,
 	traits::{Get, Currency, ReservableCurrency},
 };
-use frame_system::{self, ensure_root, ensure_signed};
+use fabric_system::{self, ensure_root, ensure_signed};
 use primitives::v1::{
 	Id as ParaId, ValidationCode, HeadData,
 };
@@ -39,14 +39,14 @@ use runtime_parachains::{
 };
 
 type BalanceOf<T> =
-	<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+	<<T as Config>::Currency as Currency<<T as fabric_system::Config>::AccountId>>::Balance;
 
 pub trait Config: paras::Config + dmp::Config + ump::Config + hrmp::Config {
 	/// The aggregated origin type must support the `parachains` origin. We require that we can
 	/// infallibly convert between this origin and the system origin, but in reality, they're the
 	/// same type, we just can't express that to the Rust type system without writing a `where`
 	/// clause everywhere.
-	type Origin: From<<Self as frame_system::Config>::Origin>
+	type Origin: From<<Self as fabric_system::Config>::Origin>
 		+ Into<result::Result<Origin, <Self as Config>::Origin>>;
 
 	/// The system's currency for parathread payment.
@@ -92,7 +92,7 @@ decl_error! {
 }
 
 decl_module! {
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		/// Register a parathread with given code for immediate use.
@@ -195,13 +195,13 @@ decl_module! {
 
 				Paras::mutate(id, |i|
 					Paras::mutate(other, |j|
-						sp_std::mem::swap(i, j)
+						tetcore_std::mem::swap(i, j)
 					)
 				);
 
 				<Debtors<T>>::mutate(id, |i|
 					<Debtors<T>>::mutate(other, |j|
-						sp_std::mem::swap(i, j)
+						tetcore_std::mem::swap(i, j)
 					)
 				);
 			} else {
@@ -254,9 +254,9 @@ impl<T: Config> Module<T> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use sp_io::TestExternalities;
-	use sp_core::H256;
-	use sp_runtime::{
+	use tp_io::TestExternalities;
+	use tet_core::H256;
+	use tp_runtime::{
 		traits::{
 			BlakeTwo256, IdentityLookup, Extrinsic as ExtrinsicT,
 		}, testing::{UintAuthorityId, TestXt}, Perbill, curve::PiecewiseLinear,
@@ -264,14 +264,14 @@ mod tests {
 	use primitives::v1::{
 		Balance, BlockNumber, Header, Signature, AuthorityDiscoveryId, ValidatorIndex,
 	};
-	use frame_system::limits;
-	use frame_support::{
+	use fabric_system::limits;
+	use fabric_support::{
 		traits::{Randomness, OnInitialize, OnFinalize},
 		impl_outer_origin, impl_outer_dispatch, assert_ok, parameter_types,
 	};
 	use keyring::Sr25519Keyring;
 	use runtime_parachains::{initializer, configuration, inclusion, session_info, scheduler, dmp, ump, hrmp};
-	use pallet_session::OneSessionHandler;
+	use noble_session::OneSessionHandler;
 
 	impl_outer_origin! {
 		pub enum Origin for Test {
@@ -287,7 +287,7 @@ mod tests {
 		}
 	}
 
-	pallet_staking_reward_curve::build! {
+	noble_staking_reward_curve::build! {
 		const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
 			min_inflation: 0_025_000,
 			max_inflation: 0_100_000,
@@ -309,7 +309,7 @@ mod tests {
 			limits::BlockLength::max_with_normal_ratio(4 * 1024 * 1024, NORMAL_RATIO);
 	}
 
-	impl frame_system::Config for Test {
+	impl fabric_system::Config for Test {
 		type BaseCallFilter = ();
 		type Origin = Origin;
 		type Call = Call;
@@ -327,14 +327,14 @@ mod tests {
 		type BlockLength = BlockLength;
 		type Version = ();
 		type PalletInfo = ();
-		type AccountData = pallet_balances::AccountData<u128>;
+		type AccountData = noble_balances::AccountData<u128>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
 		type SystemWeightInfo = ();
 		type SS58Prefix = ();
 	}
 
-	impl<C> frame_system::offchain::SendTransactionTypes<C> for Test where
+	impl<C> fabric_system::offchain::SendTransactionTypes<C> for Test where
 		Call: From<C>,
 	{
 		type OverarchingCall = Call;
@@ -345,7 +345,7 @@ mod tests {
 		pub const ExistentialDeposit: Balance = 1;
 	}
 
-	impl pallet_balances::Config for Test {
+	impl noble_balances::Config for Test {
 		type Balance = u128;
 		type DustRemoval = ();
 		type Event = ();
@@ -356,11 +356,11 @@ mod tests {
 	}
 
 	parameter_types!{
-		pub const SlashDeferDuration: pallet_staking::EraIndex = 7;
+		pub const SlashDeferDuration: noble_staking::EraIndex = 7;
 		pub const AttestationPeriod: BlockNumber = 100;
 		pub const MinimumPeriod: u64 = 3;
-		pub const SessionsPerEra: sp_staking::SessionIndex = 6;
-		pub const BondingDuration: pallet_staking::EraIndex = 28;
+		pub const SessionsPerEra: tp_staking::SessionIndex = 6;
+		pub const BondingDuration: noble_staking::EraIndex = 28;
 		pub const MaxNominatorRewardedPerValidator: u32 = 64;
 	}
 
@@ -371,12 +371,12 @@ mod tests {
 		pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	}
 
-	impl pallet_session::Config for Test {
+	impl noble_session::Config for Test {
 		type SessionManager = ();
 		type Keys = UintAuthorityId;
-		type ShouldEndSession = pallet_session::PeriodicSessions<Period, Offset>;
-		type NextSessionRotation = pallet_session::PeriodicSessions<Period, Offset>;
-		type SessionHandler = pallet_session::TestSessionHandler;
+		type ShouldEndSession = noble_session::PeriodicSessions<Period, Offset>;
+		type NextSessionRotation = noble_session::PeriodicSessions<Period, Offset>;
+		type SessionHandler = noble_session::TestSessionHandler;
 		type Event = ();
 		type ValidatorId = u64;
 		type ValidatorIdOf = ();
@@ -395,19 +395,19 @@ mod tests {
 		pub const StakingUnsignedPriority: u64 = u64::max_value() / 2;
 	}
 
-	impl pallet_staking::Config for Test {
+	impl noble_staking::Config for Test {
 		type RewardRemainder = ();
-		type CurrencyToVote = frame_support::traits::SaturatingCurrencyToVote;
+		type CurrencyToVote = fabric_support::traits::SaturatingCurrencyToVote;
 		type Event = ();
-		type Currency = pallet_balances::Module<Test>;
+		type Currency = noble_balances::Module<Test>;
 		type Slash = ();
 		type Reward = ();
 		type SessionsPerEra = SessionsPerEra;
 		type BondingDuration = BondingDuration;
 		type SlashDeferDuration = SlashDeferDuration;
-		type SlashCancelOrigin = frame_system::EnsureRoot<Self::AccountId>;
+		type SlashCancelOrigin = fabric_system::EnsureRoot<Self::AccountId>;
 		type SessionInterface = Self;
-		type UnixTime = pallet_timestamp::Module<Test>;
+		type UnixTime = noble_timestamp::Module<Test>;
 		type RewardCurve = RewardCurve;
 		type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
 		type NextNewSession = Session;
@@ -420,7 +420,7 @@ mod tests {
 		type WeightInfo = ();
 	}
 
-	impl pallet_timestamp::Config for Test {
+	impl noble_timestamp::Config for Test {
 		type Moment = u64;
 		type OnTimestampSet = ();
 		type MinimumPeriod = MinimumPeriod;
@@ -435,27 +435,27 @@ mod tests {
 
 	impl hrmp::Config for Test {
 		type Origin = Origin;
-		type Currency = pallet_balances::Module<Test>;
+		type Currency = noble_balances::Module<Test>;
 	}
 
-	impl pallet_session::historical::Config for Test {
-		type FullIdentification = pallet_staking::Exposure<u64, Balance>;
-		type FullIdentificationOf = pallet_staking::ExposureOf<Self>;
+	impl noble_session::historical::Config for Test {
+		type FullIdentification = noble_staking::Exposure<u64, Balance>;
+		type FullIdentificationOf = noble_staking::ExposureOf<Self>;
 	}
 
 	// This is needed for a custom `AccountId` type which is `u64` in testing here.
 	pub mod test_keys {
-		use sp_core::crypto::KeyTypeId;
+		use tet_core::crypto::KeyTypeId;
 
 		pub const KEY_TYPE: KeyTypeId = KeyTypeId(*b"test");
 
 		mod app {
 			use super::super::Inclusion;
-			use sp_application_crypto::{app_crypto, sr25519};
+			use tp_application_crypto::{app_crypto, sr25519};
 
 			app_crypto!(sr25519, super::KEY_TYPE);
 
-			impl sp_runtime::traits::IdentifyAccount for Public {
+			impl tp_runtime::traits::IdentifyAccount for Public {
 				type AccountId = u64;
 
 				fn into_account(self) -> Self::AccountId {
@@ -510,20 +510,20 @@ mod tests {
 
 	type Extrinsic = TestXt<Call, ()>;
 
-	impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Test where
+	impl<LocalCall> fabric_system::offchain::CreateSignedTransaction<LocalCall> for Test where
 		Call: From<LocalCall>,
 	{
-		fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+		fn create_transaction<C: fabric_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
 			call: Call,
 			_public: test_keys::ReporterId,
-			_account: <Test as frame_system::Config>::AccountId,
-			nonce: <Test as frame_system::Config>::Index,
+			_account: <Test as fabric_system::Config>::AccountId,
+			nonce: <Test as fabric_system::Config>::Index,
 		) -> Option<(Call, <Extrinsic as ExtrinsicT>::SignaturePayload)> {
 			Some((call, (nonce, ())))
 		}
 	}
 
-	impl frame_system::offchain::SigningTypes for Test {
+	impl fabric_system::offchain::SigningTypes for Test {
 		type Public = test_keys::ReporterId;
 		type Signature = Signature;
 	}
@@ -536,21 +536,21 @@ mod tests {
 
 	impl Config for Test {
 		type Origin = Origin;
-		type Currency = pallet_balances::Module<Test>;
+		type Currency = noble_balances::Module<Test>;
 		type ParathreadDeposit = ParathreadDeposit;
 	}
 
-	type Balances = pallet_balances::Module<Test>;
+	type Balances = noble_balances::Module<Test>;
 	type Parachains = paras::Module<Test>;
 	type Inclusion = inclusion::Module<Test>;
-	type System = frame_system::Module<Test>;
+	type System = fabric_system::Module<Test>;
 	type Registrar = Module<Test>;
-	type Session = pallet_session::Module<Test>;
-	type Staking = pallet_staking::Module<Test>;
+	type Session = noble_session::Module<Test>;
+	type Staking = noble_staking::Module<Test>;
 	type Initializer = initializer::Module<Test>;
 
 	fn new_test_ext() -> TestExternalities {
-		let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 
 		let authority_keys = [
 			Sr25519Keyring::Alice,
@@ -565,7 +565,7 @@ mod tests {
 
 		let balances: Vec<_> = (0..authority_keys.len()).map(|i| (i as u64, 10_000_000)).collect();
 
-		pallet_balances::GenesisConfig::<Test> {
+		noble_balances::GenesisConfig::<Test> {
 			balances,
 		}.assimilate_storage(&mut t).unwrap();
 
@@ -574,7 +574,7 @@ mod tests {
 			.map(|(i, _k)| (i as u64, i as u64, UintAuthorityId(i as u64)))
 			.collect();
 
-		pallet_session::GenesisConfig::<Test> {
+		noble_session::GenesisConfig::<Test> {
 			keys: session_keys,
 		}.assimilate_storage(&mut t).unwrap();
 

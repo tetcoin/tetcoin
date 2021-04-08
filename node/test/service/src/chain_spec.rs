@@ -1,45 +1,45 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Chain specifications for the test runtime.
 
-use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
+use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use babe_primitives::AuthorityId as BabeId;
 use grandpa::AuthorityId as GrandpaId;
-use pallet_staking::Forcing;
-use polkadot_primitives::v1::{ValidatorId, AccountId, AssignmentId};
-use polkadot_service::chain_spec::{get_account_id_from_seed, get_from_seed, Extensions};
-use polkadot_test_runtime::constants::currency::DOTS;
-use sc_chain_spec::{ChainSpec, ChainType};
-use sp_core::sr25519;
-use sp_runtime::Perbill;
+use noble_staking::Forcing;
+use tetcoin_primitives::v1::{ValidatorId, AccountId, AssignmentId};
+use tetcoin_service::chain_spec::{get_account_id_from_seed, get_from_seed, Extensions};
+use tetcoin_test_runtime::constants::currency::DOTS;
+use tc_chain_spec::{ChainSpec, ChainType};
+use tet_core::sr25519;
+use tp_runtime::Perbill;
 
 const DEFAULT_PROTOCOL_ID: &str = "dot";
 
-/// The `ChainSpec` parametrized for polkadot test runtime.
-pub type PolkadotChainSpec =
-	service::GenericChainSpec<polkadot_test_runtime::GenesisConfig, Extensions>;
+/// The `ChainSpec` parametrized for tetcoin test runtime.
+pub type TetcoinChainSpec =
+	service::GenericChainSpec<tetcoin_test_runtime::GenesisConfig, Extensions>;
 
 /// Local testnet config (multivalidator Alice + Bob)
-pub fn polkadot_local_testnet_config() -> PolkadotChainSpec {
-	PolkadotChainSpec::from_genesis(
+pub fn tetcoin_local_testnet_config() -> TetcoinChainSpec {
+	TetcoinChainSpec::from_genesis(
 		"Local Testnet",
 		"local_testnet",
 		ChainType::Local,
-		|| polkadot_local_testnet_genesis(),
+		|| tetcoin_local_testnet_genesis(),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
@@ -49,8 +49,8 @@ pub fn polkadot_local_testnet_config() -> PolkadotChainSpec {
 }
 
 /// Local testnet genesis config (multivalidator Alice + Bob)
-pub fn polkadot_local_testnet_genesis() -> polkadot_test_runtime::GenesisConfig {
-	polkadot_testnet_genesis(
+pub fn tetcoin_local_testnet_genesis() -> tetcoin_test_runtime::GenesisConfig {
+	tetcoin_testnet_genesis(
 		vec![
 			get_authority_keys_from_seed("Alice"),
 			get_authority_keys_from_seed("Bob"),
@@ -92,8 +92,8 @@ fn testnet_accounts() -> Vec<AccountId> {
 	]
 }
 
-/// Helper function to create polkadot GenesisConfig for testing
-fn polkadot_testnet_genesis(
+/// Helper function to create tetcoin GenesisConfig for testing
+fn tetcoin_testnet_genesis(
 	initial_authorities: Vec<(
 		AccountId,
 		AccountId,
@@ -105,8 +105,8 @@ fn polkadot_testnet_genesis(
 	)>,
 	root_key: AccountId,
 	endowed_accounts: Option<Vec<AccountId>>,
-) -> polkadot_test_runtime::GenesisConfig {
-	use polkadot_test_runtime as runtime;
+) -> tetcoin_test_runtime::GenesisConfig {
+	use tetcoin_test_runtime as runtime;
 
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
@@ -114,18 +114,18 @@ fn polkadot_testnet_genesis(
 	const STASH: u128 = 100 * DOTS;
 
 	runtime::GenesisConfig {
-		frame_system: Some(runtime::SystemConfig {
+		fabric_system: Some(runtime::SystemConfig {
 			code: runtime::WASM_BINARY.expect("Wasm binary must be built for testing").to_vec(),
 			..Default::default()
 		}),
-		pallet_indices: Some(runtime::IndicesConfig { indices: vec![] }),
-		pallet_balances: Some(runtime::BalancesConfig {
+		noble_indices: Some(runtime::IndicesConfig { indices: vec![] }),
+		noble_balances: Some(runtime::BalancesConfig {
 			balances: endowed_accounts
 				.iter()
 				.map(|k| (k.clone(), ENDOWMENT))
 				.collect(),
 		}),
-		pallet_session: Some(runtime::SessionConfig {
+		noble_session: Some(runtime::SessionConfig {
 			keys: initial_authorities
 				.iter()
 				.map(|x| {
@@ -143,7 +143,7 @@ fn polkadot_testnet_genesis(
 				})
 				.collect::<Vec<_>>(),
 		}),
-		pallet_staking: Some(runtime::StakingConfig {
+		noble_staking: Some(runtime::StakingConfig {
 			minimum_validator_count: 1,
 			validator_count: 2,
 			stakers: initial_authorities
@@ -162,17 +162,17 @@ fn polkadot_testnet_genesis(
 			slash_reward_fraction: Perbill::from_percent(10),
 			..Default::default()
 		}),
-		pallet_babe: Some(Default::default()),
-		pallet_grandpa: Some(Default::default()),
-		pallet_authority_discovery: Some(runtime::AuthorityDiscoveryConfig { keys: vec![] }),
+		noble_babe: Some(Default::default()),
+		noble_grandpa: Some(Default::default()),
+		noble_authority_discovery: Some(runtime::AuthorityDiscoveryConfig { keys: vec![] }),
 		claims: Some(runtime::ClaimsConfig {
 			claims: vec![],
 			vesting: vec![],
 		}),
-		pallet_vesting: Some(runtime::VestingConfig { vesting: vec![] }),
-		pallet_sudo: Some(runtime::SudoConfig { key: root_key }),
+		noble_vesting: Some(runtime::VestingConfig { vesting: vec![] }),
+		noble_sudo: Some(runtime::SudoConfig { key: root_key }),
 		parachains_configuration: Some(runtime::ParachainsConfigurationConfig {
-			config: polkadot_runtime_parachains::configuration::HostConfiguration {
+			config: tetcoin_runtime_parachains::configuration::HostConfiguration {
 				validation_upgrade_frequency: 10u32,
 				validation_upgrade_delay: 5,
 				acceptance_period: 1200,

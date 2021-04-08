@@ -1,35 +1,35 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use log::info;
 use service::{IdentifyVariant, self};
-use sc_cli::{SubstrateCli, RuntimeVersion, Role};
+use tc_cli::{SubstrateCli, RuntimeVersion, Role};
 use crate::cli::{Cli, Subcommand};
 use futures::future::TryFutureExt;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
 	#[error(transparent)]
-	PolkadotService(#[from] service::Error),
+	TetcoinService(#[from] service::Error),
 
 	#[error(transparent)]
-	SubstrateCli(#[from] sc_cli::Error),
+	SubstrateCli(#[from] tc_cli::Error),
 
 	#[error(transparent)]
-	SubstrateService(#[from] sc_service::Error),
+	SubstrateService(#[from] tc_service::Error),
 
 	#[error("Other: {0}")]
 	Other(String),
@@ -51,7 +51,7 @@ fn get_exec_name() -> Option<String> {
 }
 
 impl SubstrateCli for Cli {
-	fn impl_name() -> String { "Parity Polkadot".into() }
+	fn impl_name() -> String { "Parity Tetcoin".into() }
 
 	fn impl_version() -> String { env!("SUBSTRATE_CLI_IMPL_VERSION").into() }
 
@@ -59,28 +59,28 @@ impl SubstrateCli for Cli {
 
 	fn author() -> String { env!("CARGO_PKG_AUTHORS").into() }
 
-	fn support_url() -> String { "https://github.com/paritytech/polkadot/issues/new".into() }
+	fn support_url() -> String { "https://github.com/tetcoin/tetcoin/issues/new".into() }
 
 	fn copyright_start_year() -> i32 { 2017 }
 
-	fn executable_name() -> String { "polkadot".into() }
+	fn executable_name() -> String { "tetcoin".into() }
 
-	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
+	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn tc_service::ChainSpec>, String> {
 		let id = if id == "" {
 			let n = get_exec_name().unwrap_or_default();
-			["polkadot", "kusama", "westend", "rococo"].iter()
+			["tetcoin", "kusama", "westend", "rococo"].iter()
 				.cloned()
 				.find(|&chain| n.starts_with(chain))
-				.unwrap_or("polkadot")
+				.unwrap_or("tetcoin")
 		} else { id };
 		Ok(match id {
-			"polkadot-dev" | "dev" => Box::new(service::chain_spec::polkadot_development_config()?),
-			"polkadot-local" => Box::new(service::chain_spec::polkadot_local_testnet_config()?),
-			"polkadot-staging" => Box::new(service::chain_spec::polkadot_staging_testnet_config()?),
+			"tetcoin-dev" | "dev" => Box::new(service::chain_spec::tetcoin_development_config()?),
+			"tetcoin-local" => Box::new(service::chain_spec::tetcoin_local_testnet_config()?),
+			"tetcoin-staging" => Box::new(service::chain_spec::tetcoin_staging_testnet_config()?),
 			"kusama-dev" => Box::new(service::chain_spec::kusama_development_config()?),
 			"kusama-local" => Box::new(service::chain_spec::kusama_local_testnet_config()?),
 			"kusama-staging" => Box::new(service::chain_spec::kusama_staging_testnet_config()?),
-			"polkadot" => Box::new(service::chain_spec::polkadot_config()?),
+			"tetcoin" => Box::new(service::chain_spec::tetcoin_config()?),
 			"westend" => Box::new(service::chain_spec::westend_config()?),
 			"kusama" => Box::new(service::chain_spec::kusama_config()?),
 			"westend-dev" => Box::new(service::chain_spec::westend_development_config()?),
@@ -105,7 +105,7 @@ impl SubstrateCli for Cli {
 				} else if self.run.force_westend || starts_with("westend") {
 					Box::new(service::WestendChainSpec::from_json_file(path)?)
 				} else {
-					Box::new(service::PolkadotChainSpec::from_json_file(path)?)
+					Box::new(service::TetcoinChainSpec::from_json_file(path)?)
 				}
 			},
 		})
@@ -119,26 +119,26 @@ impl SubstrateCli for Cli {
 		} else if spec.is_rococo() {
 			&service::rococo_runtime::VERSION
 		} else {
-			&service::polkadot_runtime::VERSION
+			&service::tetcoin_runtime::VERSION
 		}
 	}
 }
 
 fn set_default_ss58_version(spec: &Box<dyn service::ChainSpec>) {
-	use sp_core::crypto::Ss58AddressFormat;
+	use tet_core::crypto::Ss58AddressFormat;
 
 	let ss58_version = if spec.is_kusama() {
 		Ss58AddressFormat::KusamaAccount
 	} else if spec.is_westend() {
 		Ss58AddressFormat::SubstrateAccount
 	} else {
-		Ss58AddressFormat::PolkadotAccount
+		Ss58AddressFormat::TetcoinAccount
 	};
 
-	sp_core::crypto::set_default_ss58_version(ss58_version);
+	tet_core::crypto::set_default_ss58_version(ss58_version);
 }
 
-/// Parses polkadot specific CLI arguments and run the service.
+/// Parses tetcoin specific CLI arguments and run the service.
 pub fn run() -> Result<()> {
 	let cli = Cli::from_args();
 
@@ -207,7 +207,7 @@ pub fn run() -> Result<()> {
 
 			Ok(runner.async_run(|mut config| {
 				let (client, _, _, task_manager) = service::new_chain_ops(&mut config, None)
-					.map_err(Error::PolkadotService)?;
+					.map_err(Error::TetcoinService)?;
 				Ok((cmd.run(client, config.database).map_err(Error::SubstrateCli), task_manager))
 			})?)
 		},
@@ -249,15 +249,15 @@ pub fn run() -> Result<()> {
 			})?)
 		},
 		Some(Subcommand::ValidationWorker(cmd)) => {
-			let mut builder = sc_cli::LoggerBuilder::new("");
+			let mut builder = tc_cli::LoggerBuilder::new("");
 			builder.with_colors(false);
 			let _ = builder.init();
 
 			if cfg!(feature = "browser") || cfg!(target_os = "android") {
-				Err(sc_cli::Error::Input("Cannot run validation worker in browser".into()).into())
+				Err(tc_cli::Error::Input("Cannot run validation worker in browser".into()).into())
 			} else {
 				#[cfg(not(any(target_os = "android", feature = "browser")))]
-				polkadot_parachain::wasm_executor::run_worker(&cmd.mem_id)?;
+				tetcoin_parachain::wasm_executor::run_worker(&cmd.mem_id)?;
 				Ok(())
 			}
 		},

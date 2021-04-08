@@ -1,18 +1,18 @@
 // Copyright 2019-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Basic parachain that adds a number as part of its state.
 
@@ -47,7 +47,7 @@ fn terminates_on_timeout() {
 			dmq_mqc_head: Default::default(),
 		},
 		&isolation_strategy,
-		sp_core::testing::TaskExecutor::new(),
+		tet_core::testing::TaskExecutor::new(),
 	);
 	match result {
 		Err(ValidationError::InvalidCandidate(InvalidCandidate::Timeout)) => {},
@@ -76,7 +76,7 @@ fn parallel_execution() {
 			dmq_mqc_head: Default::default(),
 		},
 		&isolation_strategy,
-		sp_core::testing::TaskExecutor::new(),
+		tet_core::testing::TaskExecutor::new(),
 	).ok());
 	let _ = parachain::wasm_executor::validate_candidate(
 		halt::wasm_binary_unwrap(),
@@ -89,7 +89,7 @@ fn parallel_execution() {
 			dmq_mqc_head: Default::default(),
 		},
 		&isolation_strategy_clone,
-		sp_core::testing::TaskExecutor::new(),
+		tet_core::testing::TaskExecutor::new(),
 	);
 	thread.join().unwrap();
 	// total time should be < 2 x EXECUTION_TIMEOUT_SEC

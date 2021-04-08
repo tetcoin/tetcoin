@@ -3,15 +3,15 @@
 set -e
 
 action="$1"
-config_file="/etc/default/polkadot"
+config_file="/etc/default/tetcoin"
 
 if [ "$action" = "configure" ]; then
   # Make user and group
-  getent group polkadot >/dev/null 2>&1 || addgroup --system polkadot
-  getent passwd polkadot >/dev/null 2>&1 ||
-    adduser --system --home /home/polkadot --disabled-password \
-    --ingroup polkadot polkadot
+  getent group tetcoin >/dev/null 2>&1 || addgroup --system tetcoin
+  getent passwd tetcoin >/dev/null 2>&1 ||
+    adduser --system --home /home/tetcoin --disabled-password \
+    --ingroup tetcoin tetcoin
   if [ ! -e "$config_file" ]; then
-    echo 'POLKADOT_CLI_ARGS=""' > /etc/default/polkadot
+    echo 'TETCOIN_CLI_ARGS=""' > /etc/default/tetcoin
   fi
 fi

@@ -31,10 +31,10 @@ jobs:
           push: true
           file: scripts/docker/release.Dockerfile
           tags: |
-            parity/polkadot:latest
-            parity/polkadot:${{ github.event.release.tag_name }}
+            parity/tetcoin:latest
+            parity/tetcoin:${{ github.event.release.tag_name }}
           build-args: |
-            POLKADOT_VERSION=${{ github.event.release.tag_name }}
+            TETCOIN_VERSION=${{ github.event.release.tag_name }}
             VCS_REF=${{ github.ref }}
             BUILD_DATE=${{ github.event.release.published_at }}
           cache-from: type=local,src=/tmp/.buildx-cache

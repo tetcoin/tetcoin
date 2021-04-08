@@ -3,7 +3,7 @@
 #shellcheck source=lib.sh
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/lib.sh"
 
-repo='paritytech/polkadot'
+repo='tetcoin/tetcoin'
 
 ensure_labels() {
   for label in "$@"; do

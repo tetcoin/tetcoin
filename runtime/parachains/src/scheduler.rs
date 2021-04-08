@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The scheduler module for parachains and parathreads.
 //!
@@ -35,18 +35,18 @@
 //! number of groups as availability cores. Validator groups will be assigned to different availability cores
 //! over time.
 
-use sp_std::prelude::*;
-use sp_std::convert::TryInto;
+use tetcore_std::prelude::*;
+use tetcore_std::convert::TryInto;
 use primitives::v1::{
 	Id as ParaId, ValidatorIndex, CoreOccupied, CoreIndex, CollatorId,
 	GroupIndex, ParathreadClaim, ParathreadEntry, GroupRotationInfo, ScheduledCore,
 };
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error,
 	weights::Weight,
 };
 use parity_scale_codec::{Encode, Decode};
-use sp_runtime::traits::{One, Saturating};
+use tp_runtime::traits::{One, Saturating};
 
 use rand::{SeedableRng, seq::SliceRandom};
 use rand_chacha::ChaCha20Rng;
@@ -153,7 +153,7 @@ impl CoreAssignment {
 	}
 }
 
-pub trait Config: frame_system::Config + configuration::Config + paras::Config { }
+pub trait Config: fabric_system::Config + configuration::Config + paras::Config { }
 
 decl_storage! {
 	trait Store for Module<T: Config> as ParaScheduler {
@@ -205,7 +205,7 @@ decl_error! {
 
 decl_module! {
 	/// The scheduler module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 	}
 }
@@ -326,7 +326,7 @@ impl<T: Config> Module<T> {
 		});
 		ParathreadQueue::set(thread_queue);
 
-		let now = <frame_system::Module<T>>::block_number() + One::one();
+		let now = <fabric_system::Module<T>>::block_number() + One::one();
 		<SessionStartBlock<T>>::set(now);
 	}
 
@@ -590,14 +590,14 @@ impl<T: Config> Module<T> {
 	/// https://github.com/rust-lang/rust/issues/73226
 	/// which prevents us from testing the code if using `impl Trait`.
 	pub(crate) fn availability_timeout_predicate() -> Option<Box<dyn Fn(CoreIndex, T::BlockNumber) -> bool>> {
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		let config = <configuration::Module<T>>::config();
 
 		let session_start = <SessionStartBlock<T>>::get();
 		let blocks_since_session_start = now.saturating_sub(session_start);
 		let blocks_since_last_rotation = blocks_since_session_start % config.group_rotation_frequency;
 
-		let absolute_cutoff = sp_std::cmp::max(
+		let absolute_cutoff = tetcore_std::cmp::max(
 			config.chain_availability_period,
 			config.thread_availability_period,
 		);
@@ -736,7 +736,7 @@ mod tests {
 	use super::*;
 
 	use primitives::v1::{BlockNumber, ValidatorId, CollatorId};
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 	use keyring::Sr25519Keyring;
 
 	use crate::mock::{new_test_ext, Configuration, Paras, System, Scheduler, GenesisConfig as MockGenesisConfig};

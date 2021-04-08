@@ -1,15 +1,15 @@
 version: '3'
 services:
-  polkadot:
+  tetcoin:
     build:
       context: .
     ports:
       - "127.0.0.1:30333:30333/tcp"
       - "127.0.0.1:9933:9933/tcp"
-    image: chevdor/polkadot:latest
+    image: chevdor/tetcoin:latest
     volumes:
-      - "polkadot-data:/data"
-    command: polkadot
+      - "tetcoin-data:/data"
+    command: tetcoin
 
 volumes:
-  polkadot-data:
+  tetcoin-data:

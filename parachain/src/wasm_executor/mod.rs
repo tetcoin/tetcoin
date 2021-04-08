@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! WASM re-execution of a parachain candidate.
 //! In the context of relay-chain candidate evaluation, there are some additional
@@ -23,9 +23,9 @@
 use std::{any::{TypeId, Any}, path::PathBuf};
 use crate::primitives::{ValidationParams, ValidationResult};
 use parity_scale_codec::{Decode, Encode};
-use sp_core::{storage::{ChildInfo, TrackedStorageKey}, traits::{CallInWasm, SpawnNamed}};
-use sp_externalities::Extensions;
-use sp_wasm_interface::HostFunctions as _;
+use tet_core::{storage::{ChildInfo, TrackedStorageKey}, traits::{CallInWasm, SpawnNamed}};
+use tp_externalities::Extensions;
+use tp_wasm_interface::HostFunctions as _;
 
 #[cfg(not(any(target_os = "android", target_os = "unknown")))]
 pub use validation_host::{run_worker, ValidationPool, EXECUTION_TIMEOUT_SEC, WORKER_ARGS};
@@ -61,7 +61,7 @@ const MAX_VALIDATION_RESULT_HEADER_MEM: usize = MAX_CODE_MEM + 1024; // 16.001 M
 /// of specially crafted code that take enourmous amounts of time and memory to compile.
 ///
 /// At the same time, since PVF validates self-contained candidates, validation workers don't require
-/// extensive communication with polkadot host, therefore there should be no observable performance penalty
+/// extensive communication with tetcoin host, therefore there should be no observable performance penalty
 /// coming from inter process communication.
 ///
 /// All of the above should give a sense why isolation is crucial for a typical use-case.
@@ -121,7 +121,7 @@ pub enum ValidationError {
 pub enum InvalidCandidate {
 	/// Wasm executor error.
 	#[error("WASM executor error")]
-	WasmExecutor(#[from] sc_executor::error::Error),
+	WasmExecutor(#[from] tc_executor::error::Error),
 	/// Call data is too large.
 	#[error("Validation parameters are {0} bytes, max allowed is {}", MAX_RUNTIME_MEM)]
 	ParamsTooLarge(usize),
@@ -163,16 +163,16 @@ pub enum InternalError {
 /// A cache of executors for different parachain Wasm instances.
 ///
 /// This should be reused across candidate validation instances.
-pub struct ExecutorCache(sc_executor::WasmExecutor);
+pub struct ExecutorCache(tc_executor::WasmExecutor);
 
 impl Default for ExecutorCache {
 	fn default() -> Self {
-		ExecutorCache(sc_executor::WasmExecutor::new(
+		ExecutorCache(tc_executor::WasmExecutor::new(
 			#[cfg(all(feature = "wasmtime", not(any(target_os = "android", target_os = "unknown"))))]
-			sc_executor::WasmExecutionMethod::Compiled,
+			tc_executor::WasmExecutionMethod::Compiled,
 			#[cfg(any(not(feature = "wasmtime"), target_os = "android", target_os = "unknown"))]
-			sc_executor::WasmExecutionMethod::Interpreted,
-			// TODO: Make sure we don't use more than 1GB: https://github.com/paritytech/polkadot/issues/699
+			tc_executor::WasmExecutionMethod::Interpreted,
+			// TODO: Make sure we don't use more than 1GB: https://github.com/tetcoin/tetcoin/issues/699
 			Some(1024),
 			HostFunctions::host_functions(),
 			8
@@ -211,7 +211,7 @@ pub fn validate_candidate(
 }
 
 /// The host functions provided by the wasm executor to the parachain wasm blob.
-type HostFunctions = sp_io::SubstrateHostFunctions;
+type HostFunctions = tp_io::SubstrateHostFunctions;
 
 /// Validate a candidate under the given validation code.
 ///
@@ -225,15 +225,15 @@ pub fn validate_candidate_internal(
 	let executor = &executor.0;
 
 	let mut extensions = Extensions::new();
-	extensions.register(sp_core::traits::TaskExecutorExt::new(spawner));
-	extensions.register(sp_core::traits::CallInWasmExt::new(executor.clone()));
+	extensions.register(tet_core::traits::TaskExecutorExt::new(spawner));
+	extensions.register(tet_core::traits::CallInWasmExt::new(executor.clone()));
 
 	let mut ext = ValidationExternalities(extensions);
 
 	// Expensive, but not more-so than recompiling the wasm module.
-	// And we need this hash to access the `sc_executor` cache.
+	// And we need this hash to access the `tc_executor` cache.
 	let code_hash = {
-		use polkadot_core_primitives::{BlakeTwo256, HashT};
+		use tetcoin_core_primitives::{BlakeTwo256, HashT};
 		BlakeTwo256::hash(validation_code)
 	};
 
@@ -243,7 +243,7 @@ pub fn validate_candidate_internal(
 		"validate_block",
 		encoded_call_data,
 		&mut ext,
-		sp_core::traits::MissingHostFunctions::Allow,
+		tet_core::traits::MissingHostFunctions::Allow,
 	).map_err(|e| ValidationError::InvalidCandidate(e.into()))?;
 
 	ValidationResult::decode(&mut &res[..])
@@ -254,7 +254,7 @@ pub fn validate_candidate_internal(
 /// access to the parachain extension.
 struct ValidationExternalities(Extensions);
 
-impl sp_externalities::Externalities for ValidationExternalities {
+impl tp_externalities::Externalities for ValidationExternalities {
 	fn storage(&self, _: &[u8]) -> Option<Vec<u8>> {
 		panic!("storage: unsupported feature for parachain validation")
 	}
@@ -360,7 +360,7 @@ impl sp_externalities::Externalities for ValidationExternalities {
 	}
 }
 
-impl sp_externalities::ExtensionStore for ValidationExternalities {
+impl tp_externalities::ExtensionStore for ValidationExternalities {
 	fn extension_by_type_id(&mut self, type_id: TypeId) -> Option<&mut dyn Any> {
 		self.0.get_mut(type_id)
 	}
@@ -368,19 +368,19 @@ impl sp_externalities::ExtensionStore for ValidationExternalities {
 	fn register_extension_with_type_id(
 		&mut self,
 		type_id: TypeId,
-		extension: Box<dyn sp_externalities::Extension>,
-	) -> Result<(), sp_externalities::Error> {
+		extension: Box<dyn tp_externalities::Extension>,
+	) -> Result<(), tp_externalities::Error> {
 		self.0.register_with_type_id(type_id, extension)
 	}
 
 	fn deregister_extension_by_type_id(
 		&mut self,
 		type_id: TypeId,
-	) -> Result<(), sp_externalities::Error> {
+	) -> Result<(), tp_externalities::Error> {
 		if self.0.deregister(type_id) {
 			Ok(())
 		} else {
-			Err(sp_externalities::Error::ExtensionIsNotRegistered(type_id))
+			Err(tp_externalities::Error::ExtensionIsNotRegistered(type_id))
 		}
 	}
 }

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Collator Protocol allows collators and validators talk to each other.
 //! This subsystem implements both sides of the collator protocol.
@@ -24,18 +24,18 @@ use std::time::Duration;
 use futures::{channel::oneshot, FutureExt, TryFutureExt};
 use thiserror::Error;
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	Subsystem, SubsystemContext, SubsystemError, SpawnedSubsystem,
 	errors::RuntimeApiError,
 	messages::{
 		AllMessages, CollatorProtocolMessage, NetworkBridgeMessage,
 	},
 };
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	PeerId, ReputationChange as Rep,
 };
-use polkadot_primitives::v1::CollatorId;
-use polkadot_node_subsystem_util::{
+use tetcoin_primitives::v1::CollatorId;
+use tetcoin_node_subsystem_util::{
 	self as util,
 	metrics::prometheus,
 };

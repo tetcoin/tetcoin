@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Implements the Runtime API Subsystem
 //!
@@ -22,7 +22,7 @@
 #![deny(unused_crate_dependencies)]
 #![warn(missing_docs)]
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	Subsystem, SpawnedSubsystem, SubsystemResult, SubsystemContext,
 	FromOverseer, OverseerSignal,
 	messages::{
@@ -30,11 +30,11 @@ use polkadot_subsystem::{
 	},
 	errors::RuntimeApiError,
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_primitives::v1::{Block, BlockId, Hash, ParachainHost};
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_primitives::v1::{Block, BlockId, Hash, ParachainHost};
 
-use sp_api::ProvideRuntimeApi;
-use sp_core::traits::SpawnNamed;
+use tp_api::ProvideRuntimeApi;
+use tet_core::traits::SpawnNamed;
 
 use futures::{prelude::*, stream::FuturesUnordered, channel::oneshot, select};
 use std::{sync::Arc, collections::VecDeque, pin::Pin};
@@ -48,7 +48,7 @@ const LOG_TARGET: &str = "runtime_api";
 const MAX_PARALLEL_REQUESTS: usize = 4;
 
 /// The name of the blocking task that executes a runtime api request.
-const API_REQUEST_TASK_NAME: &str = "polkadot-runtime-api-request";
+const API_REQUEST_TASK_NAME: &str = "tetcoin-runtime-api-request";
 
 /// The `RuntimeApiSubsystem`. See module docs for more details.
 pub struct RuntimeApiSubsystem<Client> {
@@ -405,14 +405,14 @@ impl metrics::Metrics for Metrics {
 mod tests {
 	use super::*;
 
-	use polkadot_primitives::v1::{
+	use tetcoin_primitives::v1::{
 		ValidatorId, ValidatorIndex, GroupRotationInfo, CoreState, PersistedValidationData,
 		Id as ParaId, OccupiedCoreAssumption, SessionIndex, ValidationCode,
 		CommittedCandidateReceipt, CandidateEvent, InboundDownwardMessage,
 		BlockNumber, InboundHrmpMessage, SessionInfo,
 	};
-	use polkadot_node_subsystem_test_helpers as test_helpers;
-	use sp_core::testing::TaskExecutor;
+	use tetcoin_node_subsystem_test_helpers as test_helpers;
+	use tet_core::testing::TaskExecutor;
 	use std::{collections::{HashMap, BTreeMap}, sync::{Arc, Mutex}};
 	use futures::channel::oneshot;
 
@@ -437,14 +437,14 @@ mod tests {
 	impl ProvideRuntimeApi<Block> for MockRuntimeApi {
 		type Api = Self;
 
-		fn runtime_api<'a>(&'a self) -> sp_api::ApiRef<'a, Self::Api> {
+		fn runtime_api<'a>(&'a self) -> tp_api::ApiRef<'a, Self::Api> {
 			self.clone().into()
 		}
 	}
 
-	sp_api::mock_impl_runtime_apis! {
+	tp_api::mock_impl_runtime_apis! {
 		impl ParachainHost<Block> for MockRuntimeApi {
-			type Error = sp_api::ApiError;
+			type Error = tp_api::ApiError;
 
 			fn validators(&self) -> Vec<ValidatorId> {
 				self.validators.clone()
@@ -477,7 +477,7 @@ mod tests {
 			fn check_validation_outputs(
 				&self,
 				para_id: ParaId,
-				_commitments: polkadot_primitives::v1::CandidateCommitments,
+				_commitments: tetcoin_primitives::v1::CandidateCommitments,
 			) -> bool {
 				self.validation_outputs_results
 					.get(&para_id)
@@ -548,7 +548,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);
 		let subsystem_task = run(ctx, subsystem).map(|x| x.unwrap());
@@ -572,7 +572,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);
 		let subsystem_task = run(ctx, subsystem).map(|x| x.unwrap());
@@ -596,7 +596,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);
 		let subsystem_task = run(ctx, subsystem).map(|x| x.unwrap());
@@ -621,7 +621,7 @@ mod tests {
 		let relay_parent = [1; 32].into();
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let mut runtime_api = MockRuntimeApi::default();
 		runtime_api.validation_data.insert(para_a, Default::default());
@@ -664,8 +664,8 @@ mod tests {
 		let relay_parent = [1; 32].into();
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let commitments = polkadot_primitives::v1::CandidateCommitments::default();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let commitments = tetcoin_primitives::v1::CandidateCommitments::default();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		runtime_api.validation_outputs_results.insert(para_a, false);
 		runtime_api.validation_outputs_results.insert(para_b, true);
@@ -719,7 +719,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);
 		let subsystem_task = run(ctx, subsystem).map(|x| x.unwrap());
@@ -745,7 +745,7 @@ mod tests {
 		let session_index = 1;
 		runtime_api.session_info.insert(session_index, Default::default());
 		let runtime_api = Arc::new(runtime_api);
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let relay_parent = [1; 32].into();
 
@@ -773,7 +773,7 @@ mod tests {
 		let relay_parent = [1; 32].into();
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let mut runtime_api = MockRuntimeApi::default();
 		runtime_api.validation_code.insert(para_a, Default::default());
@@ -815,7 +815,7 @@ mod tests {
 		let relay_parent = [1; 32].into();
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let mut runtime_api = MockRuntimeApi::default();
 		runtime_api.candidate_pending_availability.insert(para_a, Default::default());
@@ -857,7 +857,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);
 		let subsystem_task = run(ctx, subsystem).map(|x| x.unwrap());
@@ -883,7 +883,7 @@ mod tests {
 		let relay_parent = [1; 32].into();
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let runtime_api = Arc::new({
 			let mut runtime_api = MockRuntimeApi::default();
@@ -940,7 +940,7 @@ mod tests {
 		let para_a = 99.into();
 		let para_b = 66.into();
 		let para_c = 33.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let para_b_inbound_channels = [
 			(para_a, vec![]),
@@ -1005,7 +1005,7 @@ mod tests {
 
 		let para_a = 5.into();
 		let para_b = 6.into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 
 		let runtime_api = Arc::new({
 			let mut runtime_api = MockRuntimeApi::default();
@@ -1074,7 +1074,7 @@ mod tests {
 		let (ctx, mut ctx_handle) = test_helpers::make_subsystem_context(TaskExecutor::new());
 		let runtime_api = Arc::new(MockRuntimeApi::default());
 		let relay_parent = [1; 32].into();
-		let spawner = sp_core::testing::TaskExecutor::new();
+		let spawner = tet_core::testing::TaskExecutor::new();
 		let mutex = runtime_api.availability_cores_wait.clone();
 
 		let subsystem = RuntimeApiSubsystem::new(runtime_api.clone(), Metrics(None), spawner);

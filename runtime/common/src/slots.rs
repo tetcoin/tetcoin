@@ -1,29 +1,29 @@
 // Copyright 2019-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Auctioning system to determine the set of Parachains in operation. This includes logic for the
 //! auctioning mechanism, for locking balance as part of the "payment", and to provide the requisite
 //! information for commissioning and decommissioning them.
 
-use sp_std::{prelude::*, mem::swap, convert::TryInto};
-use sp_runtime::traits::{
+use tetcore_std::{prelude::*, mem::swap, convert::TryInto};
+use tp_runtime::traits::{
 	CheckedSub, StaticLookup, Zero, One, CheckedConversion, Hash, AccountIdConversion,
 };
 use parity_scale_codec::{Encode, Decode, Codec};
-use frame_support::{
+use fabric_support::{
 	decl_module, decl_storage, decl_event, decl_error, ensure, dispatch::DispatchResult,
 	traits::{Currency, ReservableCurrency, WithdrawReasons, ExistenceRequirement, Get, Randomness},
 	weights::{DispatchClass, Weight},
@@ -31,15 +31,15 @@ use frame_support::{
 use primitives::v1::{
 	Id as ParaId, ValidationCode, HeadData,
 };
-use frame_system::{ensure_signed, ensure_root};
+use fabric_system::{ensure_signed, ensure_root};
 use crate::slot_range::{SlotRange, SLOT_RANGE_COUNT};
 
-type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as fabric_system::Config>::AccountId>>::Balance;
 
 /// The module's configuration trait.
-pub trait Config: frame_system::Config {
+pub trait Config: fabric_system::Config {
 	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 
 	/// The currency type used for bidding.
 	type Currency: ReservableCurrency<Self::AccountId>;
@@ -161,14 +161,14 @@ pub enum IncomingParachain<AccountId, Hash> {
 	Deploy { code: ValidationCode, initial_head_data: HeadData },
 }
 
-type LeasePeriodOf<T> = <T as frame_system::Config>::BlockNumber;
+type LeasePeriodOf<T> = <T as fabric_system::Config>::BlockNumber;
 // Winning data type. This encodes the top bidders of each range together with their bid.
 type WinningData<T> =
-	[Option<(Bidder<<T as frame_system::Config>::AccountId>, BalanceOf<T>)>; SLOT_RANGE_COUNT];
+	[Option<(Bidder<<T as fabric_system::Config>::AccountId>, BalanceOf<T>)>; SLOT_RANGE_COUNT];
 // Winners data type. This encodes each of the final winners of a parachain auction, the parachain
 // index assigned to them, their winning bid and the range that they won.
 type WinnersData<T> =
-	Vec<(Option<NewBidder<<T as frame_system::Config>::AccountId>>, ParaId, BalanceOf<T>, SlotRange)>;
+	Vec<(Option<NewBidder<<T as fabric_system::Config>::AccountId>>, ParaId, BalanceOf<T>, SlotRange)>;
 
 // This module's storage items.
 decl_storage! {
@@ -262,8 +262,8 @@ impl<T: Config> SwapAux for Module<T> {
 
 decl_event!(
 	pub enum Event<T> where
-		AccountId = <T as frame_system::Config>::AccountId,
-		BlockNumber = <T as frame_system::Config>::BlockNumber,
+		AccountId = <T as fabric_system::Config>::AccountId,
+		BlockNumber = <T as fabric_system::Config>::BlockNumber,
 		LeasePeriod = LeasePeriodOf<T>,
 		ParaId = ParaId,
 		Balance = BalanceOf<T>,
@@ -383,7 +383,7 @@ decl_module! {
 			let n = <AuctionCounter>::mutate(|n| { *n += 1; *n });
 
 			// Set the information.
-			let ending = <frame_system::Module<T>>::block_number() + duration;
+			let ending = <fabric_system::Module<T>>::block_number() + duration;
 			<AuctionInfo<T>>::put((lease_period_index, ending));
 
 			Self::deposit_event(RawEvent::AuctionStarted(n, lease_period_index, ending))
@@ -520,7 +520,7 @@ decl_module! {
 				.ok_or(Error::<T>::ParaNotOnboarding)?;
 			if let IncomingParachain::Fixed{code_hash, code_size, initial_head_data} = details {
 				ensure!(code.0.len() as u32 == code_size, Error::<T>::InvalidCode);
-				ensure!(<T as frame_system::Config>::Hashing::hash(&code.0) == code_hash, Error::<T>::InvalidCode);
+				ensure!(<T as fabric_system::Config>::Hashing::hash(&code.0) == code_hash, Error::<T>::InvalidCode);
 
 				if starts > Self::lease_period_index() {
 					// Hasn't yet begun. Replace the on-boarding entry with the new information.
@@ -568,7 +568,7 @@ impl<T: Config> Module<T> {
 
 	/// Returns the current lease period.
 	fn lease_period_index() -> LeasePeriodOf<T> {
-		(<frame_system::Module<T>>::block_number() / T::LeasePeriod::get()).into()
+		(<fabric_system::Module<T>>::block_number() / T::LeasePeriod::get()).into()
 	}
 
 	/// Some when the auction's end is known (with the end block number). None if it is unknown.
@@ -812,7 +812,7 @@ impl<T: Config> Module<T> {
 		// Range as an array index.
 		let range_index = range as u8 as usize;
 		// The offset into the auction ending set.
-		let offset = Self::is_ending(<frame_system::Module<T>>::block_number()).unwrap_or_default();
+		let offset = Self::is_ending(<fabric_system::Module<T>>::block_number()).unwrap_or_default();
 		// The current winning ranges.
 		let mut current_winning = <Winning<T>>::get(offset)
 			.or_else(|| offset.checked_sub(&One::one()).and_then(<Winning<T>>::get))
@@ -941,13 +941,13 @@ mod tests {
 	use super::*;
 	use std::{collections::HashMap, cell::RefCell};
 
-	use sp_core::H256;
-	use sp_runtime::traits::{BlakeTwo256, Hash, IdentityLookup};
-	use frame_support::{
+	use tet_core::H256;
+	use tp_runtime::traits::{BlakeTwo256, Hash, IdentityLookup};
+	use fabric_support::{
 		impl_outer_origin, parameter_types, assert_ok, assert_noop,
 		traits::{OnInitialize, OnFinalize}
 	};
-	use pallet_balances;
+	use noble_balances;
 	use primitives::v1::{BlockNumber, Header, Id as ParaId};
 
 	impl_outer_origin! {
@@ -962,7 +962,7 @@ mod tests {
 	parameter_types! {
 		pub const BlockHashCount: u32 = 250;
 	}
-	impl frame_system::Config for Test {
+	impl fabric_system::Config for Test {
 		type BaseCallFilter = ();
 		type BlockWeights = ();
 		type BlockLength = ();
@@ -980,7 +980,7 @@ mod tests {
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
 		type PalletInfo = ();
-		type AccountData = pallet_balances::AccountData<u64>;
+		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
 		type SystemWeightInfo = ();
@@ -991,7 +991,7 @@ mod tests {
 		pub const ExistentialDeposit: u64 = 1;
 	}
 
-	impl pallet_balances::Config for Test {
+	impl noble_balances::Config for Test {
 		type Balance = u64;
 		type Event = ();
 		type DustRemoval = ();
@@ -1074,16 +1074,16 @@ mod tests {
 		type Randomness = RandomnessCollectiveFlip;
 	}
 
-	type System = frame_system::Module<Test>;
-	type Balances = pallet_balances::Module<Test>;
+	type System = fabric_system::Module<Test>;
+	type Balances = noble_balances::Module<Test>;
 	type Slots = Module<Test>;
-	type RandomnessCollectiveFlip = pallet_randomness_collective_flip::Module<Test>;
+	type RandomnessCollectiveFlip = noble_randomness_collective_flip::Module<Test>;
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mock up.
-	fn new_test_ext() -> sp_io::TestExternalities {
-		let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
-		pallet_balances::GenesisConfig::<Test>{
+	fn new_test_ext() -> tp_io::TestExternalities {
+		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+		noble_balances::GenesisConfig::<Test>{
 			balances: vec![(1, 10), (2, 20), (3, 30), (4, 40), (5, 50), (6, 60)],
 		}.assimilate_storage(&mut t).unwrap();
 		t.into()

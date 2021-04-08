@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Implements a `AvailabilityStoreSubsystem`.
 
@@ -31,17 +31,17 @@ use futures_timer::Delay;
 use kvdb_rocksdb::{Database, DatabaseConfig};
 use kvdb::{KeyValueDB, DBTransaction};
 
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	Hash, AvailableData, BlockNumber, CandidateEvent, ErasureChunk, ValidatorIndex, CandidateHash,
 	CandidateReceipt,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	FromOverseer, OverseerSignal, SubsystemError, Subsystem, SubsystemContext, SpawnedSubsystem,
 	ActiveLeavesUpdate,
 	errors::{ChainApiError, RuntimeApiError},
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_subsystem::messages::{
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_subsystem::messages::{
 	AvailabilityStoreMessage, ChainApiMessage, RuntimeApiMessage, RuntimeApiRequest,
 };
 use bitvec::{vec::BitVec, order::Lsb0 as BitOrderLsb0};
@@ -409,17 +409,17 @@ pub struct Config {
 	pub path: PathBuf,
 }
 
-impl std::convert::TryFrom<sc_service::config::DatabaseConfig> for Config {
+impl std::convert::TryFrom<tc_service::config::DatabaseConfig> for Config {
 	type Error = Error;
 
-	fn try_from(config: sc_service::config::DatabaseConfig) -> Result<Self, Self::Error> {
+	fn try_from(config: tc_service::config::DatabaseConfig) -> Result<Self, Self::Error> {
 		let path = config.path().ok_or(Error::CustomDatabase)?;
 
 		Ok(Self {
-			// substrate cache size is improper here; just use the default
+			// tetcore cache size is improper here; just use the default
 			cache_size: None,
-			// DB path is a sub-directory of substrate db path to give two properties:
-			// 1: column numbers don't conflict with substrate
+			// DB path is a sub-directory of tetcore db path to give two properties:
+			// 1: column numbers don't conflict with tetcore
 			// 2: commands like purge-chain work without further changes
 			path: path.join("parachains").join("av-store"),
 		})

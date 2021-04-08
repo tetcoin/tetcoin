@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Shows a basic usage of the `Overseer`:
 //!   * Spawning subsystems and subsystem child jobs
@@ -26,11 +26,11 @@ use futures::{
 };
 use futures_timer::Delay;
 
-use polkadot_primitives::v1::{BlockData, PoV};
-use polkadot_overseer::{Overseer, AllSubsystems};
+use tetcoin_primitives::v1::{BlockData, PoV};
+use tetcoin_overseer::{Overseer, AllSubsystems};
 
-use polkadot_subsystem::{Subsystem, SubsystemContext, SpawnedSubsystem, FromOverseer};
-use polkadot_subsystem::messages::{
+use tetcoin_subsystem::{Subsystem, SubsystemContext, SpawnedSubsystem, FromOverseer};
+use tetcoin_subsystem::messages::{
 	CandidateValidationMessage, CandidateBackingMessage, AllMessages,
 };
 
@@ -133,7 +133,7 @@ impl<C> Subsystem<C> for Subsystem2
 
 fn main() {
 	femme::with_level(femme::LevelFilter::Trace);
-	let spawner = sp_core::testing::TaskExecutor::new();
+	let spawner = tet_core::testing::TaskExecutor::new();
 	futures::executor::block_on(async {
 		let timer_stream = stream::repeat(()).then(|_| async {
 			Delay::new(Duration::from_secs(1)).await;

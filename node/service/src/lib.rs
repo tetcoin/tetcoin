@@ -1,20 +1,20 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Polkadot service. Specialized wrapper over substrate service.
+//! Tetcoin service. Specialized wrapper over tetcore service.
 
 #![deny(unused_results)]
 
@@ -28,78 +28,78 @@ use {
 	std::convert::TryInto,
 	std::time::Duration,
 	tracing::info,
-	polkadot_node_core_av_store::Config as AvailabilityConfig,
-	polkadot_node_core_av_store::Error as AvailabilityError,
-	polkadot_node_core_proposer::ProposerFactory,
-	polkadot_overseer::{AllSubsystems, BlockInfo, Overseer, OverseerHandler},
-	polkadot_primitives::v1::ParachainHost,
-	sc_authority_discovery::Service as AuthorityDiscoveryService,
-	sp_blockchain::HeaderBackend,
-	sp_keystore::SyncCryptoStorePtr,
-	sp_trie::PrefixedMemoryDB,
-	sc_client_api::ExecutorProvider,
+	tetcoin_node_core_av_store::Config as AvailabilityConfig,
+	tetcoin_node_core_av_store::Error as AvailabilityError,
+	tetcoin_node_core_proposer::ProposerFactory,
+	tetcoin_overseer::{AllSubsystems, BlockInfo, Overseer, OverseerHandler},
+	tetcoin_primitives::v1::ParachainHost,
+	tc_authority_discovery::Service as AuthorityDiscoveryService,
+	tp_blockchain::HeaderBackend,
+	tp_keystore::SyncCryptoStorePtr,
+	tp_trie::PrefixedMemoryDB,
+	tc_client_api::ExecutorProvider,
 };
 
-use sp_core::traits::SpawnNamed;
+use tet_core::traits::SpawnNamed;
 
 
-use polkadot_subsystem::jaeger;
+use tetcoin_subsystem::jaeger;
 
 use std::sync::Arc;
 
 use prometheus_endpoint::Registry;
-use sc_executor::native_executor_instance;
+use tc_executor::native_executor_instance;
 use service::RpcHandlers;
 use telemetry::TelemetryConnectionNotifier;
 
 pub use self::client::{AbstractClient, Client, ClientHandle, ExecuteWithClient, RuntimeApiCollection};
-pub use chain_spec::{PolkadotChainSpec, KusamaChainSpec, WestendChainSpec, RococoChainSpec};
+pub use chain_spec::{TetcoinChainSpec, KusamaChainSpec, WestendChainSpec, RococoChainSpec};
 pub use consensus_common::{Proposal, SelectChain, BlockImport, RecordProof, block_validation::Chain};
-pub use polkadot_parachain::wasm_executor::IsolationStrategy;
-pub use polkadot_primitives::v1::{Block, BlockId, CollatorId, Hash, Id as ParaId};
-pub use sc_client_api::{Backend, ExecutionStrategy, CallExecutor};
-pub use sc_consensus::LongestChain;
-pub use sc_executor::NativeExecutionDispatch;
+pub use tetcoin_parachain::wasm_executor::IsolationStrategy;
+pub use tetcoin_primitives::v1::{Block, BlockId, CollatorId, Hash, Id as ParaId};
+pub use tc_client_api::{Backend, ExecutionStrategy, CallExecutor};
+pub use tc_consensus::LongestChain;
+pub use tc_executor::NativeExecutionDispatch;
 pub use service::{
 	Role, PruningMode, TransactionPoolOptions, Error as SubstrateServiceError, RuntimeGenesis,
 	TFullClient, TLightClient, TFullBackend, TLightBackend, TFullCallExecutor, TLightCallExecutor,
 	Configuration, ChainSpec, TaskManager,
 };
 pub use service::config::{DatabaseConfig, PrometheusConfig};
-pub use sp_api::{ApiRef, Core as CoreApi, ConstructRuntimeApi, ProvideRuntimeApi, StateBackend};
-pub use sp_runtime::traits::{DigestFor, HashFor, NumberFor, Block as BlockT, self as runtime_traits, BlakeTwo256};
+pub use tp_api::{ApiRef, Core as CoreApi, ConstructRuntimeApi, ProvideRuntimeApi, StateBackend};
+pub use tp_runtime::traits::{DigestFor, HashFor, NumberFor, Block as BlockT, self as runtime_traits, BlakeTwo256};
 
 pub use kusama_runtime;
-pub use polkadot_runtime;
+pub use tetcoin_runtime;
 pub use rococo_runtime;
 pub use westend_runtime;
 
 native_executor_instance!(
-	pub PolkadotExecutor,
-	polkadot_runtime::api::dispatch,
-	polkadot_runtime::native_version,
-	frame_benchmarking::benchmarking::HostFunctions,
+	pub TetcoinExecutor,
+	tetcoin_runtime::api::dispatch,
+	tetcoin_runtime::native_version,
+	fabric_benchmarking::benchmarking::HostFunctions,
 );
 
 native_executor_instance!(
 	pub KusamaExecutor,
 	kusama_runtime::api::dispatch,
 	kusama_runtime::native_version,
-	frame_benchmarking::benchmarking::HostFunctions,
+	fabric_benchmarking::benchmarking::HostFunctions,
 );
 
 native_executor_instance!(
 	pub WestendExecutor,
 	westend_runtime::api::dispatch,
 	westend_runtime::native_version,
-	frame_benchmarking::benchmarking::HostFunctions,
+	fabric_benchmarking::benchmarking::HostFunctions,
 );
 
 native_executor_instance!(
 	pub RococoExecutor,
 	rococo_runtime::api::dispatch,
 	rococo_runtime::native_version,
-	frame_benchmarking::benchmarking::HostFunctions,
+	fabric_benchmarking::benchmarking::HostFunctions,
 );
 
 #[derive(thiserror::Error, Debug)]
@@ -114,19 +114,19 @@ pub enum Error {
 	Sub(#[from] SubstrateServiceError),
 
 	#[error(transparent)]
-	Blockchain(#[from] sp_blockchain::Error),
+	Blockchain(#[from] tp_blockchain::Error),
 
 	#[error(transparent)]
 	Consensus(#[from] consensus_common::Error),
 
 	#[error("Failed to create an overseer")]
-	Overseer(#[from] polkadot_overseer::SubsystemError),
+	Overseer(#[from] tetcoin_overseer::SubsystemError),
 
 	#[error(transparent)]
 	Prometheus(#[from] prometheus_endpoint::PrometheusError),
 
 	#[error(transparent)]
-	Jaeger(#[from] polkadot_subsystem::jaeger::JaegerError),
+	Jaeger(#[from] tetcoin_subsystem::jaeger::JaegerError),
 
 	#[cfg(feature = "full-node")]
 	#[error(transparent)]
@@ -160,10 +160,10 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 	}
 }
 
-// If we're using prometheus, use a registry with a prefix of `polkadot`.
+// If we're using prometheus, use a registry with a prefix of `tetcoin`.
 fn set_prometheus_registry(config: &mut Configuration) -> Result<(), Error> {
 	if let Some(PrometheusConfig { registry, .. }) = config.prometheus_config.as_mut() {
-		*registry = Registry::new_custom(Some("polkadot".into()), None)?;
+		*registry = Registry::new_custom(Some("tetcoin".into()), None)?;
 	}
 
 	Ok(())
@@ -185,14 +185,14 @@ fn jaeger_launch_collector_with_agent(spawner: impl SpawnNamed, config: &Configu
 
 pub type FullBackend = service::TFullBackend<Block>;
 #[cfg(feature = "full-node")]
-type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
+type FullSelectChain = tc_consensus::LongestChain<FullBackend, Block>;
 pub type FullClient<RuntimeApi, Executor> = service::TFullClient<Block, RuntimeApi, Executor>;
 #[cfg(feature = "full-node")]
 type FullGrandpaBlockImport<RuntimeApi, Executor> = grandpa::GrandpaBlockImport<
 	FullBackend, Block, FullClient<RuntimeApi, Executor>, FullSelectChain
 >;
 
-type LightBackend = service::TLightBackendWithHash<Block, sp_runtime::traits::BlakeTwo256>;
+type LightBackend = service::TLightBackendWithHash<Block, tp_runtime::traits::BlakeTwo256>;
 
 type LightClient<RuntimeApi, Executor> =
 	service::TLightClientWithBackend<Block, RuntimeApi, Executor, LightBackend>;
@@ -202,12 +202,12 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 	service::PartialComponents<
 		FullClient<RuntimeApi, Executor>, FullBackend, FullSelectChain,
 		consensus_common::DefaultImportQueue<Block, FullClient<RuntimeApi, Executor>>,
-		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, Executor>>,
+		tc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, Executor>>,
 		(
 			impl Fn(
-				polkadot_rpc::DenyUnsafe,
-				polkadot_rpc::SubscriptionTaskExecutor,
-			) -> polkadot_rpc::RpcExtension,
+				tetcoin_rpc::DenyUnsafe,
+				tetcoin_rpc::SubscriptionTaskExecutor,
+			) -> tetcoin_rpc::RpcExtension,
 			(
 				babe::BabeBlockImport<
 					Block, FullClient<RuntimeApi, Executor>, FullGrandpaBlockImport<RuntimeApi, Executor>
@@ -223,7 +223,7 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 	where
 		RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, Executor>> + Send + Sync + 'static,
 		RuntimeApi::RuntimeApi:
-		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
+		RuntimeApiCollection<StateBackend = tc_client_api::StateBackendFor<FullBackend, Block>>,
 		Executor: NativeExecutionDispatch + 'static,
 {
 	set_prometheus_registry(config)?;
@@ -237,9 +237,9 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 
 	jaeger_launch_collector_with_agent(task_manager.spawn_handle(), &*config, jaeger_agent)?;
 
-	let select_chain = sc_consensus::LongestChain::new(backend.clone());
+	let select_chain = tc_consensus::LongestChain::new(backend.clone());
 
-	let transaction_pool = sc_transaction_pool::BasicPool::new_full(
+	let transaction_pool = tc_transaction_pool::BasicPool::new_full(
 		config.transaction_pool.clone(),
 		config.prometheus_registry(),
 		task_manager.spawn_handle(),
@@ -301,19 +301,19 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 		let select_chain = select_chain.clone();
 		let chain_spec = config.chain_spec.cloned_box();
 
-		move |deny_unsafe, subscription_executor| -> polkadot_rpc::RpcExtension {
-			let deps = polkadot_rpc::FullDeps {
+		move |deny_unsafe, subscription_executor| -> tetcoin_rpc::RpcExtension {
+			let deps = tetcoin_rpc::FullDeps {
 				client: client.clone(),
 				pool: transaction_pool.clone(),
 				select_chain: select_chain.clone(),
 				chain_spec: chain_spec.cloned_box(),
 				deny_unsafe,
-				babe: polkadot_rpc::BabeDeps {
+				babe: tetcoin_rpc::BabeDeps {
 					babe_config: babe_config.clone(),
 					shared_epoch_changes: shared_epoch_changes.clone(),
 					keystore: keystore.clone(),
 				},
-				grandpa: polkadot_rpc::GrandpaDeps {
+				grandpa: tetcoin_rpc::GrandpaDeps {
 					shared_voter_state: shared_voter_state.clone(),
 					shared_authority_set: shared_authority_set.clone(),
 					justification_stream: justification_stream.clone(),
@@ -322,7 +322,7 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 				},
 			};
 
-			polkadot_rpc::create_full(deps)
+			tetcoin_rpc::create_full(deps)
 		}
 	};
 
@@ -345,7 +345,7 @@ fn real_overseer<Spawner, RuntimeClient>(
 	_: SyncCryptoStorePtr,
 	_: Arc<RuntimeClient>,
 	_: AvailabilityConfig,
-	_: Arc<sc_network::NetworkService<Block, Hash>>,
+	_: Arc<tc_network::NetworkService<Block, Hash>>,
 	_: AuthorityDiscoveryService,
 	registry: Option<&Registry>,
 	spawner: Spawner,
@@ -371,7 +371,7 @@ fn real_overseer<Spawner, RuntimeClient>(
 	keystore: SyncCryptoStorePtr,
 	runtime_client: Arc<RuntimeClient>,
 	availability_config: AvailabilityConfig,
-	network_service: Arc<sc_network::NetworkService<Block, Hash>>,
+	network_service: Arc<tc_network::NetworkService<Block, Hash>>,
 	authority_discovery: AuthorityDiscoveryService,
 	registry: Option<&Registry>,
 	spawner: Spawner,
@@ -383,25 +383,25 @@ where
 	RuntimeClient::Api: ParachainHost<Block>,
 	Spawner: 'static + SpawnNamed + Clone + Unpin,
 {
-	use polkadot_node_subsystem_util::metrics::Metrics;
+	use tetcoin_node_subsystem_util::metrics::Metrics;
 
-	use polkadot_availability_distribution::AvailabilityDistributionSubsystem;
-	use polkadot_node_core_av_store::AvailabilityStoreSubsystem;
-	use polkadot_availability_bitfield_distribution::BitfieldDistribution as BitfieldDistributionSubsystem;
-	use polkadot_node_core_bitfield_signing::BitfieldSigningSubsystem;
-	use polkadot_node_core_backing::CandidateBackingSubsystem;
-	use polkadot_node_core_candidate_selection::CandidateSelectionSubsystem;
-	use polkadot_node_core_candidate_validation::CandidateValidationSubsystem;
-	use polkadot_node_core_chain_api::ChainApiSubsystem;
-	use polkadot_node_collation_generation::CollationGenerationSubsystem;
-	use polkadot_collator_protocol::{CollatorProtocolSubsystem, ProtocolSide};
-	use polkadot_network_bridge::NetworkBridge as NetworkBridgeSubsystem;
-	use polkadot_pov_distribution::PoVDistribution as PoVDistributionSubsystem;
-	use polkadot_node_core_provisioner::ProvisioningSubsystem as ProvisionerSubsystem;
-	use polkadot_node_core_runtime_api::RuntimeApiSubsystem;
-	use polkadot_statement_distribution::StatementDistribution as StatementDistributionSubsystem;
-	use polkadot_availability_recovery::AvailabilityRecoverySubsystem;
-	use polkadot_approval_distribution::ApprovalDistribution as ApprovalDistributionSubsystem;
+	use tetcoin_availability_distribution::AvailabilityDistributionSubsystem;
+	use tetcoin_node_core_av_store::AvailabilityStoreSubsystem;
+	use tetcoin_availability_bitfield_distribution::BitfieldDistribution as BitfieldDistributionSubsystem;
+	use tetcoin_node_core_bitfield_signing::BitfieldSigningSubsystem;
+	use tetcoin_node_core_backing::CandidateBackingSubsystem;
+	use tetcoin_node_core_candidate_selection::CandidateSelectionSubsystem;
+	use tetcoin_node_core_candidate_validation::CandidateValidationSubsystem;
+	use tetcoin_node_core_chain_api::ChainApiSubsystem;
+	use tetcoin_node_collation_generation::CollationGenerationSubsystem;
+	use tetcoin_collator_protocol::{CollatorProtocolSubsystem, ProtocolSide};
+	use tetcoin_network_bridge::NetworkBridge as NetworkBridgeSubsystem;
+	use tetcoin_pov_distribution::PoVDistribution as PoVDistributionSubsystem;
+	use tetcoin_node_core_provisioner::ProvisioningSubsystem as ProvisionerSubsystem;
+	use tetcoin_node_core_runtime_api::RuntimeApiSubsystem;
+	use tetcoin_statement_distribution::StatementDistribution as StatementDistributionSubsystem;
+	use tetcoin_availability_recovery::AvailabilityRecoverySubsystem;
+	use tetcoin_approval_distribution::ApprovalDistribution as ApprovalDistributionSubsystem;
 
 	let all_subsystems = AllSubsystems {
 		availability_distribution: AvailabilityDistributionSubsystem::new(
@@ -491,7 +491,7 @@ pub struct NewFull<C> {
 	pub task_manager: TaskManager,
 	pub client: C,
 	pub overseer_handler: Option<OverseerHandler>,
-	pub network: Arc<sc_network::NetworkService<Block, <Block as BlockT>::Hash>>,
+	pub network: Arc<tc_network::NetworkService<Block, <Block as BlockT>::Hash>>,
 	pub network_status_sinks: service::NetworkStatusSinks<Block>,
 	pub rpc_handlers: RpcHandlers,
 	pub backend: Arc<FullBackend>,
@@ -546,13 +546,13 @@ pub fn new_full<RuntimeApi, Executor>(
 	where
 		RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, Executor>> + Send + Sync + 'static,
 		RuntimeApi::RuntimeApi:
-		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
+		RuntimeApiCollection<StateBackend = tc_client_api::StateBackendFor<FullBackend, Block>>,
 		Executor: NativeExecutionDispatch + 'static,
 {
 	let role = config.role.clone();
 	let force_authoring = config.force_authoring;
 	let backoff_authoring_blocks =
-		Some(sc_consensus_slots::BackoffAuthoringOnFinalizedHeadLagging::default());
+		Some(tc_consensus_slots::BackoffAuthoringOnFinalizedHeadLagging::default());
 	let disable_grandpa = config.disable_grandpa;
 	let name = config.network.node_name.clone();
 
@@ -572,12 +572,12 @@ pub fn new_full<RuntimeApi, Executor>(
 
 	let shared_voter_state = rpc_setup;
 
-	// Note: GrandPa is pushed before the Polkadot-specific protocols. This doesn't change
+	// Note: GrandPa is pushed before the Tetcoin-specific protocols. This doesn't change
 	// anything in terms of behaviour, but makes the logs more consistent with the other
 	// Substrate nodes.
 	config.network.extra_sets.push(grandpa::grandpa_peers_set_config());
 	#[cfg(feature = "real-overseer")]
-	config.network.extra_sets.extend(polkadot_network_bridge::peer_sets_info());
+	config.network.extra_sets.extend(tetcoin_network_bridge::peer_sets_info());
 
 	// TODO: At the moment, the collator protocol uses notifications protocols to download
 	// collations. Because of DoS-protection measures, notifications protocols have a very limited
@@ -585,16 +585,16 @@ pub fn new_full<RuntimeApi, Executor>(
 	// The lines of code below considerably relaxes this DoS protection in order to circumvent
 	// this problem. This configuraiton change should preferably not reach any live network, and
 	// should be removed once the collation protocol is finished.
-	// Tracking issue: https://github.com/paritytech/polkadot/issues/2283
+	// Tracking issue: https://github.com/tetcoin/tetcoin/issues/2283
 	#[cfg(feature = "real-overseer")]
-	fn adjust_yamux(cfg: &mut sc_network::config::NetworkConfiguration) {
+	fn adjust_yamux(cfg: &mut tc_network::config::NetworkConfiguration) {
 		cfg.yamux_window_size = Some(5 * 1024 * 1024);
 	}
 	#[cfg(not(feature = "real-overseer"))]
-	fn adjust_yamux(_: &mut sc_network::config::NetworkConfiguration) {}
+	fn adjust_yamux(_: &mut tc_network::config::NetworkConfiguration) {}
 	adjust_yamux(&mut config.network);
 
-	config.network.request_response_protocols.push(sc_finality_grandpa_warp_sync::request_response_config_for_chain(
+	config.network.request_response_protocols.push(tc_finality_grandpa_warp_sync::request_response_config_for_chain(
 		&config, task_manager.spawn_handle(), backend.clone(),
 	));
 
@@ -653,23 +653,23 @@ pub fn new_full<RuntimeApi, Executor>(
 		.collect();
 
 	let authority_discovery_service = if role.is_authority() || is_collator.is_collator() {
-		use sc_network::Event;
+		use tc_network::Event;
 		use futures::StreamExt;
 
 		let authority_discovery_role = if role.is_authority() {
-			sc_authority_discovery::Role::PublishAndDiscover(
+			tc_authority_discovery::Role::PublishAndDiscover(
 				keystore_container.keystore(),
 			)
 		} else {
 			// don't publish our addresses when we're only a collator
-			sc_authority_discovery::Role::Discover
+			tc_authority_discovery::Role::Discover
 		};
 		let dht_event_stream = network.event_stream("authority-discovery")
 			.filter_map(|e| async move { match e {
 				Event::Dht(e) => Some(e),
 				_ => None,
 			}});
-		let (worker, service) = sc_authority_discovery::new_worker_and_service(
+		let (worker, service) = tc_authority_discovery::new_worker_and_service(
 			client.clone(),
 			network.clone(),
 			Box::pin(dht_event_stream),
@@ -703,7 +703,7 @@ pub fn new_full<RuntimeApi, Executor>(
 		task_manager.spawn_essential_handle().spawn_blocking("overseer", Box::pin(async move {
 			use futures::{pin_mut, select, FutureExt};
 
-			let forward = polkadot_overseer::forward_events(overseer_client, overseer_handler_clone);
+			let forward = tetcoin_overseer::forward_events(overseer_client, overseer_handler_clone);
 
 			let forward = forward.fuse();
 			let overseer_fut = overseer.run().fuse();
@@ -760,7 +760,7 @@ pub fn new_full<RuntimeApi, Executor>(
 	};
 
 	let config = grandpa::Config {
-		// FIXME substrate#1578 make this available through chainspec
+		// FIXME tetcore#1578 make this available through chainspec
 		gossip_duration: Duration::from_millis(1000),
 		justification_period: 512,
 		name: Some(name),
@@ -772,7 +772,7 @@ pub fn new_full<RuntimeApi, Executor>(
 	let enable_grandpa = !disable_grandpa;
 	if enable_grandpa {
 		// start the full GRANDPA voter
-		// NOTE: unlike in substrate we are currently running the full
+		// NOTE: unlike in tetcore we are currently running the full
 		// GRANDPA voter protocol for all full nodes (regardless of whether
 		// they're validators or not). at this point the full voter should
 		// provide better guarantees of block and vote data availability than
@@ -836,18 +836,18 @@ fn new_light<Runtime, Dispatch>(mut config: Configuration) -> Result<(
 	where
 		Runtime: 'static + Send + Sync + ConstructRuntimeApi<Block, LightClient<Runtime, Dispatch>>,
 		<Runtime as ConstructRuntimeApi<Block, LightClient<Runtime, Dispatch>>>::RuntimeApi:
-		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<LightBackend, Block>>,
+		RuntimeApiCollection<StateBackend = tc_client_api::StateBackendFor<LightBackend, Block>>,
 		Dispatch: NativeExecutionDispatch + 'static,
 {
 	set_prometheus_registry(&mut config)?;
-	use sc_client_api::backend::RemoteBackend;
+	use tc_client_api::backend::RemoteBackend;
 
 	let (client, backend, keystore_container, mut task_manager, on_demand) =
 		service::new_light_parts::<Block, Runtime, Dispatch>(&config)?;
 
-	let select_chain = sc_consensus::LongestChain::new(backend.clone());
+	let select_chain = tc_consensus::LongestChain::new(backend.clone());
 
-	let transaction_pool = Arc::new(sc_transaction_pool::BasicPool::new_light(
+	let transaction_pool = Arc::new(tc_transaction_pool::BasicPool::new_light(
 		config.transaction_pool.clone(),
 		config.prometheus_registry(),
 		task_manager.spawn_handle(),
@@ -904,14 +904,14 @@ fn new_light<Runtime, Dispatch>(mut config: Configuration) -> Result<(
 		);
 	}
 
-	let light_deps = polkadot_rpc::LightDeps {
+	let light_deps = tetcoin_rpc::LightDeps {
 		remote_blockchain: backend.remote_blockchain(),
 		fetcher: on_demand.clone(),
 		client: client.clone(),
 		pool: transaction_pool.clone(),
 	};
 
-	let rpc_extensions = polkadot_rpc::create_light(light_deps);
+	let rpc_extensions = tetcoin_rpc::create_light(light_deps);
 
 	let (rpc_handlers, telemetry_connection_notifier) = service::spawn_tasks(service::SpawnTasksParams {
 		on_demand: Some(on_demand),
@@ -960,8 +960,8 @@ pub fn new_chain_ops(mut config: &mut Configuration, jaeger_agent: Option<std::n
 		Ok((Arc::new(Client::Westend(client)), backend, import_queue, task_manager))
 	} else {
 		let service::PartialComponents { client, backend, import_queue, task_manager, .. }
-			= new_partial::<polkadot_runtime::RuntimeApi, PolkadotExecutor>(config, jaeger_agent)?;
-		Ok((Arc::new(Client::Polkadot(client)), backend, import_queue, task_manager))
+			= new_partial::<tetcoin_runtime::RuntimeApi, TetcoinExecutor>(config, jaeger_agent)?;
+		Ok((Arc::new(Client::Tetcoin(client)), backend, import_queue, task_manager))
 	}
 }
 
@@ -978,7 +978,7 @@ pub fn build_light(config: Configuration) -> Result<(
 	} else if config.chain_spec.is_westend() {
 		new_light::<westend_runtime::RuntimeApi, WestendExecutor>(config)
 	} else {
-		new_light::<polkadot_runtime::RuntimeApi, PolkadotExecutor>(config)
+		new_light::<tetcoin_runtime::RuntimeApi, TetcoinExecutor>(config)
 	}
 }
 
@@ -1014,12 +1014,12 @@ pub fn build_full(
 			Default::default(),
 		).map(|full| full.with_client(Client::Westend))
 	} else {
-		new_full::<polkadot_runtime::RuntimeApi, PolkadotExecutor>(
+		new_full::<tetcoin_runtime::RuntimeApi, TetcoinExecutor>(
 			config,
 			is_collator,
 			grandpa_pause,
 			jaeger_agent,
 			Default::default(),
-		).map(|full| full.with_client(Client::Polkadot))
+		).map(|full| full.with_client(Client::Tetcoin))
 	}
 }

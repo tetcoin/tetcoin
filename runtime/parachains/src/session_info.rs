@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The session info module provides information about validator sets
 //! from prior sessions needed for approvals and disputes.
@@ -20,15 +20,15 @@
 //! See https://w3f.github.io/parachain-implementers-guide/runtime/session_info.html.
 
 use primitives::v1::{AssignmentId, AuthorityDiscoveryId, SessionIndex, SessionInfo};
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error,
 	weights::Weight,
 };
 use crate::{configuration, paras, scheduler};
-use sp_std::vec::Vec;
+use tetcore_std::vec::Vec;
 
 pub trait Config:
-	frame_system::Config
+	fabric_system::Config
 	+ configuration::Config
 	+ paras::Config
 	+ scheduler::Config
@@ -57,7 +57,7 @@ decl_error! {
 
 decl_module! {
 	/// The session info module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 	}
 }
@@ -69,9 +69,9 @@ pub trait AuthorityDiscoveryConfig {
 	fn authorities() -> Vec<AuthorityDiscoveryId>;
 }
 
-impl<T: pallet_authority_discovery::Config> AuthorityDiscoveryConfig for T {
+impl<T: noble_authority_discovery::Config> AuthorityDiscoveryConfig for T {
 	fn authorities() -> Vec<AuthorityDiscoveryId> {
-		<pallet_authority_discovery::Module<T>>::current_authorities()
+		<noble_authority_discovery::Module<T>>::current_authorities()
 	}
 }
 
@@ -137,11 +137,11 @@ impl<T: Config> Module<T> {
 	pub(crate) fn initializer_finalize() {}
 }
 
-impl<T: Config> sp_runtime::BoundToRuntimeAppPublic for Module<T> {
+impl<T: Config> tp_runtime::BoundToRuntimeAppPublic for Module<T> {
 	type Public = AssignmentId;
 }
 
-impl<T: pallet_session::Config + Config> pallet_session::OneSessionHandler<T::AccountId> for Module<T> {
+impl<T: noble_session::Config + Config> noble_session::OneSessionHandler<T::AccountId> for Module<T> {
 	type Key = AssignmentId;
 
 	fn on_genesis_session<'a, I: 'a>(_validators: I)
@@ -170,7 +170,7 @@ mod tests {
 	};
 	use crate::initializer::SessionChangeNotification;
 	use crate::configuration::HostConfiguration;
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 	use primitives::v1::BlockNumber;
 
 	fn run_to_block(

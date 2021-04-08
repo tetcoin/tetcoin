@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The paras module is responsible for storing data on parachains and parathreads.
 //!
@@ -23,32 +23,32 @@
 //! A para is not considered live until it is registered and activated in this module. Activation can
 //! only occur at session boundaries.
 
-use sp_std::prelude::*;
-use sp_std::result;
+use tetcore_std::prelude::*;
+use tetcore_std::result;
 #[cfg(feature = "std")]
-use sp_std::marker::PhantomData;
+use tetcore_std::marker::PhantomData;
 use primitives::v1::{
 	Id as ParaId, ValidationCode, HeadData,
 };
-use sp_runtime::traits::One;
-use frame_support::{
+use tp_runtime::traits::One;
+use fabric_support::{
 	decl_storage, decl_module, decl_error,
 	traits::Get,
 	weights::Weight,
 };
 use parity_scale_codec::{Encode, Decode};
 use crate::{configuration, initializer::SessionChangeNotification};
-use sp_core::RuntimeDebug;
+use tet_core::RuntimeDebug;
 
 #[cfg(feature = "std")]
 use serde::{Serialize, Deserialize};
 
 pub use crate::Origin;
 
-pub trait Config: frame_system::Config + configuration::Config {
+pub trait Config: fabric_system::Config + configuration::Config {
 	/// The outer origin type.
 	type Origin: From<Origin>
-		+ From<<Self as frame_system::Config>::Origin>
+		+ From<<Self as fabric_system::Config>::Origin>
 		+ Into<result::Result<Origin, <Self as Config>::Origin>>;
 }
 
@@ -249,7 +249,7 @@ decl_error! {
 
 decl_module! {
 	/// The parachains configuration module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 	}
 }
@@ -265,7 +265,7 @@ impl<T: Config> Module<T> {
 
 	/// Called by the initializer to note that a new session has started.
 	pub(crate) fn initializer_on_new_session(_notification: &SessionChangeNotification<T::BlockNumber>) {
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		let mut parachains = Self::clean_up_outgoing(now);
 		Self::apply_incoming(&mut parachains);
 		<Self as Store>::Parachains::set(parachains);
@@ -485,7 +485,7 @@ impl<T: Config> Module<T> {
 				CurrentCode::insert(&id, &new_code);
 
 				// `now` is only used for registering pruning as part of `fn note_past_code`
-				let now = <frame_system::Module<T>>::block_number();
+				let now = <fabric_system::Module<T>>::block_number();
 
 				let weight = Self::note_past_code(
 					id,
@@ -517,7 +517,7 @@ impl<T: Config> Module<T> {
 		at: T::BlockNumber,
 		assume_intermediate: Option<T::BlockNumber>,
 	) -> Option<ValidationCode> {
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 		let config = <configuration::Module<T>>::config();
 
 		if assume_intermediate.as_ref().map_or(false, |i| &at <= i) {
@@ -569,7 +569,7 @@ impl<T: Config> Module<T> {
 mod tests {
 	use super::*;
 	use primitives::v1::BlockNumber;
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 
 	use crate::mock::{new_test_ext, Paras, System, GenesisConfig as MockGenesisConfig};
 	use crate::configuration::HostConfiguration;

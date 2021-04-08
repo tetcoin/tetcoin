@@ -1,40 +1,40 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Primitive types which are strictly necessary from a parachain-execution point
 //! of view.
 
-use sp_std::vec::Vec;
+use tetcore_std::vec::Vec;
 
 use parity_scale_codec::{Encode, Decode, CompactAs};
-use sp_core::{RuntimeDebug, TypeId};
+use tet_core::{RuntimeDebug, TypeId};
 
 #[cfg(feature = "std")]
 use serde::{Serialize, Deserialize};
 
 #[cfg(feature = "std")]
-use sp_core::bytes;
+use tet_core::bytes;
 
 #[cfg(feature = "std")]
 use parity_util_mem::MallocSizeOf;
 
-use polkadot_core_primitives::{Hash, OutboundHrmpMessage};
+use tetcoin_core_primitives::{Hash, OutboundHrmpMessage};
 
 /// Block number type used by the relay chain.
-pub use polkadot_core_primitives::BlockNumber as RelayChainBlockNumber;
+pub use tetcoin_core_primitives::BlockNumber as RelayChainBlockNumber;
 
 /// Parachain head data included in the chain.
 #[derive(PartialEq, Eq, Clone, PartialOrd, Ord, Encode, Decode, RuntimeDebug, derive_more::From)]
@@ -45,8 +45,8 @@ pub struct HeadData(#[cfg_attr(feature = "std", serde(with="bytes"))] pub Vec<u8
 impl HeadData {
 	/// Returns the hash of this head data.
 	pub fn hash(&self) -> Hash {
-		use sp_runtime::traits::Hash;
-		sp_runtime::traits::BlakeTwo256::hash(&self.0)
+		use tp_runtime::traits::Hash;
+		tp_runtime::traits::BlakeTwo256::hash(&self.0)
 	}
 }
 
@@ -86,7 +86,7 @@ impl From<u32> for Id {
 
 impl From<usize> for Id {
 	fn from(x: usize) -> Self {
-		use sp_std::convert::TryInto;
+		use tetcore_std::convert::TryInto;
 		// can't panic, so need to truncate
 		let x = x.try_into().unwrap_or(u32::MAX);
 		Id(x)
@@ -141,7 +141,7 @@ impl IsSystem for Id {
 	}
 }
 
-impl sp_std::ops::Add<u32> for Id {
+impl tetcore_std::ops::Add<u32> for Id {
 	type Output = Self;
 
 	fn add(self, other: u32) -> Self {
@@ -197,7 +197,7 @@ pub trait AccountIdConversion<AccountId>: Sized {
 	fn try_from_account(a: &AccountId) -> Option<Self>;
 }
 
-// TODO: Remove all of this, move sp-runtime::AccountIdConversion to own crate and and use that.
+// TODO: Remove all of this, move tp-runtime::AccountIdConversion to own crate and and use that.
 // #360
 struct TrailingZeroInput<'a>(&'a [u8]);
 impl<'a> parity_scale_codec::Input for TrailingZeroInput<'a> {
@@ -258,7 +258,7 @@ pub struct HrmpChannelId {
 pub type UpwardMessage = Vec<u8>;
 
 /// Validation parameters for evaluating the parachain validity function.
-// TODO: balance downloads (https://github.com/paritytech/polkadot/issues/220)
+// TODO: balance downloads (https://github.com/tetcoin/tetcoin/issues/220)
 #[derive(PartialEq, Eq, Decode)]
 #[cfg_attr(feature = "std", derive(Debug, Encode))]
 pub struct ValidationParams {
@@ -282,7 +282,7 @@ pub struct ValidationParams {
 }
 
 /// The result of parachain validation.
-// TODO: balance uploads (https://github.com/paritytech/polkadot/issues/220)
+// TODO: balance uploads (https://github.com/tetcoin/tetcoin/issues/220)
 #[derive(PartialEq, Eq, Encode)]
 #[cfg_attr(feature = "std", derive(Debug, Decode))]
 pub struct ValidationResult {

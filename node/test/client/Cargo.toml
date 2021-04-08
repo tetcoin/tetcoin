@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-test-client"
+name = "tetcoin-test-client"
 version = "0.8.28"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -7,25 +7,25 @@ edition = "2018"
 [dependencies]
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 
-# Polkadot dependencies
-polkadot-test-runtime = { path = "../../../runtime/test-runtime" }
-polkadot-test-service = { path = "../service" }
-polkadot-primitives = { path = "../../../primitives" }
-polkadot-node-subsystem = { path = "../../subsystem" }
+# Tetcoin dependencies
+tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
+tetcoin-test-service = { path = "../service" }
+tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-node-subsystem = { path = "../../subsystem" }
 
 # Substrate dependencies
-substrate-test-client = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-service = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-block-builder = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-consensus = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-inherents = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-api = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-timestamp = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-state-machine = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcore-test-client = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-timestamp = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
 [dev-dependencies]
-sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "master" }
+tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

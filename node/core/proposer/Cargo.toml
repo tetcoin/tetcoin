@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-core-proposer"
+name = "tetcoin-node-core-proposer"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -8,17 +8,17 @@ edition = "2018"
 futures = "0.3.12"
 futures-timer = "3.0.2"
 tracing = "0.1.22"
-polkadot-node-subsystem = { path = "../../subsystem" }
-polkadot-overseer = { path = "../../overseer" }
-polkadot-primitives = { path = "../../../primitives" }
-sc-basic-authorship = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-block-builder = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-api = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-inherents = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "master" }
-prometheus-endpoint = { package = "substrate-prometheus-endpoint", git = "https://github.com/paritytech/substrate", branch = "master" }
+tetcoin-node-subsystem = { path = "../../subsystem" }
+tetcoin-overseer = { path = "../../overseer" }
+tetcoin-primitives = { path = "../../../primitives" }
+tc-basic-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { package = "tetcore-prometheus-endpoint", git = "https://github.com/tetcoin/tetcore", branch = "master" }

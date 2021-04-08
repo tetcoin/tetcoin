@@ -1,28 +1,28 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Mocks for all the traits.
 
-use sp_io::TestExternalities;
-use sp_core::H256;
-use sp_runtime::traits::{
+use tp_io::TestExternalities;
+use tet_core::H256;
+use tp_runtime::traits::{
 	BlakeTwo256, IdentityLookup,
 };
 use primitives::v1::{AuthorityDiscoveryId, Balance, BlockNumber, Header, ValidatorIndex};
-use frame_support::{
+use fabric_support::{
 	impl_outer_origin, impl_outer_dispatch, impl_outer_event, parameter_types,
 	traits::Randomness as RandomnessT,
 };
@@ -49,8 +49,8 @@ impl_outer_dispatch! {
 
 impl_outer_event! {
 	pub enum TestEvent for Test {
-		frame_system<T>,
-		pallet_balances<T>,
+		fabric_system<T>,
+		noble_balances<T>,
 		inclusion<T>,
 	}
 }
@@ -65,11 +65,11 @@ impl RandomnessT<H256> for TestRandomness {
 
 parameter_types! {
 	pub const BlockHashCount: u32 = 250;
-	pub BlockWeights: frame_system::limits::BlockWeights =
-		frame_system::limits::BlockWeights::simple_max(4 * 1024 * 1024);
+	pub BlockWeights: fabric_system::limits::BlockWeights =
+		fabric_system::limits::BlockWeights::simple_max(4 * 1024 * 1024);
 }
 
-impl frame_system::Config for Test {
+impl fabric_system::Config for Test {
 	type BaseCallFilter = ();
 	type BlockWeights = BlockWeights;
 	type BlockLength = ();
@@ -87,7 +87,7 @@ impl frame_system::Config for Test {
 	type BlockHashCount = BlockHashCount;
 	type Version = ();
 	type PalletInfo = ();
-	type AccountData = pallet_balances::AccountData<u128>;
+	type AccountData = noble_balances::AccountData<u128>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
 	type SystemWeightInfo = ();
@@ -98,7 +98,7 @@ parameter_types! {
 	pub static ExistentialDeposit: u64 = 0;
 }
 
-impl pallet_balances::Config for Test {
+impl noble_balances::Config for Test {
 	type MaxLocks = ();
 	type Balance = Balance;
 	type Event = TestEvent;
@@ -126,7 +126,7 @@ impl crate::ump::Config for Test {
 
 impl crate::hrmp::Config for Test {
 	type Origin = Origin;
-	type Currency = pallet_balances::Module<Test>;
+	type Currency = noble_balances::Module<Test>;
 }
 
 impl crate::scheduler::Config for Test { }
@@ -183,7 +183,7 @@ impl inclusion::RewardValidators for TestRewardValidators {
 	}
 }
 
-pub type System = frame_system::Module<Test>;
+pub type System = fabric_system::Module<Test>;
 
 /// Mocked initializer.
 pub type Initializer = crate::initializer::Module<Test>;
@@ -226,7 +226,7 @@ pub fn new_test_ext(state: GenesisConfig) -> TestExternalities {
 
 #[derive(Default)]
 pub struct GenesisConfig {
-	pub system: frame_system::GenesisConfig,
+	pub system: fabric_system::GenesisConfig,
 	pub configuration: crate::configuration::GenesisConfig<Test>,
 	pub paras: crate::paras::GenesisConfig<Test>,
 }

@@ -1,36 +1,36 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 use assert_matches::assert_matches;
-use polkadot_erasure_coding::{branches, obtain_chunks_v1 as obtain_chunks};
-use polkadot_node_network_protocol::{view, ObservedRole, our_view};
-use polkadot_node_subsystem_util::TimeoutExt;
-use polkadot_primitives::v1::{
+use tetcoin_erasure_coding::{branches, obtain_chunks_v1 as obtain_chunks};
+use tetcoin_node_network_protocol::{view, ObservedRole, our_view};
+use tetcoin_node_subsystem_util::TimeoutExt;
+use tetcoin_primitives::v1::{
 	AvailableData, BlockData, CandidateCommitments, CandidateDescriptor, GroupIndex,
 	GroupRotationInfo, HeadData, OccupiedCore, PersistedValidationData, PoV, ScheduledCore, Id as ParaId,
 	CommittedCandidateReceipt,
 };
-use polkadot_subsystem_testhelpers as test_helpers;
+use tetcoin_subsystem_testhelpers as test_helpers;
 
 use futures::{executor, future, Future};
-use sc_keystore::LocalKeystore;
-use sp_application_crypto::AppKey;
-use sp_keystore::{SyncCryptoStore, SyncCryptoStorePtr};
-use sp_keyring::Sr25519Keyring;
+use tc_keystore::LocalKeystore;
+use tp_application_crypto::AppKey;
+use tp_keystore::{SyncCryptoStore, SyncCryptoStorePtr};
+use tp_keyring::Sr25519Keyring;
 use std::{sync::Arc, time::Duration};
 use maplit::hashmap;
 
@@ -71,9 +71,9 @@ fn test_harness<T: Future<Output = ()>>(
 	keystore: SyncCryptoStorePtr,
 	test_fx: impl FnOnce(TestHarness) -> T,
 ) -> ProtocolState {
-	sp_tracing::try_init_simple();
+	tp_tracing::try_init_simple();
 
-	let pool = sp_core::testing::TaskExecutor::new();
+	let pool = tet_core::testing::TaskExecutor::new();
 	let (context, virtual_overseer) = test_helpers::make_subsystem_context(pool.clone());
 
 	let subsystem = AvailabilityDistributionSubsystem::new(keystore, Default::default());
@@ -927,7 +927,7 @@ fn candidate_chunks_are_put_into_message_vault_when_candidate_is_first_seen() {
 
 #[test]
 fn k_ancestors_in_session() {
-	let pool = sp_core::testing::TaskExecutor::new();
+	let pool = tet_core::testing::TaskExecutor::new();
 	let (mut ctx, mut virtual_overseer) =
 		test_helpers::make_subsystem_context::<AvailabilityDistributionMessage, _>(pool);
 
@@ -1145,7 +1145,7 @@ fn query_pending_availability_at_pulls_from_and_updates_receipts() {
 	let mut receipts = HashMap::new();
 	receipts.insert(hash_a, vec![candidate_hash_a, candidate_hash_b].into_iter().collect());
 
-	let pool = sp_core::testing::TaskExecutor::new();
+	let pool = tet_core::testing::TaskExecutor::new();
 
 	let (mut ctx, mut virtual_overseer) =
 		test_helpers::make_subsystem_context::<AvailabilityDistributionMessage, _>(pool);

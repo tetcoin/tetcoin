@@ -2,30 +2,30 @@
 
 Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework.
 
-> **NOTE:** In 2018, we split our implementation of "Polkadot" from its development framework
-> "Substrate". See the [Substrate][substrate-repo] repo for git history prior to 2018.
+> **NOTE:** In 2018, we split our implementation of "Tetcoin" from its development framework
+> "Substrate". See the [Substrate][tetcore-repo] repo for git history prior to 2018.
 
-[substrate-repo]: https://github.com/paritytech/substrate
+[tetcore-repo]: https://github.com/tetcoin/tetcore
 
-This repo contains runtimes for the Polkadot, Kusama, and Westend networks. The README provides
-information about installing the `polkadot` binary and developing on the codebase. For more
+This repo contains runtimes for the Tetcoin, Kusama, and Westend networks. The README provides
+information about installing the `tetcoin` binary and developing on the codebase. For more
 specific guides, like how to be a validator, see the
-[Polkadot Wiki](https://wiki.polkadot.network/docs/en/).
+[Tetcoin Wiki](https://wiki.tetcoin.network/docs/en/).
 
 ## Installation
 
-If you just wish to run a Polkadot node without compiling it yourself, you may
+If you just wish to run a Tetcoin node without compiling it yourself, you may
 either run the latest binary from our
-[releases](https://github.com/paritytech/polkadot/releases) page, or install
-Polkadot from one of our package repositories.
+[releases](https://github.com/tetcoin/tetcoin/releases) page, or install
+Tetcoin from one of our package repositories.
 
 Installation from the debian or rpm repositories will create a `systemd`
-service that can be used to run a Polkadot node. This is disabled by default,
-and can be started by running `systemctl start polkadot` on demand (use
-`systemctl enable polkadot` to make it auto-start after reboot). By default, it
-will run as the `polkadot` user.  Command-line flags passed to the binary can
-be customised by editing `/etc/default/polkadot`. This file will not be
-overwritten on updating polkadot. You may also just run the node directly from
+service that can be used to run a Tetcoin node. This is disabled by default,
+and can be started by running `systemctl start tetcoin` on demand (use
+`systemctl enable tetcoin` to make it auto-start after reboot). By default, it
+will run as the `tetcoin` user.  Command-line flags passed to the binary can
+be customised by editing `/etc/default/tetcoin`. This file will not be
+overwritten on updating tetcoin. You may also just run the node directly from
 the command-line.
 
 ### Debian-based (Debian, Ubuntu)
@@ -43,8 +43,8 @@ apt update
 # Install the `parity-keyring` package - This will ensure the GPG key
 # used by APT remains up-to-date
 apt install parity-keyring
-# Install polkadot
-apt install polkadot
+# Install tetcoin
+apt install tetcoin
 
 ```
 
@@ -56,21 +56,21 @@ Currently supports Fedora 32 and CentOS 8, and derivatives.
 # Install dnf-plugins-core (This might already be installed)
 dnf install dnf-plugins-core
 # Add the repository and enable it
-dnf config-manager --add-repo https://releases.parity.io/rpm/polkadot.repo
-dnf config-manager --set-enabled polkadot
-# Install polkadot (You may have to confirm the import of the GPG key, which
+dnf config-manager --add-repo https://releases.parity.io/rpm/tetcoin.repo
+dnf config-manager --set-enabled tetcoin
+# Install tetcoin (You may have to confirm the import of the GPG key, which
 # should have the following fingerprint: 9D4B2B6EB8F97156D19669A9FF0812D491B96798)
-dnf install polkadot
+dnf install tetcoin
 ```
 
 ## Building
 
 ### Install via Cargo
 
-If you want to install Polkadot in your PATH, you can do so with with:
+If you want to install Tetcoin in your PATH, you can do so with with:
 
 ```bash
-cargo install --git https://github.com/paritytech/polkadot --tag <version> polkadot --locked
+cargo install --git https://github.com/tetcoin/tetcoin --tag <version> tetcoin --locked
 ```
 
 ### Build from Source
@@ -107,67 +107,67 @@ Note that compilation is a memory intensive process. We recommend having 4 GiB o
 
 ## Networks
 
-This repo supports runtimes for Polkadot, Kusama, and Westend.
+This repo supports runtimes for Tetcoin, Kusama, and Westend.
 
-### Connect to Polkadot Mainnet
+### Connect to Tetcoin Mainnet
 
-Connect to the global Polkadot Mainnet network by running:
+Connect to the global Tetcoin Mainnet network by running:
 
 ```bash
-./target/release/polkadot --chain=polkadot
+./target/release/tetcoin --chain=tetcoin
 ```
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.polkadot.io/#list/Polkadot
+[telemetry]: https://telemetry.tetcoin.io/#list/Tetcoin
 
 ### Connect to the "Kusama" Canary Network
 
 Connect to the global Kusama canary network by running:
 
 ```bash
-./target/release/polkadot --chain=kusama
+./target/release/tetcoin --chain=kusama
 ```
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.polkadot.io/#list/Kusama
+[telemetry]: https://telemetry.tetcoin.io/#list/Kusama
 
 ### Connect to the Westend Testnet
 
 Connect to the global Westend testnet by running:
 
 ```bash
-./target/release/polkadot --chain=westend
+./target/release/tetcoin --chain=westend
 ```
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.polkadot.io/#list/Westend
+[telemetry]: https://telemetry.tetcoin.io/#list/Westend
 
 ### Obtaining DOTs
 
-If you want to do anything on Polkadot, Kusama, or Westend, then you'll need to get an account and
+If you want to do anything on Tetcoin, Kusama, or Westend, then you'll need to get an account and
 some DOT, KSM, or WND tokens, respectively. See the
-[claims instructions](https://claims.polkadot.network/) for Polkadot if you have DOTs to claim. For
+[claims instructions](https://claims.tetcoin.network/) for Tetcoin if you have DOTs to claim. For
 Westend's WND tokens, see the faucet
-[instructions](https://wiki.polkadot.network/docs/en/learn-DOT#getting-westies) on the Wiki.
+[instructions](https://wiki.tetcoin.network/docs/en/learn-DOT#getting-westies) on the Wiki.
 
-## Hacking on Polkadot
+## Hacking on Tetcoin
 
-If you'd actually like hack on Polkadot, you can grab the source code and build it. Ensure you have
+If you'd actually like hack on Tetcoin, you can grab the source code and build it. Ensure you have
 Rust and the support software installed. This script will install or update Rust and install the
 required dependencies (this may take up to 30 minutes on Mac machines):
 
 ```bash
-curl https://getsubstrate.io -sSf | bash -s -- --fast
+curl https://gettetcore.io -sSf | bash -s -- --fast
 ```
 
-Then, grab the Polkadot source code:
+Then, grab the Tetcoin source code:
 
 ```bash
-git clone https://github.com/paritytech/polkadot.git
-cd polkadot
+git clone https://github.com/tetcoin/tetcoin.git
+cd tetcoin
 ```
 
 Then build the code. You will need to build in release mode (`--release`) to start a network. Only
@@ -201,10 +201,10 @@ RUST_LOG=debug RUST_BACKTRACE=1 cargo run -- --dev
 You can run a simple single-node development "network" on your machine by running:
 
 ```bash
-polkadot --dev
+tetcoin --dev
 ```
 
-You can muck around by heading to https://polkadot.js.org/apps and choose "Local Node" from the
+You can muck around by heading to https://tetcoin.js.org/apps and choose "Local Node" from the
 Settings menu.
 
 ### Local Two-node Testnet
@@ -213,13 +213,13 @@ If you want to see the multi-node consensus algorithm in action locally, then yo
 local testnet. You'll need two terminals open. In one, run:
 
 ```bash
-polkadot --chain=polkadot-local --alice -d /tmp/alice
+tetcoin --chain=tetcoin-local --alice -d /tmp/alice
 ```
 
 And in the other, run:
 
 ```bash
-polkadot --chain=polkadot-local --bob -d /tmp/bob --port 30334 --bootnodes '/ip4/127.0.0.1/tcp/30333/p2p/ALICE_BOOTNODE_ID_HERE'
+tetcoin --chain=tetcoin-local --bob -d /tmp/bob --port 30334 --bootnodes '/ip4/127.0.0.1/tcp/30333/p2p/ALICE_BOOTNODE_ID_HERE'
 ```
 
 Ensure you replace `ALICE_BOOTNODE_ID_HERE` with the node ID from the output of the first terminal.
@@ -242,8 +242,8 @@ Ensure you replace `ALICE_BOOTNODE_ID_HERE` with the node ID from the output of 
 
 ## License
 
-Polkadot is [GPL 3.0 licensed](LICENSE).
+Tetcoin is [GPL 3.0 licensed](LICENSE).
 
 ## Important Notice
 
-https://polkadot.network/testnetdisclaimer
+https://tetcoin.network/testnetdisclaimer

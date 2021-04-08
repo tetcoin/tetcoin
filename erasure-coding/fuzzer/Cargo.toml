@@ -5,9 +5,9 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-polkadot-erasure-coding = { path = ".." }
+tetcoin-erasure-coding = { path = ".." }
 honggfuzz = "0.5"
-primitives = { package = "polkadot-primitives", path = "../../primitives/" }
+primitives = { package = "tetcoin-primitives", path = "../../primitives/" }
 
 [[bin]]
 name = "reconstruct_fuzzer"

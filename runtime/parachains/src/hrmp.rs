@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
 	ensure_parachain,
@@ -20,7 +20,7 @@ use crate::{
 	initializer, paras, dmp,
 };
 use parity_scale_codec::{Decode, Encode};
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error, ensure, traits::{Get, ReservableCurrency}, weights::Weight,
 	StorageMap, StorageValue, dispatch::DispatchResult,
 };
@@ -28,8 +28,8 @@ use primitives::v1::{
 	Balance, Hash, HrmpChannelId, Id as ParaId, InboundHrmpMessage, OutboundHrmpMessage,
 	SessionIndex,
 };
-use sp_runtime::traits::{UniqueSaturatedInto, AccountIdConversion, BlakeTwo256, Hash as HashT};
-use sp_std::{
+use tp_runtime::traits::{UniqueSaturatedInto, AccountIdConversion, BlakeTwo256, Hash as HashT};
+use tetcore_std::{
 	mem, fmt,
 	collections::{btree_map::BTreeMap, btree_set::BTreeSet},
 	prelude::*,
@@ -214,9 +214,9 @@ impl fmt::Debug for OutboundHrmpAcceptanceErr {
 	}
 }
 
-pub trait Config: frame_system::Config + configuration::Config + paras::Config + dmp::Config {
+pub trait Config: fabric_system::Config + configuration::Config + paras::Config + dmp::Config {
 	type Origin: From<crate::Origin>
-		+ From<<Self as frame_system::Config>::Origin>
+		+ From<<Self as fabric_system::Config>::Origin>
 		+ Into<Result<crate::Origin, <Self as Config>::Origin>>;
 
 	/// An interface for reserving deposits for opening channels.
@@ -338,7 +338,7 @@ decl_error! {
 
 decl_module! {
 	/// The HRMP module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		/// Initiate opening a channel from a parachain to a given recipient with given channel
@@ -797,7 +797,7 @@ impl<T: Config> Module<T> {
 		out_hrmp_msgs: Vec<OutboundHrmpMessage<ParaId>>,
 	) -> Weight {
 		let mut weight = 0;
-		let now = <frame_system::Module<T>>::block_number();
+		let now = <fabric_system::Module<T>>::block_number();
 
 		for out_msg in out_hrmp_msgs {
 			let channel_id = HrmpChannelId {
@@ -1125,12 +1125,12 @@ mod tests {
 	use crate::mock::{
 		new_test_ext, Test, Configuration, Paras, Hrmp, System, GenesisConfig as MockGenesisConfig,
 	};
-	use frame_support::{assert_err, traits::Currency as _};
+	use fabric_support::{assert_err, traits::Currency as _};
 	use primitives::v1::BlockNumber;
 	use std::collections::{BTreeMap, HashSet};
 
 	fn run_to_block(to: BlockNumber, new_session: Option<Vec<BlockNumber>>) {
-		use frame_support::traits::{OnFinalize as _, OnInitialize as _};
+		use fabric_support::traits::{OnFinalize as _, OnInitialize as _};
 
 		let config = Configuration::config();
 		while System::block_number() < to {
@@ -1254,7 +1254,7 @@ mod tests {
 	}
 
 	fn assert_storage_consistency_exhaustive() {
-		use frame_support::IterableStorageMap;
+		use fabric_support::IterableStorageMap;
 
 		assert_eq!(
 			<Hrmp as Store>::HrmpOpenChannelRequests::iter()
@@ -1649,7 +1649,7 @@ mod tests {
 			// decode it into the abridged version.
 			assert!(channel_exists(para_a, para_b));
 			let raw_hrmp_channel =
-				sp_io::storage::get(&well_known_keys::hrmp_channels(HrmpChannelId {
+				tp_io::storage::get(&well_known_keys::hrmp_channels(HrmpChannelId {
 					sender: para_a,
 					recipient: para_b,
 				}))
@@ -1671,7 +1671,7 @@ mod tests {
 
 			// Now, verify that we can access and decode the egress index.
 			let raw_egress_index =
-				sp_io::storage::get(
+				tp_io::storage::get(
 					&well_known_keys::hrmp_egress_channel_index(para_a)
 				)
 				.expect("the egress index must be present for para_a");
@@ -1696,7 +1696,7 @@ mod tests {
 
 			assert_err!(
 				Hrmp::init_open_channel(para_a, para_b, 2, 8),
-				pallet_balances::Error::<Test, _>::InsufficientBalance
+				noble_balances::Error::<Test, _>::InsufficientBalance
 			);
 		});
 
@@ -1709,7 +1709,7 @@ mod tests {
 
 			assert_err!(
 				Hrmp::accept_open_channel(para_b, para_a),
-				pallet_balances::Error::<Test, _>::InsufficientBalance
+				noble_balances::Error::<Test, _>::InsufficientBalance
 			);
 		});
 	}

@@ -12,96 +12,96 @@ serde_derive = { version = "1.0.117", optional = true }
 smallvec = "1.6.1"
 hex-literal = "0.3.1"
 
-frame-support = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-api = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-io = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-std = { package = "sp-std", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-session = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-staking = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-version = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-version = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
-tx-pool-api = { package = "sp-transaction-pool", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-block-builder-api = { package = "sp-block-builder", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-inherents = { package = "sp-inherents", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-offchain-primitives = { package = "sp-offchain", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+tx-pool-api = { package = "tp-transaction-pool", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+block-builder-api = { package = "tp-block-builder", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+offchain-primitives = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
-pallet-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-authorship = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-babe = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-sudo = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-babe-primitives = { package = "sp-consensus-babe", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-balances = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-session = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-im-online = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-indices = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-staking = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-staking-reward-curve = { package = "pallet-staking-reward-curve", git = "https://github.com/paritytech/substrate", branch = "master" }
-frame-executive = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-grandpa = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-timestamp = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-pallet-offences = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-authority-discovery-primitives = { package = "sp-authority-discovery", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+noble-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-sudo = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+babe-primitives = { package = "tp-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-im-online = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-indices = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-transaction-payment = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-transaction-payment-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-staking-reward-curve = { package = "noble-staking-reward-curve", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+fabric-executive = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-grandpa = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-timestamp = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-offences = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+authority-discovery-primitives = { package = "tp-authority-discovery", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
-frame-system = {git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+fabric-system = {git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+fabric-system-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
-runtime-common = { package = "polkadot-runtime-common", path = "../common", default-features = false }
-primitives = { package = "polkadot-primitives", path = "../../primitives", default-features = false }
-polkadot-parachain = { path = "../../parachain", default-features = false }
-runtime-parachains = { package = "polkadot-runtime-parachains", path = "../parachains", default-features = false }
+runtime-common = { package = "tetcoin-runtime-common", path = "../common", default-features = false }
+primitives = { package = "tetcoin-primitives", path = "../../primitives", default-features = false }
+tetcoin-parachain = { path = "../../parachain", default-features = false }
+runtime-parachains = { package = "tetcoin-runtime-parachains", path = "../parachains", default-features = false }
 
 xcm = { package = "xcm", path = "../../xcm", default-features = false }
 xcm-executor = { package = "xcm-executor", path = "../../xcm/xcm-executor", default-features = false }
 xcm-builder = { package = "xcm-builder", path = "../../xcm/xcm-builder", default-features = false }
 
 [build-dependencies]
-substrate-wasm-builder = "3.0.0"
+tetcore-wasm-builder = "3.0.0"
 
 [features]
 default = ["std"]
 no_std = []
 std = [
 	"authority-discovery-primitives/std",
-	"pallet-authority-discovery/std",
-	"pallet-authorship/std",
-	"pallet-babe/std",
+	"noble-authority-discovery/std",
+	"noble-authorship/std",
+	"noble-babe/std",
 	"babe-primitives/std",
-	"pallet-balances/std",
+	"noble-balances/std",
 	"parity-scale-codec/std",
-	"frame-executive/std",
-	"pallet-grandpa/std",
-	"pallet-sudo/std",
-	"pallet-indices/std",
-	"pallet-im-online/std",
+	"fabric-executive/std",
+	"noble-grandpa/std",
+	"noble-sudo/std",
+	"noble-indices/std",
+	"noble-im-online/std",
 	"inherents/std",
-	"frame-support/std",
-	"polkadot-parachain/std",
+	"fabric-support/std",
+	"tetcoin-parachain/std",
 	"primitives/std",
 	"runtime-common/std",
 	"runtime-parachains/std",
-	"pallet-session/std",
-	"sp-api/std",
-	"sp-core/std",
-	"sp-io/std",
-	"sp-runtime/std",
-	"sp-session/std",
-	"sp-staking/std",
-	"sp-std/std",
-	"pallet-staking/std",
-	"frame-system/std",
-	"frame-system-rpc-runtime-api/std",
+	"noble-session/std",
+	"tp-api/std",
+	"tet-core/std",
+	"tp-io/std",
+	"tp-runtime/std",
+	"tp-session/std",
+	"tp-staking/std",
+	"tetcore-std/std",
+	"noble-staking/std",
+	"fabric-system/std",
+	"fabric-system-rpc-runtime-api/std",
 	"offchain-primitives/std",
-	"pallet-offences/std",
-	"pallet-timestamp/std",
-	"pallet-transaction-payment/std",
-	"pallet-transaction-payment-rpc-runtime-api/std",
+	"noble-offences/std",
+	"noble-timestamp/std",
+	"noble-transaction-payment/std",
+	"noble-transaction-payment-rpc-runtime-api/std",
 	"block-builder-api/std",
 	"tx-pool-api/std",
-	"sp-version/std",
+	"tp-version/std",
 	"serde_derive",
 	"serde/std",
 	"xcm/std",
@@ -116,14 +116,14 @@ std = [
 disable-runtime-api = []
 runtime-benchmarks = [
 	"runtime-common/runtime-benchmarks",
-	"frame-support/runtime-benchmarks",
-	"frame-system/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
-	"pallet-babe/runtime-benchmarks",
-	"pallet-balances/runtime-benchmarks",
-	"pallet-grandpa/runtime-benchmarks",
-	"pallet-im-online/runtime-benchmarks",
-	"pallet-indices/runtime-benchmarks",
-	"pallet-staking/runtime-benchmarks",
-	"pallet-timestamp/runtime-benchmarks",
+	"fabric-support/runtime-benchmarks",
+	"fabric-system/runtime-benchmarks",
+	"tp-runtime/runtime-benchmarks",
+	"noble-babe/runtime-benchmarks",
+	"noble-balances/runtime-benchmarks",
+	"noble-grandpa/runtime-benchmarks",
+	"noble-im-online/runtime-benchmarks",
+	"noble-indices/runtime-benchmarks",
+	"noble-staking/runtime-benchmarks",
+	"noble-timestamp/runtime-benchmarks",
 ]

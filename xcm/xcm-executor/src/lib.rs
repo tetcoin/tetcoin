@@ -1,23 +1,23 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use sp_std::{prelude::*, marker::PhantomData, convert::TryInto};
-use frame_support::{ensure, dispatch::Dispatchable};
+use tetcore_std::{prelude::*, marker::PhantomData, convert::TryInto};
+use fabric_support::{ensure, dispatch::Dispatchable};
 use parity_scale_codec::Decode;
 use xcm::v0::{
 	Xcm, Order, ExecuteXcm, SendXcm, Error as XcmError, Result as XcmResult,
@@ -71,7 +71,7 @@ impl<Config: config::Config> ExecuteXcm for XcmExecutor<Config> {
 			(origin, Xcm::TeleportAsset { assets, effects }) => {
 				// check whether we trust origin to teleport this asset to us via config trait.
 				// TODO: should de-wildcard `assets` before passing in.
-				frame_support::debug::print!("Teleport from {:?}", origin);
+				fabric_support::debug::print!("Teleport from {:?}", origin);
 				if assets.iter().all(|asset| Config::IsTeleporter::filter_asset_location(asset, &origin)) {
 					// We only trust the origin to send us assets that they identify as their
 					// sovereign assets.

@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! PoV Distribution Subsystem of Polkadot.
+//! PoV Distribution Subsystem of Tetcoin.
 //!
 //! This is a gossip implementation of code that is responsible for distributing PoVs
 //! among validators.
@@ -22,24 +22,24 @@
 #![deny(unused_crate_dependencies)]
 #![warn(missing_docs)]
 
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	Hash, PoV, CandidateDescriptor, ValidatorId, Id as ParaId, CoreIndex, CoreState,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	ActiveLeavesUpdate, OverseerSignal, SubsystemContext, SubsystemResult, SubsystemError, Subsystem,
 	FromOverseer, SpawnedSubsystem,
 	messages::{
 		PoVDistributionMessage, AllMessages, NetworkBridgeMessage,
 	},
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	validator_discovery,
 	request_validators_ctx,
 	request_validator_groups_ctx,
 	request_availability_cores_ctx,
 	metrics::{self, prometheus},
 };
-use polkadot_node_network_protocol::{
+use tetcoin_node_network_protocol::{
 	v1 as protocol_v1, ReputationChange as Rep, NetworkBridgeEvent, PeerId, OurView,
 };
 

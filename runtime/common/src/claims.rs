@@ -1,5 +1,5 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
 // Substrate is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,21 +16,21 @@
 
 //! Module to process claims from Ethereum addresses.
 
-use sp_std::{prelude::*, fmt::Debug};
-use sp_io::{hashing::keccak_256, crypto::secp256k1_ecdsa_recover};
-use frame_support::{
+use tetcore_std::{prelude::*, fmt::Debug};
+use tp_io::{hashing::keccak_256, crypto::secp256k1_ecdsa_recover};
+use fabric_support::{
 	decl_event, decl_storage, decl_module, decl_error, ensure,
 	traits::{Currency, Get, VestingSchedule, EnsureOrigin, IsSubType},
 	weights::{Weight, Pays, DispatchClass},
-	pallet_prelude::DispatchResultWithPostInfo,
+	noble_prelude::DispatchResultWithPostInfo,
 };
-use frame_system::{ensure_signed, ensure_root, ensure_none};
+use fabric_system::{ensure_signed, ensure_root, ensure_none};
 use parity_scale_codec::{Encode, Decode};
 #[cfg(feature = "std")]
 use serde::{self, Serialize, Deserialize, Serializer, Deserializer};
 #[cfg(feature = "std")]
-use sp_runtime::traits::Zero;
-use sp_runtime::{
+use tp_runtime::traits::Zero;
+use tp_runtime::{
 	traits::{CheckedSub, SignedExtension, DispatchInfoOf}, RuntimeDebug, DispatchResult,
 	transaction_validity::{
 		TransactionLongevity, TransactionValidity, ValidTransaction, InvalidTransaction,
@@ -39,13 +39,13 @@ use sp_runtime::{
 };
 use primitives::v1::ValidityError;
 
-type CurrencyOf<T> = <<T as Config>::VestingSchedule as VestingSchedule<<T as frame_system::Config>::AccountId>>::Currency;
-type BalanceOf<T> = <CurrencyOf<T> as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+type CurrencyOf<T> = <<T as Config>::VestingSchedule as VestingSchedule<<T as fabric_system::Config>::AccountId>>::Currency;
+type BalanceOf<T> = <CurrencyOf<T> as Currency<<T as fabric_system::Config>::AccountId>>::Balance;
 
 /// Configuration trait.
-pub trait Config: frame_system::Config {
+pub trait Config: fabric_system::Config {
 	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
 	type VestingSchedule: VestingSchedule<Self::AccountId, Moment=Self::BlockNumber>;
 	type Prefix: Get<&'static [u8]>;
 	type MoveClaimOrigin: EnsureOrigin<Self::Origin>;
@@ -86,11 +86,11 @@ impl StatementKind {
 			StatementKind::Regular =>
 				&b"I hereby agree to the terms of the statement whose SHA-256 multihash is \
 				Qmc1XYqT6S39WNp2UeiRUrZichUWUPpGEThDE6dAb3f6Ny. (This may be found at the URL: \
-				https://statement.polkadot.network/regular.html)"[..],
+				https://statement.tetcoin.network/regular.html)"[..],
 			StatementKind::Saft =>
 				&b"I hereby agree to the terms of the statement whose SHA-256 multihash is \
 				QmXEkMahfhHJPzT3RjkXiZVFi77ZeVeuxtAjhojGRNYckz. (This may be found at the URL: \
-				https://statement.polkadot.network/saft.html)"[..],
+				https://statement.tetcoin.network/saft.html)"[..],
 		}
 	}
 }
@@ -141,8 +141,8 @@ impl PartialEq for EcdsaSignature {
 	}
 }
 
-impl sp_std::fmt::Debug for EcdsaSignature {
-	fn fmt(&self, f: &mut sp_std::fmt::Formatter<'_>) -> sp_std::fmt::Result {
+impl tetcore_std::fmt::Debug for EcdsaSignature {
+	fn fmt(&self, f: &mut tetcore_std::fmt::Formatter<'_>) -> tetcore_std::fmt::Result {
 		write!(f, "EcdsaSignature({:?})", &self.0[..])
 	}
 }
@@ -150,7 +150,7 @@ impl sp_std::fmt::Debug for EcdsaSignature {
 decl_event!(
 	pub enum Event<T> where
 		Balance = BalanceOf<T>,
-		AccountId = <T as frame_system::Config>::AccountId
+		AccountId = <T as fabric_system::Config>::AccountId
 	{
 		/// Someone claimed some DOTs. [who, ethereum_address, amount]
 		Claimed(AccountId, EthereumAddress, Balance),
@@ -459,7 +459,7 @@ impl<T: Config> Module<T> {
 	}
 }
 
-impl<T: Config> sp_runtime::traits::ValidateUnsigned for Module<T> {
+impl<T: Config> tp_runtime::traits::ValidateUnsigned for Module<T> {
 	type Call = Call<T>;
 
 	fn validate_unsigned(_source: TransactionSource, call: &Self::Call) -> TransactionValidity {
@@ -508,37 +508,37 @@ impl<T: Config> sp_runtime::traits::ValidateUnsigned for Module<T> {
 /// Validate `attest` calls prior to execution. Needed to avoid a DoS attack since they are
 /// otherwise free to place on chain.
 #[derive(Encode, Decode, Clone, Eq, PartialEq)]
-pub struct PrevalidateAttests<T: Config + Send + Sync>(sp_std::marker::PhantomData<T>) where
-	<T as frame_system::Config>::Call: IsSubType<Call<T>>;
+pub struct PrevalidateAttests<T: Config + Send + Sync>(tetcore_std::marker::PhantomData<T>) where
+	<T as fabric_system::Config>::Call: IsSubType<Call<T>>;
 
 impl<T: Config + Send + Sync> Debug for PrevalidateAttests<T> where
-	<T as frame_system::Config>::Call: IsSubType<Call<T>>
+	<T as fabric_system::Config>::Call: IsSubType<Call<T>>
 {
 	#[cfg(feature = "std")]
-	fn fmt(&self, f: &mut sp_std::fmt::Formatter) -> sp_std::fmt::Result {
+	fn fmt(&self, f: &mut tetcore_std::fmt::Formatter) -> tetcore_std::fmt::Result {
 		write!(f, "PrevalidateAttests")
 	}
 
 	#[cfg(not(feature = "std"))]
-	fn fmt(&self, _: &mut sp_std::fmt::Formatter) -> sp_std::fmt::Result {
+	fn fmt(&self, _: &mut tetcore_std::fmt::Formatter) -> tetcore_std::fmt::Result {
 		Ok(())
 	}
 }
 
 impl<T: Config + Send + Sync> PrevalidateAttests<T> where
-	<T as frame_system::Config>::Call: IsSubType<Call<T>>
+	<T as fabric_system::Config>::Call: IsSubType<Call<T>>
 {
 	/// Create new `SignedExtension` to check runtime version.
 	pub fn new() -> Self {
-		Self(sp_std::marker::PhantomData)
+		Self(tetcore_std::marker::PhantomData)
 	}
 }
 
 impl<T: Config + Send + Sync> SignedExtension for PrevalidateAttests<T> where
-	<T as frame_system::Config>::Call: IsSubType<Call<T>>
+	<T as fabric_system::Config>::Call: IsSubType<Call<T>>
 {
 	type AccountId = T::AccountId;
-	type Call = <T as frame_system::Config>::Call;
+	type Call = <T as fabric_system::Config>::Call;
 	type AdditionalSigned = ();
 	type Pre = ();
 	const IDENTIFIER: &'static str = "PrevalidateAttests";
@@ -601,17 +601,17 @@ mod tests {
 	use super::*;
 	use secp_utils::*;
 
-	use sp_core::H256;
+	use tet_core::H256;
 	use parity_scale_codec::Encode;
 	// The testing primitives are very useful for avoiding having to work with signatures
 	// or public keys. `u64` is used as the `AccountId` and no `Signature`s are required.
-	use sp_runtime::{traits::{BlakeTwo256, IdentityLookup, Identity}, testing::Header};
-	use frame_support::{
+	use tp_runtime::{traits::{BlakeTwo256, IdentityLookup, Identity}, testing::Header};
+	use fabric_support::{
 		impl_outer_origin, impl_outer_dispatch, assert_ok, assert_err, assert_noop, parameter_types,
 		ord_parameter_types, weights::{Pays, GetDispatchInfo}, traits::ExistenceRequirement,
 		dispatch::DispatchError::BadOrigin,
 	};
-	use pallet_balances;
+	use noble_balances;
 	use super::Call as ClaimsCall;
 
 	impl_outer_origin! {
@@ -631,7 +631,7 @@ mod tests {
 	parameter_types! {
 		pub const BlockHashCount: u32 = 250;
 	}
-	impl frame_system::Config for Test {
+	impl fabric_system::Config for Test {
 		type BaseCallFilter = ();
 		type BlockWeights = ();
 		type BlockLength = ();
@@ -649,7 +649,7 @@ mod tests {
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
 		type PalletInfo = ();
-		type AccountData = pallet_balances::AccountData<u64>;
+		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
 		type SystemWeightInfo = ();
@@ -660,7 +660,7 @@ mod tests {
 		pub const ExistentialDeposit: u64 = 1;
 	}
 
-	impl pallet_balances::Config for Test {
+	impl noble_balances::Config for Test {
 		type Balance = u64;
 		type Event = ();
 		type DustRemoval = ();
@@ -674,7 +674,7 @@ mod tests {
 		pub const MinVestedTransfer: u64 = 0;
 	}
 
-	impl pallet_vesting::Config for Test {
+	impl noble_vesting::Config for Test {
 		type Event = ();
 		type Currency = Balances;
 		type BlockNumberToBalance = Identity;
@@ -693,12 +693,12 @@ mod tests {
 		type Event = ();
 		type VestingSchedule = Vesting;
 		type Prefix = Prefix;
-		type MoveClaimOrigin = frame_system::EnsureSignedBy<Six, u64>;
+		type MoveClaimOrigin = fabric_system::EnsureSignedBy<Six, u64>;
 		type WeightInfo = TestWeightInfo;
 	}
-	type System = frame_system::Module<Test>;
-	type Balances = pallet_balances::Module<Test>;
-	type Vesting = pallet_vesting::Module<Test>;
+	type System = fabric_system::Module<Test>;
+	type Balances = noble_balances::Module<Test>;
+	type Vesting = noble_vesting::Module<Test>;
 	type Claims = Module<Test>;
 
 	fn alice() -> secp256k1::SecretKey {
@@ -719,10 +719,10 @@ mod tests {
 
 	// This function basically just builds a genesis storage key/value store according to
 	// our desired mockup.
-	pub fn new_test_ext() -> sp_io::TestExternalities {
-		let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+	pub fn new_test_ext() -> tp_io::TestExternalities {
+		let mut t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 		// We use default for brevity, but you can configure as desired if needed.
-		pallet_balances::GenesisConfig::<Test>::default().assimilate_storage(&mut t).unwrap();
+		noble_balances::GenesisConfig::<Test>::default().assimilate_storage(&mut t).unwrap();
 		GenesisConfig::<Test>{
 			claims: vec![
 				(eth(&alice()), 100, None, None),
@@ -913,7 +913,7 @@ mod tests {
 		new_test_ext().execute_with(|| {
 			assert_noop!(
 				Claims::mint_claim(Origin::signed(42), eth(&bob()), 200, None, None),
-				sp_runtime::traits::BadOrigin,
+				tp_runtime::traits::BadOrigin,
 			);
 			assert_eq!(Balances::free_balance(42), 0);
 			assert_noop!(
@@ -934,7 +934,7 @@ mod tests {
 		new_test_ext().execute_with(|| {
 			assert_noop!(
 				Claims::mint_claim(Origin::signed(42), eth(&bob()), 200, Some((50, 10, 1)), None),
-				sp_runtime::traits::BadOrigin,
+				tp_runtime::traits::BadOrigin,
 			);
 			assert_eq!(Balances::free_balance(42), 0);
 			assert_noop!(
@@ -949,7 +949,7 @@ mod tests {
 			// Make sure we can not transfer the vested balance.
 			assert_err!(
 				<Balances as Currency<_>>::transfer(&69, &80, 180, ExistenceRequirement::AllowDeath),
-				pallet_balances::Error::<Test, _>::LiquidityRestrictions,
+				noble_balances::Error::<Test, _>::LiquidityRestrictions,
 			);
 		});
 	}
@@ -959,7 +959,7 @@ mod tests {
 		new_test_ext().execute_with(|| {
 			assert_noop!(
 				Claims::mint_claim(Origin::signed(42), eth(&bob()), 200, None, Some(StatementKind::Regular)),
-				sp_runtime::traits::BadOrigin,
+				tp_runtime::traits::BadOrigin,
 			);
 			assert_eq!(Balances::free_balance(42), 0);
 			let signature = sig::<Test>(&bob(), &69u64.encode(), StatementKind::Regular.to_text());
@@ -991,7 +991,7 @@ mod tests {
 			assert_eq!(Balances::free_balance(42), 0);
 			assert_err!(
 				Claims::claim(Origin::signed(42), 42, sig::<Test>(&alice(), &42u64.encode(), &[][..])),
-				sp_runtime::traits::BadOrigin,
+				tp_runtime::traits::BadOrigin,
 			);
 		});
 	}
@@ -1063,8 +1063,8 @@ mod tests {
 
 	#[test]
 	fn validate_unsigned_works() {
-		use sp_runtime::traits::ValidateUnsigned;
-		let source = sp_runtime::transaction_validity::TransactionSource::External;
+		use tp_runtime::traits::ValidateUnsigned;
+		let source = tp_runtime::transaction_validity::TransactionSource::External;
 
 		new_test_ext().execute_with(|| {
 			assert_eq!(
@@ -1134,10 +1134,10 @@ mod tests {
 mod benchmarking {
 	use super::*;
 	use secp_utils::*;
-	use frame_system::RawOrigin;
-	use frame_benchmarking::{benchmarks, account};
-	use sp_runtime::DispatchResult;
-	use sp_runtime::traits::ValidateUnsigned;
+	use fabric_system::RawOrigin;
+	use fabric_benchmarking::{benchmarks, account};
+	use tp_runtime::DispatchResult;
+	use tp_runtime::traits::ValidateUnsigned;
 	use crate::claims::Call;
 
 	const SEED: u32 = 0;
@@ -1184,7 +1184,7 @@ mod benchmarking {
 			let signature = sig::<T>(&secret_key, &account.encode(), &[][..]);
 			super::Module::<T>::mint_claim(RawOrigin::Root.into(), eth_address, VALUE.into(), vesting, None)?;
 			assert_eq!(Claims::<T>::get(eth_address), Some(VALUE.into()));
-			let source = sp_runtime::transaction_validity::TransactionSource::External;
+			let source = tp_runtime::transaction_validity::TransactionSource::External;
 			let call = Call::<T>::claim(account.clone(), signature.clone());
 		}: {
 			super::Module::<T>::validate_unsigned(source, &call)?;
@@ -1231,7 +1231,7 @@ mod benchmarking {
 			super::Module::<T>::mint_claim(RawOrigin::Root.into(), eth_address, VALUE.into(), vesting, Some(statement))?;
 			assert_eq!(Claims::<T>::get(eth_address), Some(VALUE.into()));
 			let call = Call::<T>::claim_attest(account.clone(), signature.clone(), StatementKind::Regular.to_text().to_vec());
-			let source = sp_runtime::transaction_validity::TransactionSource::External;
+			let source = tp_runtime::transaction_validity::TransactionSource::External;
 		}: {
 			super::Module::<T>::validate_unsigned(source, &call)?;
 			super::Module::<T>::claim_attest(RawOrigin::None.into(), account, signature, statement.to_text().to_vec())?;
@@ -1337,7 +1337,7 @@ mod benchmarking {
 	mod tests {
 		use super::*;
 		use crate::claims::tests::{new_test_ext, Test};
-		use frame_support::assert_ok;
+		use fabric_support::assert_ok;
 
 		#[test]
 		fn test_benchmarks() {

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! A validator discovery service for the Network Bridge.
 
@@ -24,11 +24,11 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use futures::channel::mpsc;
 
-use sc_network::multiaddr::{Multiaddr, Protocol};
-use sc_authority_discovery::Service as AuthorityDiscoveryService;
-use polkadot_node_network_protocol::PeerId;
-use polkadot_primitives::v1::{AuthorityDiscoveryId, Block, Hash};
-use polkadot_node_network_protocol::peer_set::PeerSet;
+use tc_network::multiaddr::{Multiaddr, Protocol};
+use tc_authority_discovery::Service as AuthorityDiscoveryService;
+use tetcoin_node_network_protocol::PeerId;
+use tetcoin_primitives::v1::{AuthorityDiscoveryId, Block, Hash};
+use tetcoin_node_network_protocol::peer_set::PeerSet;
 
 const LOG_TARGET: &str = "validator_discovery";
 
@@ -51,13 +51,13 @@ pub trait AuthorityDiscovery: Send + 'static {
 }
 
 #[async_trait]
-impl Network for Arc<sc_network::NetworkService<Block, Hash>> {
+impl Network for Arc<tc_network::NetworkService<Block, Hash>> {
 	async fn add_peers_to_reserved_set(&mut self, protocol: Cow<'static, str>, multiaddresses: HashSet<Multiaddr>) -> Result<(), String> {
-		sc_network::NetworkService::add_peers_to_reserved_set(&**self, protocol, multiaddresses)
+		tc_network::NetworkService::add_peers_to_reserved_set(&**self, protocol, multiaddresses)
 	}
 
 	async fn remove_peers_from_reserved_set(&mut self, protocol: Cow<'static, str>, multiaddresses: HashSet<Multiaddr>) -> Result<(), String> {
-		sc_network::NetworkService::remove_peers_from_reserved_set(&**self, protocol, multiaddresses)
+		tc_network::NetworkService::remove_peers_from_reserved_set(&**self, protocol, multiaddresses)
 	}
 }
 
@@ -241,7 +241,7 @@ impl<N: Network, AD: AuthorityDiscovery> Service<N, AD> {
 				// depending on the number of sentry nodes,
 				// so we limit the max number of sentries per node to connect to.
 				// They are going to be removed soon though:
-				// https://github.com/paritytech/substrate/issues/6845
+				// https://github.com/tetcoin/tetcore/issues/6845
 				multiaddr_to_add.extend(addresses.into_iter().take(MAX_ADDR_PER_PEER));
 			}
 		}
@@ -340,7 +340,7 @@ mod tests {
 
 	use futures::stream::StreamExt as _;
 
-	use sp_keyring::Sr25519Keyring;
+	use tp_keyring::Sr25519Keyring;
 
 
 	fn new_service() -> Service<TestNetwork, TestAuthorityDiscovery> {

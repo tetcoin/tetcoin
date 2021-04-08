@@ -1,28 +1,28 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Polkadot runtime. This can be compiled with `#[no_std]`, ready for Wasm.
+//! The Tetcoin runtime. This can be compiled with `#[no_std]`, ready for Wasm.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
 #![recursion_limit = "256"]
 
-use pallet_transaction_payment::CurrencyAdapter;
-use sp_std::prelude::*;
-use sp_std::collections::btree_map::BTreeMap;
+use noble_transaction_payment::CurrencyAdapter;
+use tetcore_std::prelude::*;
+use tetcore_std::collections::btree_map::BTreeMap;
 use parity_scale_codec::{Encode, Decode};
 use primitives::v1::{
 	AccountId, AccountIndex, Balance, BlockNumber, CandidateEvent, CommittedCandidateReceipt,
@@ -36,7 +36,7 @@ use runtime_common::{
 	BlockHashCount, BlockWeights, BlockLength, RocksDbWeight, OffchainSolutionWeightLimit,
 	ParachainSessionKeyPlaceholder, AssignmentSessionKeyPlaceholder,
 };
-use sp_runtime::{
+use tp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	ApplyExtrinsicResult, KeyTypeId, Perbill, curve::PiecewiseLinear,
 	transaction_validity::{TransactionValidity, TransactionSource, TransactionPriority},
@@ -46,30 +46,30 @@ use sp_runtime::{
 	},
 };
 #[cfg(feature = "runtime-benchmarks")]
-use sp_runtime::RuntimeString;
-use sp_version::RuntimeVersion;
-use pallet_grandpa::{AuthorityId as GrandpaId, fg_primitives};
+use tp_runtime::RuntimeString;
+use tp_version::RuntimeVersion;
+use noble_grandpa::{AuthorityId as GrandpaId, fg_primitives};
 #[cfg(any(feature = "std", test))]
-use sp_version::NativeVersion;
-use sp_core::OpaqueMetadata;
-use sp_staking::SessionIndex;
-use frame_support::{
+use tp_version::NativeVersion;
+use tet_core::OpaqueMetadata;
+use tp_staking::SessionIndex;
+use fabric_support::{
 	parameter_types, construct_runtime, debug, RuntimeDebug,
 	traits::{KeyOwnerProofSystem, Randomness, Filter, InstanceFilter},
 	weights::Weight,
 };
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+use noble_im_online::sr25519::AuthorityId as ImOnlineId;
 use authority_discovery_primitives::AuthorityId as AuthorityDiscoveryId;
-use pallet_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
-use pallet_session::historical as session_historical;
-use frame_system::{EnsureRoot};
+use noble_transaction_payment::{FeeDetails, RuntimeDispatchInfo};
+use noble_session::historical as session_historical;
+use fabric_system::{EnsureRoot};
 
 #[cfg(feature = "std")]
-pub use pallet_staking::StakerStatus;
+pub use noble_staking::StakerStatus;
 #[cfg(any(feature = "std", test))]
-pub use sp_runtime::BuildStorage;
-pub use pallet_timestamp::Call as TimestampCall;
-pub use pallet_balances::Call as BalancesCall;
+pub use tp_runtime::BuildStorage;
+pub use noble_timestamp::Call as TimestampCall;
+pub use noble_balances::Call as BalancesCall;
 
 /// Constant values used within the runtime.
 pub mod constants;
@@ -118,7 +118,7 @@ parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 }
 
-impl frame_system::Config for Runtime {
+impl fabric_system::Config for Runtime {
 	type BaseCallFilter = BaseFilter;
 	type BlockWeights = BlockWeights;
 	type BlockLength = BlockLength;
@@ -136,10 +136,10 @@ impl frame_system::Config for Runtime {
 	type DbWeight = RocksDbWeight;
 	type Version = Version;
 	type PalletInfo = PalletInfo;
-	type AccountData = pallet_balances::AccountData<Balance>;
+	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
-	type SystemWeightInfo = weights::frame_system::WeightInfo<Runtime>;
+	type SystemWeightInfo = weights::fabric_system::WeightInfo<Runtime>;
 	type SS58Prefix = SS58Prefix;
 }
 
@@ -149,7 +149,7 @@ parameter_types! {
 	pub const MaxScheduledPerBlock: u32 = 50;
 }
 
-impl pallet_scheduler::Config for Runtime {
+impl noble_scheduler::Config for Runtime {
 	type Event = Event;
 	type Origin = Origin;
 	type PalletsOrigin = OriginCaller;
@@ -157,7 +157,7 @@ impl pallet_scheduler::Config for Runtime {
 	type MaximumWeight = MaximumSchedulerWeight;
 	type ScheduleOrigin = EnsureRoot<AccountId>;
 	type MaxScheduledPerBlock = MaxScheduledPerBlock;
-	type WeightInfo = weights::pallet_scheduler::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_scheduler::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -165,27 +165,27 @@ parameter_types! {
 	pub const ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
 }
 
-impl pallet_babe::Config for Runtime {
+impl noble_babe::Config for Runtime {
 	type EpochDuration = EpochDuration;
 	type ExpectedBlockTime = ExpectedBlockTime;
 
 	// session module is the trigger
-	type EpochChangeTrigger = pallet_babe::ExternalTrigger;
+	type EpochChangeTrigger = noble_babe::ExternalTrigger;
 
 	type KeyOwnerProofSystem = Historical;
 
 	type KeyOwnerProof = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::Proof;
 
 	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
-		pallet_babe::AuthorityId,
+		noble_babe::AuthorityId,
 	)>>::IdentificationTuple;
 
 	type HandleEquivocation =
-		pallet_babe::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
+		noble_babe::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
 
 	type WeightInfo = ();
 }
@@ -194,12 +194,12 @@ parameter_types! {
 	pub const IndexDeposit: Balance = 1 * DOLLARS;
 }
 
-impl pallet_indices::Config for Runtime {
+impl noble_indices::Config for Runtime {
 	type AccountIndex = AccountIndex;
 	type Currency = Balances;
 	type Deposit = IndexDeposit;
 	type Event = Event;
-	type WeightInfo = weights::pallet_indices::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_indices::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -207,21 +207,21 @@ parameter_types! {
 	pub const MaxLocks: u32 = 50;
 }
 
-impl pallet_balances::Config for Runtime {
+impl noble_balances::Config for Runtime {
 	type Balance = Balance;
 	type DustRemoval = ();
 	type Event = Event;
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
 	type MaxLocks = MaxLocks;
-	type WeightInfo = weights::pallet_balances::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_balances::WeightInfo<Runtime>;
 }
 
 parameter_types! {
 	pub const TransactionByteFee: Balance = 10 * MILLICENTS;
 }
 
-impl pallet_transaction_payment::Config for Runtime {
+impl noble_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ToAuthor<Runtime>>;
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = WeightToFee;
@@ -231,20 +231,20 @@ impl pallet_transaction_payment::Config for Runtime {
 parameter_types! {
 	pub const MinimumPeriod: u64 = SLOT_DURATION / 2;
 }
-impl pallet_timestamp::Config for Runtime {
+impl noble_timestamp::Config for Runtime {
 	type Moment = u64;
 	type OnTimestampSet = Babe;
 	type MinimumPeriod = MinimumPeriod;
-	type WeightInfo = weights::pallet_timestamp::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_timestamp::WeightInfo<Runtime>;
 }
 
 parameter_types! {
 	pub const UncleGenerations: u32 = 0;
 }
 
-// TODO: substrate#2986 implement this properly
-impl pallet_authorship::Config for Runtime {
-	type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Babe>;
+// TODO: tetcore#2986 implement this properly
+impl noble_authorship::Config for Runtime {
+	type FindAuthor = noble_session::FindAccountFromAuthorIndex<Self, Babe>;
 	type UncleGenerations = UncleGenerations;
 	type FilterUncle = ();
 	type EventHandler = (Staking, ImOnline);
@@ -299,25 +299,25 @@ parameter_types! {
 	pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
 }
 
-impl pallet_session::Config for Runtime {
+impl noble_session::Config for Runtime {
 	type Event = Event;
 	type ValidatorId = AccountId;
-	type ValidatorIdOf = pallet_staking::StashOf<Self>;
+	type ValidatorIdOf = noble_staking::StashOf<Self>;
 	type ShouldEndSession = Babe;
 	type NextSessionRotation = Babe;
-	type SessionManager = pallet_session::historical::NoteHistoricalRoot<Self, Staking>;
+	type SessionManager = noble_session::historical::NoteHistoricalRoot<Self, Staking>;
 	type SessionHandler = <SessionKeys as OpaqueKeys>::KeyTypeIdProviders;
 	type Keys = SessionKeys;
 	type DisabledValidatorsThreshold = DisabledValidatorsThreshold;
-	type WeightInfo = weights::pallet_session::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_session::WeightInfo<Runtime>;
 }
 
-impl pallet_session::historical::Config for Runtime {
-	type FullIdentification = pallet_staking::Exposure<AccountId, Balance>;
-	type FullIdentificationOf = pallet_staking::ExposureOf<Runtime>;
+impl noble_session::historical::Config for Runtime {
+	type FullIdentification = noble_staking::Exposure<AccountId, Balance>;
+	type FullIdentificationOf = noble_staking::ExposureOf<Runtime>;
 }
 
-pallet_staking_reward_curve::build! {
+noble_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
 		min_inflation: 0_025_000,
 		max_inflation: 0_100_000,
@@ -332,9 +332,9 @@ parameter_types! {
 	// Six sessions in an era (6 hours).
 	pub const SessionsPerEra: SessionIndex = 6;
 	// 28 eras for unbonding (7 days).
-	pub const BondingDuration: pallet_staking::EraIndex = 28;
+	pub const BondingDuration: noble_staking::EraIndex = 28;
 	// 27 eras in which slashes can be cancelled (slightly less than 7 days).
-	pub const SlashDeferDuration: pallet_staking::EraIndex = 27;
+	pub const SlashDeferDuration: noble_staking::EraIndex = 27;
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 64;
 	// quarter of the last session will be for election.
@@ -343,7 +343,7 @@ parameter_types! {
 	pub MinSolutionScoreBump: Perbill = Perbill::from_rational_approximation(5u32, 10_000);
 }
 
-impl pallet_staking::Config for Runtime {
+impl noble_staking::Config for Runtime {
 	type Currency = Balances;
 	type UnixTime = Timestamp;
 	type CurrencyToVote = CurrencyToVote;
@@ -366,7 +366,7 @@ impl pallet_staking::Config for Runtime {
 	type MaxIterations = MaxIterations;
 	type MinSolutionScoreBump = MinSolutionScoreBump;
 	type OffchainSolutionWeightLimit = OffchainSolutionWeightLimit;
-	type WeightInfo = weights::pallet_staking::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_staking::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -385,14 +385,14 @@ parameter_types! {
 	pub OffencesWeightSoftLimit: Weight = Perbill::from_percent(60) * BlockWeights::get().max_block;
 }
 
-impl pallet_offences::Config for Runtime {
+impl noble_offences::Config for Runtime {
 	type Event = Event;
-	type IdentificationTuple = pallet_session::historical::IdentificationTuple<Self>;
+	type IdentificationTuple = noble_session::historical::IdentificationTuple<Self>;
 	type OnOffenceHandler = Staking;
 	type WeightSoftLimit = OffencesWeightSoftLimit;
 }
 
-impl pallet_authority_discovery::Config for Runtime {}
+impl noble_authority_discovery::Config for Runtime {}
 
 parameter_types! {
 	pub const SessionDuration: BlockNumber = EPOCH_DURATION_IN_BLOCKS as _;
@@ -403,16 +403,16 @@ parameter_types! {
 	pub const ImOnlineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
-impl pallet_im_online::Config for Runtime {
+impl noble_im_online::Config for Runtime {
 	type AuthorityId = ImOnlineId;
 	type Event = Event;
 	type ReportUnresponsiveness = Offences;
 	type SessionDuration = SessionDuration;
 	type UnsignedPriority = StakingUnsignedPriority;
-	type WeightInfo = weights::pallet_im_online::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_im_online::WeightInfo<Runtime>;
 }
 
-impl pallet_grandpa::Config for Runtime {
+impl noble_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 
@@ -426,23 +426,23 @@ impl pallet_grandpa::Config for Runtime {
 		GrandpaId,
 	)>>::IdentificationTuple;
 
-	type HandleEquivocation = pallet_grandpa::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
+	type HandleEquivocation = noble_grandpa::EquivocationHandler<Self::KeyOwnerIdentification, Offences>;
 
 	type WeightInfo = ();
 }
 
 /// Submits a transaction with the node's public and signature type. Adheres to the signed extension
 /// format of the chain.
-impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
+impl<LocalCall> fabric_system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
 	Call: From<LocalCall>,
 {
-	fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+	fn create_transaction<C: fabric_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
 		call: Call,
 		public: <Signature as Verify>::Signer,
 		account: AccountId,
-		nonce: <Runtime as frame_system::Config>::Index,
+		nonce: <Runtime as fabric_system::Config>::Index,
 	) -> Option<(Call, <UncheckedExtrinsic as ExtrinsicT>::SignaturePayload)> {
-		use sp_runtime::traits::StaticLookup;
+		use tp_runtime::traits::StaticLookup;
 		// take the biggest period possible.
 		let period = BlockHashCount::get()
 			.checked_next_power_of_two()
@@ -456,13 +456,13 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			.saturating_sub(1);
 		let tip = 0;
 		let extra: SignedExtra = (
-			frame_system::CheckSpecVersion::<Runtime>::new(),
-			frame_system::CheckTxVersion::<Runtime>::new(),
-			frame_system::CheckGenesis::<Runtime>::new(),
-			frame_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
-			frame_system::CheckNonce::<Runtime>::from(nonce),
-			frame_system::CheckWeight::<Runtime>::new(),
-			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+			fabric_system::CheckSpecVersion::<Runtime>::new(),
+			fabric_system::CheckTxVersion::<Runtime>::new(),
+			fabric_system::CheckGenesis::<Runtime>::new(),
+			fabric_system::CheckMortality::<Runtime>::from(generic::Era::mortal(period, current_block)),
+			fabric_system::CheckNonce::<Runtime>::from(nonce),
+			fabric_system::CheckWeight::<Runtime>::new(),
+			noble_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
 		);
 		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
 			debug::warn!("Unable to create signed payload: {:?}", e);
@@ -471,17 +471,17 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			C::sign(payload, public)
 		})?;
 		let (call, extra, _) = raw_payload.deconstruct();
-		let address = <Runtime as frame_system::Config>::Lookup::unlookup(account);
+		let address = <Runtime as fabric_system::Config>::Lookup::unlookup(account);
 		Some((call, (address, signature, extra)))
 	}
 }
 
-impl frame_system::offchain::SigningTypes for Runtime {
+impl fabric_system::offchain::SigningTypes for Runtime {
 	type Public = <Signature as Verify>::Signer;
 	type Signature = Signature;
 }
 
-impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime where
+impl<C> fabric_system::offchain::SendTransactionTypes<C> for Runtime where
 	Call: From<C>,
 {
 	type OverarchingCall = Call;
@@ -498,7 +498,7 @@ parameter_types! {
 	pub const MaxRegistrars: u32 = 20;
 }
 
-impl pallet_identity::Config for Runtime {
+impl noble_identity::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type Slashed = ();
@@ -508,15 +508,15 @@ impl pallet_identity::Config for Runtime {
 	type MaxSubAccounts = MaxSubAccounts;
 	type MaxAdditionalFields = MaxAdditionalFields;
 	type MaxRegistrars = MaxRegistrars;
-	type RegistrarOrigin = frame_system::EnsureRoot<AccountId>;
-	type ForceOrigin = frame_system::EnsureRoot<AccountId>;
-	type WeightInfo = weights::pallet_identity::WeightInfo<Runtime>;
+	type RegistrarOrigin = fabric_system::EnsureRoot<AccountId>;
+	type ForceOrigin = fabric_system::EnsureRoot<AccountId>;
+	type WeightInfo = weights::noble_identity::WeightInfo<Runtime>;
 }
 
-impl pallet_utility::Config for Runtime {
+impl noble_utility::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type WeightInfo = weights::pallet_utility::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_utility::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -527,14 +527,14 @@ parameter_types! {
 	pub const MaxSignatories: u16 = 100;
 }
 
-impl pallet_multisig::Config for Runtime {
+impl noble_multisig::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type Currency = Balances;
 	type DepositBase = DepositBase;
 	type DepositFactor = DepositFactor;
 	type MaxSignatories = MaxSignatories;
-	type WeightInfo = weights::pallet_multisig::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_multisig::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -544,7 +544,7 @@ parameter_types! {
 	pub const RecoveryDeposit: Balance = 5 * DOLLARS;
 }
 
-impl pallet_recovery::Config for Runtime {
+impl noble_recovery::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type Currency = Balances;
@@ -558,15 +558,15 @@ parameter_types! {
 	pub const MinVestedTransfer: Balance = 100 * DOLLARS;
 }
 
-impl pallet_vesting::Config for Runtime {
+impl noble_vesting::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type BlockNumberToBalance = ConvertInto;
 	type MinVestedTransfer = MinVestedTransfer;
-	type WeightInfo = weights::pallet_vesting::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_vesting::WeightInfo<Runtime>;
 }
 
-impl pallet_sudo::Config for Runtime {
+impl noble_sudo::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 }
@@ -600,9 +600,9 @@ impl InstanceFilter<Call> for ProxyType {
 				Call::System(..) |
 				Call::Babe(..) |
 				Call::Timestamp(..) |
-				Call::Indices(pallet_indices::Call::claim(..)) |
-				Call::Indices(pallet_indices::Call::free(..)) |
-				Call::Indices(pallet_indices::Call::freeze(..)) |
+				Call::Indices(noble_indices::Call::claim(..)) |
+				Call::Indices(noble_indices::Call::free(..)) |
+				Call::Indices(noble_indices::Call::freeze(..)) |
 				// Specifically omitting Indices `transfer`, `force_transfer`
 				// Specifically omitting the entire Balances pallet
 				Call::Authorship(..) |
@@ -614,15 +614,15 @@ impl InstanceFilter<Call> for ProxyType {
 				Call::AuthorityDiscovery(..) |
 				Call::Utility(..) |
 				Call::Identity(..) |
-				Call::Recovery(pallet_recovery::Call::as_recovered(..)) |
-				Call::Recovery(pallet_recovery::Call::vouch_recovery(..)) |
-				Call::Recovery(pallet_recovery::Call::claim_recovery(..)) |
-				Call::Recovery(pallet_recovery::Call::close_recovery(..)) |
-				Call::Recovery(pallet_recovery::Call::remove_recovery(..)) |
-				Call::Recovery(pallet_recovery::Call::cancel_recovered(..)) |
+				Call::Recovery(noble_recovery::Call::as_recovered(..)) |
+				Call::Recovery(noble_recovery::Call::vouch_recovery(..)) |
+				Call::Recovery(noble_recovery::Call::claim_recovery(..)) |
+				Call::Recovery(noble_recovery::Call::close_recovery(..)) |
+				Call::Recovery(noble_recovery::Call::remove_recovery(..)) |
+				Call::Recovery(noble_recovery::Call::cancel_recovered(..)) |
 				// Specifically omitting Recovery `create_recovery`, `initiate_recovery`
-				Call::Vesting(pallet_vesting::Call::vest(..)) |
-				Call::Vesting(pallet_vesting::Call::vest_other(..)) |
+				Call::Vesting(noble_vesting::Call::vest(..)) |
+				Call::Vesting(noble_vesting::Call::vest_other(..)) |
 				// Specifically omitting Vesting `vested_transfer`, and `force_vested_transfer`
 				Call::Scheduler(..) |
 				// Specifically omitting Sudo pallet
@@ -635,12 +635,12 @@ impl InstanceFilter<Call> for ProxyType {
 				Call::Utility(..)
 			),
 			ProxyType::SudoBalances => match c {
-				Call::Sudo(pallet_sudo::Call::sudo(ref x)) => matches!(x.as_ref(), &Call::Balances(..)),
+				Call::Sudo(noble_sudo::Call::sudo(ref x)) => matches!(x.as_ref(), &Call::Balances(..)),
 				Call::Utility(..) => true,
 				_ => false,
 			},
 			ProxyType::IdentityJudgement => matches!(c,
-				Call::Identity(pallet_identity::Call::provide_judgement(..)) |
+				Call::Identity(noble_identity::Call::provide_judgement(..)) |
 				Call::Utility(..)
 			)
 		}
@@ -656,7 +656,7 @@ impl InstanceFilter<Call> for ProxyType {
 	}
 }
 
-impl pallet_proxy::Config for Runtime {
+impl noble_proxy::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type Currency = Balances;
@@ -664,7 +664,7 @@ impl pallet_proxy::Config for Runtime {
 	type ProxyDepositBase = ProxyDepositBase;
 	type ProxyDepositFactor = ProxyDepositFactor;
 	type MaxProxies = MaxProxies;
-	type WeightInfo = weights::pallet_proxy::WeightInfo<Runtime>;
+	type WeightInfo = weights::noble_proxy::WeightInfo<Runtime>;
 	type MaxPending = MaxPending;
 	type CallHasher = BlakeTwo256;
 	type AnnouncementDepositBase = AnnouncementDepositBase;
@@ -678,55 +678,55 @@ construct_runtime! {
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
 		// Basic stuff; balances is uncallable initially.
-		System: frame_system::{Module, Call, Storage, Config, Event<T>} = 0,
-		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Storage} = 25,
+		System: fabric_system::{Module, Call, Storage, Config, Event<T>} = 0,
+		RandomnessCollectiveFlip: noble_randomness_collective_flip::{Module, Storage} = 25,
 
 		// Must be before session.
-		Babe: pallet_babe::{Module, Call, Storage, Config, Inherent, ValidateUnsigned} = 1,
+		Babe: noble_babe::{Module, Call, Storage, Config, Inherent, ValidateUnsigned} = 1,
 
-		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent} = 2,
-		Indices: pallet_indices::{Module, Call, Storage, Config<T>, Event<T>} = 3,
-		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>} = 4,
-		TransactionPayment: pallet_transaction_payment::{Module, Storage} = 26,
+		Timestamp: noble_timestamp::{Module, Call, Storage, Inherent} = 2,
+		Indices: noble_indices::{Module, Call, Storage, Config<T>, Event<T>} = 3,
+		Balances: noble_balances::{Module, Call, Storage, Config<T>, Event<T>} = 4,
+		TransactionPayment: noble_transaction_payment::{Module, Storage} = 26,
 
 		// Consensus support.
-		Authorship: pallet_authorship::{Module, Call, Storage} = 5,
-		Staking: pallet_staking::{Module, Call, Storage, Config<T>, Event<T>, ValidateUnsigned} = 6,
-		Offences: pallet_offences::{Module, Call, Storage, Event} = 7,
+		Authorship: noble_authorship::{Module, Call, Storage} = 5,
+		Staking: noble_staking::{Module, Call, Storage, Config<T>, Event<T>, ValidateUnsigned} = 6,
+		Offences: noble_offences::{Module, Call, Storage, Event} = 7,
 		Historical: session_historical::{Module} = 27,
-		Session: pallet_session::{Module, Call, Storage, Event, Config<T>} = 8,
-		Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event, ValidateUnsigned} = 10,
-		ImOnline: pallet_im_online::{Module, Call, Storage, Event<T>, ValidateUnsigned, Config<T>} = 11,
-		AuthorityDiscovery: pallet_authority_discovery::{Module, Call, Config} = 12,
+		Session: noble_session::{Module, Call, Storage, Event, Config<T>} = 8,
+		Grandpa: noble_grandpa::{Module, Call, Storage, Config, Event, ValidateUnsigned} = 10,
+		ImOnline: noble_im_online::{Module, Call, Storage, Event<T>, ValidateUnsigned, Config<T>} = 11,
+		AuthorityDiscovery: noble_authority_discovery::{Module, Call, Config} = 12,
 
 		// Utility module.
-		Utility: pallet_utility::{Module, Call, Event} = 16,
+		Utility: noble_utility::{Module, Call, Event} = 16,
 
 		// Less simple identity module.
-		Identity: pallet_identity::{Module, Call, Storage, Event<T>} = 17,
+		Identity: noble_identity::{Module, Call, Storage, Event<T>} = 17,
 
 		// Social recovery module.
-		Recovery: pallet_recovery::{Module, Call, Storage, Event<T>} = 18,
+		Recovery: noble_recovery::{Module, Call, Storage, Event<T>} = 18,
 
 		// Vesting. Usable initially, but removed once all vesting is finished.
-		Vesting: pallet_vesting::{Module, Call, Storage, Event<T>, Config<T>} = 19,
+		Vesting: noble_vesting::{Module, Call, Storage, Event<T>, Config<T>} = 19,
 
 		// System scheduler.
-		Scheduler: pallet_scheduler::{Module, Call, Storage, Event<T>} = 20,
+		Scheduler: noble_scheduler::{Module, Call, Storage, Event<T>} = 20,
 
 		// Sudo.
-		Sudo: pallet_sudo::{Module, Call, Storage, Event<T>, Config<T>} = 21,
+		Sudo: noble_sudo::{Module, Call, Storage, Event<T>, Config<T>} = 21,
 
 		// Proxy module. Late addition.
-		Proxy: pallet_proxy::{Module, Call, Storage, Event<T>} = 22,
+		Proxy: noble_proxy::{Module, Call, Storage, Event<T>} = 22,
 
 		// Multisig module. Late addition.
-		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>} = 23,
+		Multisig: noble_multisig::{Module, Call, Storage, Event<T>} = 23,
 	}
 }
 
 /// The address format for describing accounts.
-pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
+pub type Address = tp_runtime::MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.
@@ -737,23 +737,23 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-	frame_system::CheckSpecVersion<Runtime>,
-	frame_system::CheckTxVersion<Runtime>,
-	frame_system::CheckGenesis<Runtime>,
-	frame_system::CheckMortality<Runtime>,
-	frame_system::CheckNonce<Runtime>,
-	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	fabric_system::CheckSpecVersion<Runtime>,
+	fabric_system::CheckTxVersion<Runtime>,
+	fabric_system::CheckGenesis<Runtime>,
+	fabric_system::CheckMortality<Runtime>,
+	fabric_system::CheckNonce<Runtime>,
+	fabric_system::CheckWeight<Runtime>,
+	noble_transaction_payment::ChargeTransactionPayment<Runtime>,
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
 /// Extrinsic type that has already been checked.
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Nonce, Call>;
 /// Executive: handles dispatch to the various modules.
-pub type Executive = frame_executive::Executive<
+pub type Executive = fabric_executive::Executive<
 	Runtime,
 	Block,
-	frame_system::ChainContext<Runtime>,
+	fabric_system::ChainContext<Runtime>,
 	Runtime,
 	AllModules,
 	UpgradeSessionKeys,
@@ -763,23 +763,23 @@ pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 
 // When this is removed, should also remove `OldSessionKeys`.
 pub struct UpgradeSessionKeys;
-impl frame_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
-	fn on_runtime_upgrade() -> frame_support::weights::Weight {
+impl fabric_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
+	fn on_runtime_upgrade() -> fabric_support::weights::Weight {
 		Session::upgrade_keys::<OldSessionKeys, _>(transform_session_keys);
 		Perbill::from_percent(50) * BlockWeights::get().max_block
 	}
 }
 
 pub struct CustomOnRuntimeUpgrade;
-impl frame_support::traits::OnRuntimeUpgrade for CustomOnRuntimeUpgrade {
-	fn on_runtime_upgrade() -> frame_support::weights::Weight {
+impl fabric_support::traits::OnRuntimeUpgrade for CustomOnRuntimeUpgrade {
+	fn on_runtime_upgrade() -> fabric_support::weights::Weight {
 		0
 	}
 }
 
 #[cfg(not(feature = "disable-runtime-api"))]
-sp_api::impl_runtime_apis! {
-	impl sp_api::Core<Block> for Runtime {
+tp_api::impl_runtime_apis! {
+	impl tp_api::Core<Block> for Runtime {
 		fn version() -> RuntimeVersion {
 			VERSION
 		}
@@ -793,7 +793,7 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_api::Metadata<Block> for Runtime {
+	impl tp_api::Metadata<Block> for Runtime {
 		fn metadata() -> OpaqueMetadata {
 			Runtime::metadata().into()
 		}
@@ -909,7 +909,7 @@ sp_api::impl_runtime_apis! {
 		fn submit_report_equivocation_unsigned_extrinsic(
 			equivocation_proof: fg_primitives::EquivocationProof<
 				<Block as BlockT>::Hash,
-				sp_runtime::traits::NumberFor<Block>,
+				tp_runtime::traits::NumberFor<Block>,
 			>,
 			key_owner_proof: fg_primitives::OpaqueKeyOwnershipProof,
 		) -> Option<()> {
@@ -939,7 +939,7 @@ sp_api::impl_runtime_apis! {
 			// probability of a slot being empty), is done in accordance to the
 			// slot duration and expected target block time, for safely
 			// resisting network delays of maximum two seconds.
-			// <https://research.web3.foundation/en/latest/polkadot/BABE/Babe/#6-practical-results>
+			// <https://research.web3.foundation/en/latest/tetcoin/BABE/Babe/#6-practical-results>
 			babe_primitives::BabeGenesisConfiguration {
 				slot_duration: Babe::slot_duration(),
 				epoch_length: EpochDuration::get(),
@@ -992,25 +992,25 @@ sp_api::impl_runtime_apis! {
 		}
 	}
 
-	impl sp_session::SessionKeys<Block> for Runtime {
+	impl tp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			SessionKeys::generate(seed)
 		}
 
 		fn decode_session_keys(
 			encoded: Vec<u8>,
-		) -> Option<Vec<(Vec<u8>, sp_core::crypto::KeyTypeId)>> {
+		) -> Option<Vec<(Vec<u8>, tet_core::crypto::KeyTypeId)>> {
 			SessionKeys::decode_into_raw_public_keys(&encoded)
 		}
 	}
 
-	impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
+	impl fabric_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce> for Runtime {
 		fn account_nonce(account: AccountId) -> Nonce {
 			System::account_nonce(account)
 		}
 	}
 
-	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
+	impl noble_transaction_payment_rpc_runtime_api::TransactionPaymentApi<
 		Block,
 		Balance,
 	> for Runtime {
@@ -1023,21 +1023,21 @@ sp_api::impl_runtime_apis! {
 	}
 
 	#[cfg(feature = "runtime-benchmarks")]
-	impl frame_benchmarking::Benchmark<Block> for Runtime {
+	impl fabric_benchmarking::Benchmark<Block> for Runtime {
 		fn dispatch_benchmark(
-			config: frame_benchmarking::BenchmarkConfig,
-		) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, RuntimeString> {
-			use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
+			config: fabric_benchmarking::BenchmarkConfig,
+		) -> Result<Vec<fabric_benchmarking::BenchmarkBatch>, RuntimeString> {
+			use fabric_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
 			// Trying to add benchmarks directly to the Session Pallet caused cyclic dependency issues.
 			// To get around that, we separated the Session benchmarks into its own crate, which is why
 			// we need these two lines below.
-			use pallet_session_benchmarking::Module as SessionBench;
-			use pallet_offences_benchmarking::Module as OffencesBench;
-			use frame_system_benchmarking::Module as SystemBench;
+			use noble_session_benchmarking::Module as SessionBench;
+			use noble_offences_benchmarking::Module as OffencesBench;
+			use fabric_system_benchmarking::Module as SystemBench;
 
-			impl pallet_session_benchmarking::Config for Runtime {}
-			impl pallet_offences_benchmarking::Config for Runtime {}
-			impl frame_system_benchmarking::Config for Runtime {}
+			impl noble_session_benchmarking::Config for Runtime {}
+			impl noble_offences_benchmarking::Config for Runtime {}
+			impl fabric_system_benchmarking::Config for Runtime {}
 
 			let whitelist: Vec<TrackedStorageKey> = vec![
 				// Block Number
@@ -1057,20 +1057,20 @@ sp_api::impl_runtime_apis! {
 			let mut batches = Vec::<BenchmarkBatch>::new();
 			let params = (&config, &whitelist);
 
-			add_benchmark!(params, batches, pallet_balances, Balances);
-			add_benchmark!(params, batches, pallet_identity, Identity);
-			add_benchmark!(params, batches, pallet_im_online, ImOnline);
-			add_benchmark!(params, batches, pallet_indices, Indices);
-			add_benchmark!(params, batches, pallet_multisig, Multisig);
-			add_benchmark!(params, batches, pallet_offences, OffencesBench::<Runtime>);
-			add_benchmark!(params, batches, pallet_proxy, Proxy);
-			add_benchmark!(params, batches, pallet_scheduler, Scheduler);
-			add_benchmark!(params, batches, pallet_session, SessionBench::<Runtime>);
-			add_benchmark!(params, batches, pallet_staking, Staking);
-			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
-			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-			add_benchmark!(params, batches, pallet_utility, Utility);
-			add_benchmark!(params, batches, pallet_vesting, Vesting);
+			add_benchmark!(params, batches, noble_balances, Balances);
+			add_benchmark!(params, batches, noble_identity, Identity);
+			add_benchmark!(params, batches, noble_im_online, ImOnline);
+			add_benchmark!(params, batches, noble_indices, Indices);
+			add_benchmark!(params, batches, noble_multisig, Multisig);
+			add_benchmark!(params, batches, noble_offences, OffencesBench::<Runtime>);
+			add_benchmark!(params, batches, noble_proxy, Proxy);
+			add_benchmark!(params, batches, noble_scheduler, Scheduler);
+			add_benchmark!(params, batches, noble_session, SessionBench::<Runtime>);
+			add_benchmark!(params, batches, noble_staking, Staking);
+			add_benchmark!(params, batches, fabric_system, SystemBench::<Runtime>);
+			add_benchmark!(params, batches, noble_timestamp, Timestamp);
+			add_benchmark!(params, batches, noble_utility, Utility);
+			add_benchmark!(params, batches, noble_vesting, Vesting);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)

@@ -1,11 +1,11 @@
-name: polkadot
+name: tetcoin
 version: 0.2
 appVersion: 0.2.0
-description: Polkadot Node Implementation
-home: https://polkadot.network/
-icon: https://polkadot.network/favicon.ico
+description: Tetcoin Node Implementation
+home: https://tetcoin.network/
+icon: https://tetcoin.network/favicon.ico
 sources:
-  - https://github.com/paritytech/polkadot/
+  - https://github.com/tetcoin/tetcoin/
 maintainers:
   - name: Paritytech Devops Team
     email: devops-team@parity.io

@@ -1,28 +1,28 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-use polkadot_test_service::*;
+use tetcoin_test_service::*;
 use service::TaskExecutor;
-use sp_keyring::Sr25519Keyring::{Alice, Bob};
+use tp_keyring::Sr25519Keyring::{Alice, Bob};
 
-#[substrate_test_utils::test]
+#[tetcore_test_utils::test]
 async fn call_function_actually_work(task_executor: TaskExecutor) {
 	let alice = run_validator_node(task_executor, Alice, || {}, Vec::new());
 
-	let function = polkadot_test_runtime::Call::Balances(pallet_balances::Call::transfer(
+	let function = tetcoin_test_runtime::Call::Balances(noble_balances::Call::transfer(
 		Default::default(),
 		1,
 	));

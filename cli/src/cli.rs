@@ -1,20 +1,20 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Polkadot CLI library.
+//! Tetcoin CLI library.
 
 use structopt::StructOpt;
 
@@ -22,25 +22,25 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 pub enum Subcommand {
 	/// Build a chain specification.
-	BuildSpec(sc_cli::BuildSpecCmd),
+	BuildSpec(tc_cli::BuildSpecCmd),
 
 	/// Validate blocks.
-	CheckBlock(sc_cli::CheckBlockCmd),
+	CheckBlock(tc_cli::CheckBlockCmd),
 
 	/// Export blocks.
-	ExportBlocks(sc_cli::ExportBlocksCmd),
+	ExportBlocks(tc_cli::ExportBlocksCmd),
 
 	/// Export the state of a given block into a chain spec.
-	ExportState(sc_cli::ExportStateCmd),
+	ExportState(tc_cli::ExportStateCmd),
 
 	/// Import blocks.
-	ImportBlocks(sc_cli::ImportBlocksCmd),
+	ImportBlocks(tc_cli::ImportBlocksCmd),
 
 	/// Remove the whole chain.
-	PurgeChain(sc_cli::PurgeChainCmd),
+	PurgeChain(tc_cli::PurgeChainCmd),
 
 	/// Revert the chain to a previous state.
-	Revert(sc_cli::RevertCmd),
+	Revert(tc_cli::RevertCmd),
 
 	#[allow(missing_docs)]
 	#[structopt(name = "validation-worker", setting = structopt::clap::AppSettings::Hidden)]
@@ -51,10 +51,10 @@ pub enum Subcommand {
 		name = "benchmark",
 		about = "Benchmark runtime pallets."
 	)]
-	Benchmark(frame_benchmarking_cli::BenchmarkCmd),
+	Benchmark(fabric_benchmarking_cli::BenchmarkCmd),
 
 	/// Key management cli utilities
-	Key(sc_cli::KeySubcommand),
+	Key(tc_cli::KeySubcommand),
 }
 
 #[allow(missing_docs)]
@@ -69,7 +69,7 @@ pub struct ValidationWorkerCommand {
 pub struct RunCmd {
 	#[allow(missing_docs)]
 	#[structopt(flatten)]
-	pub base: sc_cli::RunCmd,
+	pub base: tc_cli::RunCmd,
 
 	/// Force using Kusama native runtime.
 	#[structopt(long = "force-kusama")]

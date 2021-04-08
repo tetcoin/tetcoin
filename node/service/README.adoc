@@ -1,5 +1,5 @@
 
-= Polkadot Service
+= Tetcoin Service
 
 placeholder
-//TODO Write content :) (https://github.com/paritytech/polkadot/issues/159)
+//TODO Write content :) (https://github.com/tetcoin/tetcoin/issues/159)

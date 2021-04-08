@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Implements a `CandidateBackingSubsystem`.
 
@@ -25,16 +25,16 @@ use std::sync::Arc;
 use bitvec::vec::BitVec;
 use futures::{channel::{mpsc, oneshot}, Future, FutureExt, SinkExt, StreamExt};
 
-use sp_keystore::SyncCryptoStorePtr;
-use polkadot_primitives::v1::{
+use tp_keystore::SyncCryptoStorePtr;
+use tetcoin_primitives::v1::{
 	AvailableData, BackedCandidate, CandidateCommitments, CandidateDescriptor, CandidateHash,
 	CandidateReceipt, CollatorId, CommittedCandidateReceipt, CoreIndex, CoreState, Hash, Id as ParaId,
 	PoV, SigningContext, ValidatorId, ValidatorIndex, ValidatorSignature, ValidityAttestation,
 };
-use polkadot_node_primitives::{
+use tetcoin_node_primitives::{
 	Statement, SignedFullStatement, ValidationResult,
 };
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	JaegerSpan, PerLeafSpan,
 	messages::{
 		AllMessages, AvailabilityStoreMessage, CandidateBackingMessage, CandidateSelectionMessage,
@@ -42,7 +42,7 @@ use polkadot_subsystem::{
 		ProvisionerMessage, StatementDistributionMessage, ValidationFailed, RuntimeApiRequest,
 	},
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	self as util,
 	request_session_index_for_child,
 	request_validator_groups,
@@ -292,7 +292,7 @@ async fn make_pov_available(
 	n_validators: usize,
 	pov: Arc<PoV>,
 	candidate_hash: CandidateHash,
-	validation_data: polkadot_primitives::v1::PersistedValidationData,
+	validation_data: tetcoin_primitives::v1::PersistedValidationData,
 	expected_erasure_root: Hash,
 	span: Option<&JaegerSpan>,
 ) -> Result<Result<(), InvalidErasureRoot>, Error> {
@@ -1176,15 +1176,15 @@ mod tests {
 	use super::*;
 	use assert_matches::assert_matches;
 	use futures::{future, Future};
-	use polkadot_primitives::v1::{BlockData, GroupRotationInfo, HeadData, PersistedValidationData, ScheduledCore};
-	use polkadot_subsystem::{
+	use tetcoin_primitives::v1::{BlockData, GroupRotationInfo, HeadData, PersistedValidationData, ScheduledCore};
+	use tetcoin_subsystem::{
 		messages::{RuntimeApiRequest, RuntimeApiMessage},
 		ActiveLeavesUpdate, FromOverseer, OverseerSignal,
 	};
-	use polkadot_node_primitives::InvalidCandidate;
-	use sp_keyring::Sr25519Keyring;
-	use sp_application_crypto::AppKey;
-	use sp_keystore::{CryptoStore, SyncCryptoStore};
+	use tetcoin_node_primitives::InvalidCandidate;
+	use tp_keyring::Sr25519Keyring;
+	use tp_application_crypto::AppKey;
+	use tp_keystore::{CryptoStore, SyncCryptoStore};
 	use statement_table::v1::Misbehavior;
 	use std::collections::HashMap;
 
@@ -1232,7 +1232,7 @@ mod tests {
 				Sr25519Keyring::One,
 			];
 
-			let keystore = Arc::new(sc_keystore::LocalKeystore::in_memory());
+			let keystore = Arc::new(tc_keystore::LocalKeystore::in_memory());
 			// Make sure `Alice` key is in the keystore, so this mocked node will be a parachain validator.
 			SyncCryptoStore::sr25519_generate_new(&*keystore, ValidatorId::ID, Some(&validators[0].to_seed()))
 				.expect("Insert key into keystore");
@@ -1297,13 +1297,13 @@ mod tests {
 	}
 
 	struct TestHarness {
-		virtual_overseer: polkadot_node_subsystem_test_helpers::TestSubsystemContextHandle<CandidateBackingMessage>,
+		virtual_overseer: tetcoin_node_subsystem_test_helpers::TestSubsystemContextHandle<CandidateBackingMessage>,
 	}
 
 	fn test_harness<T: Future<Output=()>>(keystore: SyncCryptoStorePtr, test: impl FnOnce(TestHarness) -> T) {
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 
-		let (context, virtual_overseer) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool.clone());
+		let (context, virtual_overseer) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool.clone());
 
 		let subsystem = CandidateBackingSubsystem::run(context, keystore, Metrics(None), pool.clone());
 
@@ -1355,7 +1355,7 @@ mod tests {
 
 	// Tests that the subsystem performs actions that are requied on startup.
 	async fn test_startup(
-		virtual_overseer: &mut polkadot_node_subsystem_test_helpers::TestSubsystemContextHandle<CandidateBackingMessage>,
+		virtual_overseer: &mut tetcoin_node_subsystem_test_helpers::TestSubsystemContextHandle<CandidateBackingMessage>,
 		test_state: &TestState,
 	) {
 		// Start work on some new parent.
@@ -2474,7 +2474,7 @@ mod tests {
 
 	#[test]
 	fn candidate_backing_reorders_votes() {
-		use sp_core::Encode;
+		use tet_core::Encode;
 		use std::convert::TryFrom;
 
 		let relay_parent = [1; 32].into();

@@ -1,26 +1,26 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
 	configuration::{self, HostConfiguration},
 	initializer,
 };
-use sp_std::{fmt, prelude::*};
-use sp_std::collections::{btree_map::BTreeMap, vec_deque::VecDeque};
-use frame_support::{decl_module, decl_storage, StorageMap, StorageValue, weights::Weight, traits::Get};
+use tetcore_std::{fmt, prelude::*};
+use tetcore_std::collections::{btree_map::BTreeMap, vec_deque::VecDeque};
+use fabric_support::{decl_module, decl_storage, StorageMap, StorageValue, weights::Weight, traits::Get};
 use primitives::v1::{Id as ParaId, UpwardMessage};
 
 /// All upward messages coming from parachains will be funneled into an implementation of this trait.
@@ -54,7 +54,7 @@ impl UmpSink for () {
 
 /// A specific implementation of a UmpSink where messages are in the XCM format
 /// and will be forwarded to the XCM Executor.
-pub struct XcmSink<Config>(sp_std::marker::PhantomData<Config>);
+pub struct XcmSink<Config>(tetcore_std::marker::PhantomData<Config>);
 
 impl<Config: xcm_executor::Config> UmpSink for XcmSink<Config> {
 	fn process_upward_message(origin: ParaId, msg: Vec<u8>) -> Weight {
@@ -75,7 +75,7 @@ impl<Config: xcm_executor::Config> UmpSink for XcmSink<Config> {
 				}
 			}
 		} else {
-			frame_support::debug::error!(
+			fabric_support::debug::error!(
 				target: "xcm",
 				"Failed to decode versioned XCM from upward message.",
 			);
@@ -141,7 +141,7 @@ impl fmt::Debug for AcceptanceCheckErr {
 	}
 }
 
-pub trait Config: frame_system::Config + configuration::Config {
+pub trait Config: fabric_system::Config + configuration::Config {
 	/// A place where all received upward messages are funneled.
 	type UmpSink: UmpSink;
 }
@@ -190,7 +190,7 @@ decl_storage! {
 
 decl_module! {
 	/// The UMP module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 	}
 }
 
@@ -547,7 +547,7 @@ pub(crate) mod mock_sink {
 	use super::{UmpSink, UpwardMessage, ParaId};
 	use std::cell::RefCell;
 	use std::collections::vec_deque::VecDeque;
-	use frame_support::weights::Weight;
+	use fabric_support::weights::Weight;
 
 	#[derive(Debug)]
 	struct UmpExpectation {
@@ -662,7 +662,7 @@ mod tests {
 	use super::*;
 	use super::mock_sink::Probe;
 	use crate::mock::{Configuration, Ump, new_test_ext, GenesisConfig as MockGenesisConfig};
-	use frame_support::IterableStorageMap;
+	use fabric_support::IterableStorageMap;
 	use std::collections::HashSet;
 
 	struct GenesisConfigBuilder {
@@ -924,7 +924,7 @@ mod tests {
 		new_test_ext(GenesisConfigBuilder::default().build()).execute_with(|| {
 			queue_upward_msg(a, msg);
 
-			let raw_queue_size = sp_io::storage::get(&well_known_keys::relay_dispatch_queue_size(a))
+			let raw_queue_size = tp_io::storage::get(&well_known_keys::relay_dispatch_queue_size(a))
 				.expect("enqueing a message should create the dispatch queue\
 				and it should be accessible via the well known keys");
 			let (cnt, size) = <(u32, u32)>::decode(&mut &raw_queue_size[..])

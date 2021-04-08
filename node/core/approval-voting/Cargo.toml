@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-core-approval-voting"
+name = "tetcoin-node-core-approval-voting"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -8,14 +8,14 @@ edition = "2018"
 futures = "0.3.8"
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
 
-polkadot-subsystem = { package = "polkadot-node-subsystem", path = "../../subsystem" }
-polkadot-overseer = { path = "../../overseer" }
-polkadot-primitives = { path = "../../../primitives" }
-polkadot-node-primitives = { path = "../../primitives" }
+tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
+tetcoin-overseer = { path = "../../overseer" }
+tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-node-primitives = { path = "../../primitives" }
 bitvec = "0.20.1"
 
-sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-consensus-slots = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-consensus-slots = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 [dev-dependencies]

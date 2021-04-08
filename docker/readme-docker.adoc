@@ -1,11 +1,11 @@
 
-== Polkadot Docker
+== Tetcoin Docker
 
-=== Start a Polkadot docker container
+=== Start a Tetcoin docker container
 
 Run the following command
 
-	docker run -d -P --name polkadot chevdor/polkadot:latest
+	docker run -d -P --name tetcoin chevdor/tetcoin:latest
 
 === Building the image
 

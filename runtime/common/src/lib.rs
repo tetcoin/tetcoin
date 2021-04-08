@@ -1,20 +1,20 @@
 // Copyright 2019-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Common runtime code for Polkadot and Kusama.
+//! Common runtime code for Tetcoin and Kusama.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -28,27 +28,27 @@ pub mod paras_sudo_wrapper;
 pub mod paras_registrar;
 
 use primitives::v1::{BlockNumber, ValidatorId, AssignmentId};
-use sp_runtime::{Perquintill, Perbill, FixedPointNumber};
-use frame_system::limits;
-use frame_support::{
+use tp_runtime::{Perquintill, Perbill, FixedPointNumber};
+use fabric_system::limits;
+use fabric_support::{
 	parameter_types, traits::{Currency},
 	weights::{Weight, constants::WEIGHT_PER_SECOND, DispatchClass},
 };
-use pallet_transaction_payment::{TargetedFeeAdjustment, Multiplier};
+use noble_transaction_payment::{TargetedFeeAdjustment, Multiplier};
 use static_assertions::const_assert;
-pub use frame_support::weights::constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
+pub use fabric_support::weights::constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
 
 #[cfg(feature = "std")]
-pub use pallet_staking::StakerStatus;
+pub use noble_staking::StakerStatus;
 #[cfg(any(feature = "std", test))]
-pub use sp_runtime::BuildStorage;
-pub use pallet_timestamp::Call as TimestampCall;
-pub use pallet_balances::Call as BalancesCall;
+pub use tp_runtime::BuildStorage;
+pub use noble_timestamp::Call as TimestampCall;
+pub use noble_balances::Call as BalancesCall;
 
 /// Implementations of some helper traits passed into runtime modules as associated types.
 pub use impls::ToAuthor;
 
-pub type NegativeImbalance<T> = <pallet_balances::Module<T> as Currency<<T as frame_system::Config>::AccountId>>::NegativeImbalance;
+pub type NegativeImbalance<T> = <noble_balances::Module<T> as Currency<<T as fabric_system::Config>::AccountId>>::NegativeImbalance;
 
 /// The sequence of bytes a valid wasm module binary always starts with. Apart from that it's also a
 /// valid wasm module.
@@ -115,7 +115,7 @@ parameter_types! {
 }
 
 /// Parameterized slow adjusting fee updated based on
-/// https://w3f-research.readthedocs.io/en/latest/polkadot/Token%20Economics.html#-2.-slow-adjusting-mechanism
+/// https://w3f-research.readthedocs.io/en/latest/tetcoin/Token%20Economics.html#-2.-slow-adjusting-mechanism
 pub type SlowAdjustingFeeUpdate<R> = TargetedFeeAdjustment<
 	R,
 	TargetBlockFullness,
@@ -126,18 +126,18 @@ pub type SlowAdjustingFeeUpdate<R> = TargetedFeeAdjustment<
 /// The type used for currency conversion.
 ///
 /// This must only be used as long as the balance type is u128.
-pub type CurrencyToVote = frame_support::traits::U128CurrencyToVote;
+pub type CurrencyToVote = fabric_support::traits::U128CurrencyToVote;
 static_assertions::assert_eq_size!(primitives::v1::Balance, u128);
 
 /// A placeholder since there is currently no provided session key handler for parachain validator
 /// keys.
-pub struct ParachainSessionKeyPlaceholder<T>(sp_std::marker::PhantomData<T>);
-impl<T> sp_runtime::BoundToRuntimeAppPublic for ParachainSessionKeyPlaceholder<T> {
+pub struct ParachainSessionKeyPlaceholder<T>(tetcore_std::marker::PhantomData<T>);
+impl<T> tp_runtime::BoundToRuntimeAppPublic for ParachainSessionKeyPlaceholder<T> {
 	type Public = ValidatorId;
 }
 
-impl<T: pallet_session::Config>
-	pallet_session::OneSessionHandler<T::AccountId> for ParachainSessionKeyPlaceholder<T>
+impl<T: noble_session::Config>
+	noble_session::OneSessionHandler<T::AccountId> for ParachainSessionKeyPlaceholder<T>
 {
 	type Key = ValidatorId;
 
@@ -160,13 +160,13 @@ impl<T: pallet_session::Config>
 
 /// A placeholder since there is currently no provided session key handler for parachain validator
 /// keys.
-pub struct AssignmentSessionKeyPlaceholder<T>(sp_std::marker::PhantomData<T>);
-impl<T> sp_runtime::BoundToRuntimeAppPublic for AssignmentSessionKeyPlaceholder<T> {
+pub struct AssignmentSessionKeyPlaceholder<T>(tetcore_std::marker::PhantomData<T>);
+impl<T> tp_runtime::BoundToRuntimeAppPublic for AssignmentSessionKeyPlaceholder<T> {
 	type Public = AssignmentId;
 }
 
-impl<T: pallet_session::Config>
-	pallet_session::OneSessionHandler<T::AccountId> for AssignmentSessionKeyPlaceholder<T>
+impl<T: noble_session::Config>
+	noble_session::OneSessionHandler<T::AccountId> for AssignmentSessionKeyPlaceholder<T>
 {
 	type Key = AssignmentId;
 
@@ -190,9 +190,9 @@ impl<T: pallet_session::Config>
 #[cfg(test)]
 mod multiplier_tests {
 	use super::*;
-	use frame_support::{impl_outer_origin, parameter_types, weights::Weight};
-	use sp_core::H256;
-	use sp_runtime::{
+	use fabric_support::{impl_outer_origin, parameter_types, weights::Weight};
+	use tet_core::H256;
+	use tp_runtime::{
 		testing::Header,
 		traits::{BlakeTwo256, IdentityLookup, Convert},
 		Perbill,
@@ -208,13 +208,13 @@ mod multiplier_tests {
 	parameter_types! {
 		pub const BlockHashCount: u64 = 250;
 		pub const AvailableBlockRatio: Perbill = Perbill::one();
-		pub BlockLength: frame_system::limits::BlockLength =
-			frame_system::limits::BlockLength::max(2 * 1024);
-		pub BlockWeights: frame_system::limits::BlockWeights =
-			frame_system::limits::BlockWeights::simple_max(1024);
+		pub BlockLength: fabric_system::limits::BlockLength =
+			fabric_system::limits::BlockLength::max(2 * 1024);
+		pub BlockWeights: fabric_system::limits::BlockWeights =
+			fabric_system::limits::BlockWeights::simple_max(1024);
 	}
 
-	impl frame_system::Config for Runtime {
+	impl fabric_system::Config for Runtime {
 		type BaseCallFilter = ();
 		type BlockWeights = BlockWeights;
 		type BlockLength = ();
@@ -239,11 +239,11 @@ mod multiplier_tests {
 		type SS58Prefix = ();
 	}
 
-	type System = frame_system::Module<Runtime>;
+	type System = fabric_system::Module<Runtime>;
 
 	fn run_with_system_weight<F>(w: Weight, assertions: F) where F: Fn() -> () {
-		let mut t: sp_io::TestExternalities =
-			frame_system::GenesisConfig::default().build_storage::<Runtime>().unwrap().into();
+		let mut t: tp_io::TestExternalities =
+			fabric_system::GenesisConfig::default().build_storage::<Runtime>().unwrap().into();
 		t.execute_with(|| {
 			System::set_block_consumed_resources(w, 0);
 			assertions()

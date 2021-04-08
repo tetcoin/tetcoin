@@ -1,37 +1,37 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Configuration manager for the Polkadot runtime parachains logic.
+//! Configuration manager for the Tetcoin runtime parachains logic.
 //!
 //! Configuration can change only at session boundaries and is buffered until then.
 
-use sp_std::prelude::*;
+use tetcore_std::prelude::*;
 use primitives::v1::{Balance, ValidatorId, SessionIndex};
-use frame_support::{
+use fabric_support::{
 	decl_storage, decl_module, decl_error,
 	ensure,
 	dispatch::DispatchResult,
 	weights::{DispatchClass, Weight},
 };
 use parity_scale_codec::{Encode, Decode};
-use frame_system::ensure_root;
-use sp_runtime::traits::Zero;
+use fabric_system::ensure_root;
+use tp_runtime::traits::Zero;
 
 /// All configuration of the runtime with respect to parachains and parathreads.
-#[derive(Clone, Encode, Decode, PartialEq, sp_core::RuntimeDebug)]
+#[derive(Clone, Encode, Decode, PartialEq, tet_core::RuntimeDebug)]
 #[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
 pub struct HostConfiguration<BlockNumber> {
 	// NOTE: This structure is used by parachains via merkle proofs. Therefore, this struct requires
@@ -231,7 +231,7 @@ impl<BlockNumber: Zero> HostConfiguration<BlockNumber> {
 	}
 }
 
-pub trait Config: frame_system::Config { }
+pub trait Config: fabric_system::Config { }
 
 decl_storage! {
 	trait Store for Module<T: Config> as Configuration {
@@ -256,7 +256,7 @@ decl_error! {
 
 decl_module! {
 	/// The parachains configuration module.
-	pub struct Module<T: Config> for enum Call where origin: <T as frame_system::Config>::Origin {
+	pub struct Module<T: Config> for enum Call where origin: <T as fabric_system::Config>::Origin {
 		type Error = Error<T>;
 
 		/// Set the validation upgrade frequency.
@@ -264,7 +264,7 @@ decl_module! {
 		pub fn set_validation_upgrade_frequency(origin, new: T::BlockNumber) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.validation_upgrade_frequency, new) != new
+				tetcore_std::mem::replace(&mut config.validation_upgrade_frequency, new) != new
 			});
 			Ok(())
 		}
@@ -274,7 +274,7 @@ decl_module! {
 		pub fn set_validation_upgrade_delay(origin, new: T::BlockNumber) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.validation_upgrade_delay, new) != new
+				tetcore_std::mem::replace(&mut config.validation_upgrade_delay, new) != new
 			});
 			Ok(())
 		}
@@ -284,7 +284,7 @@ decl_module! {
 		pub fn set_acceptance_period(origin, new: T::BlockNumber) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.acceptance_period, new) != new
+				tetcore_std::mem::replace(&mut config.acceptance_period, new) != new
 			});
 			Ok(())
 		}
@@ -294,7 +294,7 @@ decl_module! {
 		pub fn set_max_code_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_code_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_code_size, new) != new
 			});
 			Ok(())
 		}
@@ -304,7 +304,7 @@ decl_module! {
 		pub fn set_max_pov_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_pov_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_pov_size, new) != new
 			});
 			Ok(())
 		}
@@ -314,7 +314,7 @@ decl_module! {
 		pub fn set_max_head_data_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_head_data_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_head_data_size, new) != new
 			});
 			Ok(())
 		}
@@ -324,7 +324,7 @@ decl_module! {
 		pub fn set_parathread_cores(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.parathread_cores, new) != new
+				tetcore_std::mem::replace(&mut config.parathread_cores, new) != new
 			});
 			Ok(())
 		}
@@ -334,7 +334,7 @@ decl_module! {
 		pub fn set_parathread_retries(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.parathread_retries, new) != new
+				tetcore_std::mem::replace(&mut config.parathread_retries, new) != new
 			});
 			Ok(())
 		}
@@ -348,7 +348,7 @@ decl_module! {
 			ensure!(!new.is_zero(), Error::<T>::InvalidNewValue);
 
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.group_rotation_frequency, new) != new
+				tetcore_std::mem::replace(&mut config.group_rotation_frequency, new) != new
 			});
 			Ok(())
 		}
@@ -361,7 +361,7 @@ decl_module! {
 			ensure!(!new.is_zero(), Error::<T>::InvalidNewValue);
 
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.chain_availability_period, new) != new
+				tetcore_std::mem::replace(&mut config.chain_availability_period, new) != new
 			});
 			Ok(())
 		}
@@ -374,7 +374,7 @@ decl_module! {
 			ensure!(!new.is_zero(), Error::<T>::InvalidNewValue);
 
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.thread_availability_period, new) != new
+				tetcore_std::mem::replace(&mut config.thread_availability_period, new) != new
 			});
 			Ok(())
 		}
@@ -384,7 +384,7 @@ decl_module! {
 		pub fn set_scheduling_lookahead(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.scheduling_lookahead, new) != new
+				tetcore_std::mem::replace(&mut config.scheduling_lookahead, new) != new
 			});
 			Ok(())
 		}
@@ -394,7 +394,7 @@ decl_module! {
 		pub fn set_max_validators_per_core(origin, new: Option<u32>) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_validators_per_core, new) != new
+				tetcore_std::mem::replace(&mut config.max_validators_per_core, new) != new
 			});
 			Ok(())
 		}
@@ -404,7 +404,7 @@ decl_module! {
 		pub fn set_dispute_period(origin, new: SessionIndex) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.dispute_period, new) != new
+				tetcore_std::mem::replace(&mut config.dispute_period, new) != new
 			});
 			Ok(())
 		}
@@ -418,7 +418,7 @@ decl_module! {
 			ensure!(!new.is_zero(), Error::<T>::InvalidNewValue);
 
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.no_show_slots, new) != new
+				tetcore_std::mem::replace(&mut config.no_show_slots, new) != new
 			});
 			Ok(())
 		}
@@ -428,7 +428,7 @@ decl_module! {
 		pub fn set_n_delay_tranches(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.n_delay_tranches, new) != new
+				tetcore_std::mem::replace(&mut config.n_delay_tranches, new) != new
 			});
 			Ok(())
 		}
@@ -438,7 +438,7 @@ decl_module! {
 		pub fn set_zeroth_delay_tranche_width(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.zeroth_delay_tranche_width, new) != new
+				tetcore_std::mem::replace(&mut config.zeroth_delay_tranche_width, new) != new
 			});
 			Ok(())
 		}
@@ -448,7 +448,7 @@ decl_module! {
 		pub fn set_needed_approvals(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.needed_approvals, new) != new
+				tetcore_std::mem::replace(&mut config.needed_approvals, new) != new
 			});
 			Ok(())
 		}
@@ -458,7 +458,7 @@ decl_module! {
 		pub fn set_relay_vrf_modulo_samples(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.relay_vrf_modulo_samples, new) != new
+				tetcore_std::mem::replace(&mut config.relay_vrf_modulo_samples, new) != new
 			});
 			Ok(())
 		}
@@ -468,7 +468,7 @@ decl_module! {
 		pub fn set_max_upward_queue_count(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_upward_queue_count, new) != new
+				tetcore_std::mem::replace(&mut config.max_upward_queue_count, new) != new
 			});
 			Ok(())
 		}
@@ -478,7 +478,7 @@ decl_module! {
 		pub fn set_max_upward_queue_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_upward_queue_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_upward_queue_size, new) != new
 			});
 			Ok(())
 		}
@@ -488,7 +488,7 @@ decl_module! {
 		pub fn set_max_downward_message_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_downward_message_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_downward_message_size, new) != new
 			});
 			Ok(())
 		}
@@ -498,7 +498,7 @@ decl_module! {
 		pub fn set_preferred_dispatchable_upward_messages_step_weight(origin, new: Weight) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.preferred_dispatchable_upward_messages_step_weight, new) != new
+				tetcore_std::mem::replace(&mut config.preferred_dispatchable_upward_messages_step_weight, new) != new
 			});
 			Ok(())
 		}
@@ -508,7 +508,7 @@ decl_module! {
 		pub fn set_max_upward_message_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_upward_message_size, new) != new
+				tetcore_std::mem::replace(&mut config.max_upward_message_size, new) != new
 			});
 			Ok(())
 		}
@@ -518,7 +518,7 @@ decl_module! {
 		pub fn set_max_upward_message_num_per_candidate(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.max_upward_message_num_per_candidate, new) != new
+				tetcore_std::mem::replace(&mut config.max_upward_message_num_per_candidate, new) != new
 			});
 			Ok(())
 		}
@@ -528,7 +528,7 @@ decl_module! {
 		pub fn set_hrmp_open_request_ttl(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_open_request_ttl, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_open_request_ttl, new) != new
 			});
 			Ok(())
 		}
@@ -538,7 +538,7 @@ decl_module! {
 		pub fn set_hrmp_sender_deposit(origin, new: Balance) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_sender_deposit, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_sender_deposit, new) != new
 			});
 			Ok(())
 		}
@@ -549,7 +549,7 @@ decl_module! {
 		pub fn set_hrmp_recipient_deposit(origin, new: Balance) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_recipient_deposit, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_recipient_deposit, new) != new
 			});
 			Ok(())
 		}
@@ -559,7 +559,7 @@ decl_module! {
 		pub fn set_hrmp_channel_max_capacity(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_channel_max_capacity, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_channel_max_capacity, new) != new
 			});
 			Ok(())
 		}
@@ -569,7 +569,7 @@ decl_module! {
 		pub fn set_hrmp_channel_max_total_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_channel_max_total_size, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_channel_max_total_size, new) != new
 			});
 			Ok(())
 		}
@@ -579,7 +579,7 @@ decl_module! {
 		pub fn set_hrmp_max_parachain_inbound_channels(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_max_parachain_inbound_channels, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_max_parachain_inbound_channels, new) != new
 			});
 			Ok(())
 		}
@@ -589,7 +589,7 @@ decl_module! {
 		pub fn set_hrmp_max_parathread_inbound_channels(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_max_parathread_inbound_channels, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_max_parathread_inbound_channels, new) != new
 			});
 			Ok(())
 		}
@@ -599,7 +599,7 @@ decl_module! {
 		pub fn set_hrmp_channel_max_message_size(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_channel_max_message_size, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_channel_max_message_size, new) != new
 			});
 			Ok(())
 		}
@@ -609,7 +609,7 @@ decl_module! {
 		pub fn set_hrmp_max_parachain_outbound_channels(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_max_parachain_outbound_channels, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_max_parachain_outbound_channels, new) != new
 			});
 			Ok(())
 		}
@@ -619,7 +619,7 @@ decl_module! {
 		pub fn set_hrmp_max_parathread_outbound_channels(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_max_parathread_outbound_channels, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_max_parathread_outbound_channels, new) != new
 			});
 			Ok(())
 		}
@@ -629,7 +629,7 @@ decl_module! {
 		pub fn set_hrmp_max_message_num_per_candidate(origin, new: u32) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_config_member(|config| {
-				sp_std::mem::replace(&mut config.hrmp_max_message_num_per_candidate, new) != new
+				tetcore_std::mem::replace(&mut config.hrmp_max_message_num_per_candidate, new) != new
 			});
 			Ok(())
 		}
@@ -674,7 +674,7 @@ mod tests {
 	use super::*;
 	use crate::mock::{new_test_ext, Initializer, Configuration, Origin};
 
-	use frame_support::traits::{OnFinalize, OnInitialize};
+	use fabric_support::traits::{OnFinalize, OnInitialize};
 
 	#[test]
 	fn config_changes_on_session_boundary() {
@@ -898,7 +898,7 @@ mod tests {
 			<Configuration as Store>::ActiveConfig::put(ground_truth.clone());
 
 			// Extract the active config via the well known key.
-			let raw_active_config = sp_io::storage::get(well_known_keys::ACTIVE_CONFIG)
+			let raw_active_config = tp_io::storage::get(well_known_keys::ACTIVE_CONFIG)
 				.expect("config must be present in storage under ACTIVE_CONFIG");
 			let abridged_config = AbridgedHostConfiguration::decode(&mut &raw_active_config[..])
 				.expect("HostConfiguration must be decodable into AbridgedHostConfiguration");

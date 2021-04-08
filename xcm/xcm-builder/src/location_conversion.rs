@@ -1,23 +1,23 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-use sp_std::marker::PhantomData;
-use sp_io::hashing::blake2_256;
-use sp_runtime::traits::AccountIdConversion;
-use frame_support::traits::Get;
+use tetcore_std::marker::PhantomData;
+use tp_io::hashing::blake2_256;
+use tp_runtime::traits::AccountIdConversion;
+use fabric_support::traits::Get;
 use parity_scale_codec::Encode;
 use xcm::v0::{MultiLocation, NetworkId, Junction};
 use xcm_executor::traits::LocationConversion;

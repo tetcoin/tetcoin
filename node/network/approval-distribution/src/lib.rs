@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! [`ApprovalDistributionSubsystem`] implementation.
 //!
@@ -26,21 +26,21 @@ mod tests;
 
 use std::collections::{BTreeMap, HashMap, HashSet, hash_map};
 use futures::{channel::oneshot, FutureExt as _};
-use polkadot_primitives::v1::{
+use tetcoin_primitives::v1::{
 	Hash, BlockNumber, ValidatorIndex, ValidatorSignature, CandidateIndex,
 };
-use polkadot_node_primitives::{
+use tetcoin_node_primitives::{
 	approval::{AssignmentCert, BlockApprovalMeta, IndirectSignedApprovalVote, IndirectAssignmentCert},
 };
-use polkadot_node_subsystem::{
+use tetcoin_node_subsystem::{
 	messages::{
 		AllMessages, ApprovalDistributionMessage, ApprovalVotingMessage, NetworkBridgeMessage,
 		AssignmentCheckResult, ApprovalCheckResult,
 	},
 	ActiveLeavesUpdate, FromOverseer, OverseerSignal, SpawnedSubsystem, Subsystem, SubsystemContext,
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_node_network_protocol::{
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_node_network_protocol::{
 	PeerId, View, NetworkBridgeEvent, v1 as protocol_v1, ReputationChange as Rep,
 };
 
@@ -375,7 +375,7 @@ impl State {
 				AssignmentCheckResult::AcceptedDuplicate => {
 					// "duplicate" assignments aren't necessarily equal.
 					// There is more than one way each validator can be assigned to each core.
-					// cf. https://github.com/paritytech/polkadot/pull/2160#discussion_r557628699
+					// cf. https://github.com/tetcoin/tetcoin/pull/2160#discussion_r557628699
 					if let Some(peer_knowledge) = entry.known_by.get_mut(&peer_id) {
 						peer_knowledge.known_messages.insert(fingerprint);
 					}

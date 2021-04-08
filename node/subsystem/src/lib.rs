@@ -1,22 +1,22 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Subsystem trait definitions and message types.
 //!
-//! Node-side logic for Polkadot is mostly comprised of Subsystems, which are discrete components
+//! Node-side logic for Tetcoin is mostly comprised of Subsystems, which are discrete components
 //! that communicate via message-passing. They are coordinated by an overseer, provided by a
 //! separate crate.
 
@@ -28,7 +28,7 @@ use futures::prelude::*;
 use futures::channel::{mpsc, oneshot};
 use futures::future::BoxFuture;
 
-use polkadot_primitives::v1::{Hash, BlockNumber};
+use tetcoin_primitives::v1::{Hash, BlockNumber};
 use async_trait::async_trait;
 use smallvec::SmallVec;
 
@@ -37,7 +37,7 @@ use crate::messages::AllMessages;
 pub mod errors;
 pub mod messages;
 
-pub use polkadot_node_jaeger as jaeger;
+pub use tetcoin_node_jaeger as jaeger;
 pub use jaeger::*;
 
 /// How many slots are stack-reserved for active leaves updates
@@ -156,7 +156,7 @@ pub enum SubsystemError {
 	Infallible(#[from] std::convert::Infallible),
 
 	#[error(transparent)]
-	Prometheus(#[from] substrate_prometheus_endpoint::PrometheusError),
+	Prometheus(#[from] tetcore_prometheus_endpoint::PrometheusError),
 
 	#[error(transparent)]
 	Jaeger(#[from] JaegerError),

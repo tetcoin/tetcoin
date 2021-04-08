@@ -1,24 +1,24 @@
 // Copyright 2019-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The SlotRange struct which succinctly handles the ten values that
 //! represent all sub ranges between 0 and 3 inclusive.
 
-use sp_std::{result, ops::Add, convert::{TryFrom, TryInto}};
-use sp_runtime::traits::CheckedSub;
+use tetcore_std::{result, ops::Add, convert::{TryFrom, TryInto}};
+use tp_runtime::traits::CheckedSub;
 use parity_scale_codec::{Encode, Decode};
 
 /// Total number of possible sub ranges of slots.

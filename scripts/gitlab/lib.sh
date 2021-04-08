@@ -67,7 +67,7 @@ github_label () {
     -F "ref=master" \
     -F "variables[LABEL]=${1}" \
     -F "variables[PRNO]=${CI_COMMIT_REF_NAME}" \
-    -F "variables[PROJECT]=paritytech/polkadot" \
+    -F "variables[PROJECT]=tetcoin/tetcoin" \
     "${GITLAB_API}/projects/${GITHUB_API_PROJECT}/trigger/pipeline"
 }
 
@@ -98,14 +98,14 @@ boldprint () { printf "|\n| \033[1m%s\033[0m\n|\n" "${@}"; }
 boldcat () { printf "|\n"; while read -r l; do printf "| \033[1m%s\033[0m\n" "${l}"; done; printf "|\n" ; }
 
 skip_if_companion_pr() {
-  url="https://api.github.com/repos/paritytech/polkadot/pulls/${CI_COMMIT_REF_NAME}"
+  url="https://api.github.com/repos/tetcoin/tetcoin/pulls/${CI_COMMIT_REF_NAME}"
   echo "[+] API URL: $url"
 
   pr_title=$(curl -sSL -H "Authorization: token ${GITHUB_PR_TOKEN}" "$url" | jq -r .title)
   echo "[+] PR title: $pr_title"
 
   if echo "$pr_title" | grep -qi '^companion'; then
-    echo "[!] PR is a companion PR. Build is already done in substrate"
+    echo "[!] PR is a companion PR. Build is already done in tetcore"
     exit 0
   else
     echo "[+] PR is not a companion PR. Proceeding test"

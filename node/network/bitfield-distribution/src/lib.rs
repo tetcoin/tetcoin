@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The bitfield distribution
 //!
@@ -25,14 +25,14 @@
 use parity_scale_codec::{Decode, Encode};
 use futures::{channel::oneshot, FutureExt};
 
-use polkadot_subsystem::messages::*;
-use polkadot_subsystem::{
+use tetcoin_subsystem::messages::*;
+use tetcoin_subsystem::{
 	PerLeafSpan, ActiveLeavesUpdate, FromOverseer, OverseerSignal, SpawnedSubsystem, Subsystem, SubsystemContext,
 	SubsystemResult,
 };
-use polkadot_node_subsystem_util::metrics::{self, prometheus};
-use polkadot_primitives::v1::{Hash, SignedAvailabilityBitfield, SigningContext, ValidatorId};
-use polkadot_node_network_protocol::{v1 as protocol_v1, PeerId, NetworkBridgeEvent, View, ReputationChange, OurView};
+use tetcoin_node_subsystem_util::metrics::{self, prometheus};
+use tetcoin_primitives::v1::{Hash, SignedAvailabilityBitfield, SigningContext, ValidatorId};
+use tetcoin_node_network_protocol::{v1 as protocol_v1, PeerId, NetworkBridgeEvent, View, ReputationChange, OurView};
 use std::collections::{HashMap, HashSet};
 
 const COST_SIGNATURE_INVALID: ReputationChange =
@@ -776,17 +776,17 @@ mod test {
 	use bitvec::bitvec;
 	use futures::executor;
 	use maplit::hashmap;
-	use polkadot_primitives::v1::{Signed, AvailabilityBitfield};
-	use polkadot_node_subsystem_test_helpers::make_subsystem_context;
-	use polkadot_node_subsystem_util::TimeoutExt;
-	use sp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
-	use sp_application_crypto::AppKey;
-	use sp_keystore::testing::KeyStore;
+	use tetcoin_primitives::v1::{Signed, AvailabilityBitfield};
+	use tetcoin_node_subsystem_test_helpers::make_subsystem_context;
+	use tetcoin_node_subsystem_util::TimeoutExt;
+	use tp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
+	use tp_application_crypto::AppKey;
+	use tp_keystore::testing::KeyStore;
 	use std::sync::Arc;
 	use std::time::Duration;
 	use assert_matches::assert_matches;
-	use polkadot_node_network_protocol::{view, ObservedRole, our_view};
-	use polkadot_subsystem::JaegerSpan;
+	use tetcoin_node_network_protocol::{view, ObservedRole, our_view};
+	use tetcoin_subsystem::JaegerSpan;
 
 	macro_rules! launch {
 		($fut:expr) => {
@@ -900,7 +900,7 @@ mod test {
 			signed_availability: signed.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 
@@ -965,7 +965,7 @@ mod test {
 			signed_availability: signed.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 
@@ -1022,7 +1022,7 @@ mod test {
 			signed_availability: signed_bitfield.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 
@@ -1140,7 +1140,7 @@ mod test {
 			signed_availability: signed_bitfield.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 
@@ -1233,7 +1233,7 @@ mod test {
 			signed_availability: signed_bitfield.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 
@@ -1395,7 +1395,7 @@ mod test {
 			signed_availability: signed_bitfield.clone(),
 		};
 
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (mut ctx, mut handle) =
 			make_subsystem_context::<BitfieldDistributionMessage, _>(pool);
 

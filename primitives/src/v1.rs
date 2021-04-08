@@ -1,43 +1,43 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! V1 Primitives.
 
-use sp_std::prelude::*;
-use sp_std::collections::btree_map::BTreeMap;
+use tetcore_std::prelude::*;
+use tetcore_std::collections::btree_map::BTreeMap;
 use parity_scale_codec::{Encode, Decode};
 use bitvec::vec::BitVec;
 
 use primitives::RuntimeDebug;
 use runtime_primitives::traits::AppVerify;
 use inherents::InherentIdentifier;
-use sp_arithmetic::traits::{BaseArithmetic, Saturating};
+use tp_arithmetic::traits::{BaseArithmetic, Saturating};
 use application_crypto::KeyTypeId;
 
 pub use runtime_primitives::traits::{BlakeTwo256, Hash as HashT};
 
 // Export some core primitives.
-pub use polkadot_core_primitives::v1::{
+pub use tetcoin_core_primitives::v1::{
 	BlockNumber, Moment, Signature, AccountPublic, AccountId, AccountIndex, ChainId, Hash, Nonce,
 	Balance, Header, Block, BlockId, UncheckedExtrinsic, Remark, DownwardMessage,
 	InboundDownwardMessage, CandidateHash, InboundHrmpMessage, OutboundHrmpMessage,
 };
 
-// Export some polkadot-parachain primitives
-pub use polkadot_parachain::primitives::{
+// Export some tetcoin-parachain primitives
+pub use tetcoin_parachain::primitives::{
 	Id, LOWEST_USER_ID, HrmpChannelId, UpwardMessage, HeadData, BlockData, ValidationCode,
 };
 
@@ -55,15 +55,15 @@ use parity_util_mem::{MallocSizeOf, MallocSizeOfOps};
 #[cfg(feature = "std")]
 pub use crate::v0::{ValidatorPair, CollatorPair};
 
-pub use sp_staking::SessionIndex;
-pub use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
+pub use tp_staking::SessionIndex;
+pub use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 
 /// A declarations of storage keys where an external observer can find some interesting data.
 pub mod well_known_keys {
 	use super::{Id, HrmpChannelId};
 	use hex_literal::hex;
-	use sp_io::hashing::twox_64;
-	use sp_std::prelude::*;
+	use tp_io::hashing::twox_64;
+	use tetcore_std::prelude::*;
 	use parity_scale_codec::Encode as _;
 
 	// A note on generating these magic values below:
@@ -321,15 +321,15 @@ impl<H: Clone> CommittedCandidateReceipt<H> {
 }
 
 impl PartialOrd for CommittedCandidateReceipt {
-	fn partial_cmp(&self, other: &Self) -> Option<sp_std::cmp::Ordering> {
+	fn partial_cmp(&self, other: &Self) -> Option<tetcore_std::cmp::Ordering> {
 		Some(self.cmp(other))
 	}
 }
 
 impl Ord for CommittedCandidateReceipt {
-	fn cmp(&self, other: &Self) -> sp_std::cmp::Ordering {
+	fn cmp(&self, other: &Self) -> tetcore_std::cmp::Ordering {
 		// TODO: compare signatures or something more sane
-		// https://github.com/paritytech/polkadot/issues/222
+		// https://github.com/tetcoin/tetcoin/issues/222
 		self.descriptor().para_id.cmp(&other.descriptor().para_id)
 			.then_with(|| self.commitments.head_data.cmp(&other.commitments.head_data))
 	}
@@ -597,7 +597,7 @@ impl GroupRotationInfo {
 		if self.group_rotation_frequency == 0 { return GroupIndex(core_index.0) }
 		if cores == 0 { return GroupIndex(0) }
 
-		let cores = sp_std::cmp::min(cores, u32::max_value() as usize);
+		let cores = tetcore_std::cmp::min(cores, u32::max_value() as usize);
 		let blocks_since_start = self.now.saturating_sub(self.session_start_block);
 		let rotations = blocks_since_start / self.group_rotation_frequency;
 
@@ -768,14 +768,14 @@ pub struct SessionInfo {
 	pub needed_approvals: u32,
 }
 
-sp_api::decl_runtime_apis! {
+tp_api::decl_runtime_apis! {
 	/// The API for querying the state of parachains on-chain.
 	pub trait ParachainHost<H: Decode = Hash, N: Encode + Decode = BlockNumber> {
 		// NOTE: Many runtime API are declared with `#[skip_initialize_block]`. This is because without
 		// this attribute before each runtime call, the `initialize_block` runtime API will be called.
 		// That in turns will lead to two things:
 		//
-		// (a) The frame_system module will be initialized to the next block.
+		// (a) The fabric_system module will be initialized to the next block.
 		// (b) Initialization sequences for each runtime module (pallet) will be run.
 		//
 		// (a) is undesirable because the runtime APIs are querying the state against a specific
@@ -866,7 +866,7 @@ sp_api::decl_runtime_apis! {
 	}
 }
 
-/// Custom validity errors used in Polkadot while validating transactions.
+/// Custom validity errors used in Tetcoin while validating transactions.
 #[repr(u8)]
 pub enum ValidityError {
 	/// The Ethereum signature is invalid.

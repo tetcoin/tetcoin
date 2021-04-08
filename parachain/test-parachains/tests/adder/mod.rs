@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Basic parachain that adds a number as part of its state.
 
@@ -73,7 +73,7 @@ fn execute_good_on_parent(isolation_strategy: IsolationStrategy) {
 			dmq_mqc_head: Default::default(),
 		},
 		&isolation_strategy,
-		sp_core::testing::TaskExecutor::new(),
+		tet_core::testing::TaskExecutor::new(),
 	).unwrap();
 
 	let new_head = HeadData::decode(&mut &ret.head_data.0[..]).unwrap();
@@ -113,7 +113,7 @@ fn execute_good_chain_on_parent() {
 				dmq_mqc_head: Default::default(),
 			},
 			&isolation_strategy,
-			sp_core::testing::TaskExecutor::new(),
+			tet_core::testing::TaskExecutor::new(),
 		).unwrap();
 
 		let new_head = HeadData::decode(&mut &ret.head_data.0[..]).unwrap();
@@ -154,6 +154,6 @@ fn execute_bad_on_parent() {
 			dmq_mqc_head: Default::default(),
 		},
 		&isolation_strategy,
-		sp_core::testing::TaskExecutor::new(),
+		tet_core::testing::TaskExecutor::new(),
 	).unwrap_err();
 }

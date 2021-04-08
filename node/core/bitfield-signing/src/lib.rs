@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The bitfield signing subsystem produces `SignedAvailabilityBitfield`s once per block.
 
@@ -21,8 +21,8 @@
 #![recursion_limit="256"]
 
 use futures::{channel::{mpsc, oneshot}, lock::Mutex, prelude::*, future, Future};
-use sp_keystore::{Error as KeystoreError, SyncCryptoStorePtr};
-use polkadot_node_subsystem::{
+use tp_keystore::{Error as KeystoreError, SyncCryptoStorePtr};
+use tetcoin_node_subsystem::{
 	jaeger, PerLeafSpan, JaegerSpan,
 	messages::{
 		AllMessages, AvailabilityStoreMessage, BitfieldDistributionMessage,
@@ -30,10 +30,10 @@ use polkadot_node_subsystem::{
 	},
 	errors::RuntimeApiError,
 };
-use polkadot_node_subsystem_util::{
+use tetcoin_node_subsystem_util::{
 	self as util, JobManager, JobTrait, Validator, FromJobCommand, metrics::{self, prometheus},
 };
-use polkadot_primitives::v1::{AvailabilityBitfield, CoreState, Hash, ValidatorIndex};
+use tetcoin_primitives::v1::{AvailabilityBitfield, CoreState, Hash, ValidatorIndex};
 use std::{pin::Pin, time::Duration, iter::FromIterator, sync::Arc};
 use wasm_timer::{Delay, Instant};
 
@@ -297,7 +297,7 @@ pub type BitfieldSigningSubsystem<Spawner, Context> = JobManager<Spawner, Contex
 mod tests {
 	use super::*;
 	use futures::{pin_mut, executor::block_on};
-	use polkadot_primitives::v1::{CandidateHash, OccupiedCore};
+	use tetcoin_primitives::v1::{CandidateHash, OccupiedCore};
 
 	fn occupied_core(para_id: u32, candidate_hash: CandidateHash) -> CoreState {
 		CoreState::Occupied(OccupiedCore {

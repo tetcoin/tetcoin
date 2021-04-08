@@ -1,5 +1,5 @@
 [package]
-name = "polkadot-node-primitives"
+name = "tetcoin-node-primitives"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -7,10 +7,10 @@ description = "Primitives types for the Node-side"
 
 [dependencies]
 futures = "0.3.12"
-polkadot-primitives = { path = "../../primitives" }
-polkadot-statement-table = { path = "../../statement-table" }
+tetcoin-primitives = { path = "../../primitives" }
+tetcoin-statement-table = { path = "../../statement-table" }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
-runtime_primitives = { package = "sp-runtime", git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-consensus-vrf = { git = "https://github.com/paritytech/substrate", branch = "master" }
-sp-consensus-slots = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
+runtime_primitives = { package = "tp-runtime", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-consensus-vrf = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-consensus-slots = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

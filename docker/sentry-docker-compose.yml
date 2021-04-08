@@ -9,7 +9,7 @@
 #
 # Usage:
 #
-# 1. Build `target/release/substrate` binary: `cargo build --release`
+# 1. Build `target/release/tetcore` binary: `cargo build --release`
 #
 # 2. Start networks and containers: `sudo docker-compose -f scripts/sentry-node/docker-compose.yml up`
 #
@@ -23,8 +23,8 @@ services:
     ports:
       - "9944:9944"
 #    volumes:
-#      - ../../target/release/substrate:/usr/local/bin/substrate
-    image: parity/polkadot
+#      - ../../target/release/tetcore:/usr/local/bin/tetcore
+    image: parity/tetcoin
     networks:
       - network-a
     environment:
@@ -60,11 +60,11 @@ services:
       - "all"
 
   sentry:
-    image: parity/polkadot
+    image: parity/tetcoin
     ports:
       - "9946:9944"
 #    volumes:
-#      - ../../target/release/substrate:/usr/local/bin/substrate
+#      - ../../target/release/tetcore:/usr/local/bin/tetcore
     networks:
       - network-a
       - internet

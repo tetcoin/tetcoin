@@ -1,27 +1,27 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Collator for the adder test parachain.
 
-use polkadot_node_primitives::CollationGenerationConfig;
-use polkadot_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
-use polkadot_primitives::v1::Id as ParaId;
-use polkadot_cli::{Error, Result};
-use sc_cli::{Error as SubstrateCliError, Role, SubstrateCli};
-use sp_core::hexdisplay::HexDisplay;
+use tetcoin_node_primitives::CollationGenerationConfig;
+use tetcoin_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
+use tetcoin_primitives::v1::Id as ParaId;
+use tetcoin_cli::{Error, Result};
+use tc_cli::{Error as SubstrateCliError, Role, SubstrateCli};
+use tet_core::hexdisplay::HexDisplay;
 use test_parachain_adder_collator::Collator;
 
 /// The parachain ID to collate for in case it wasn't set explicitly through CLI.
@@ -58,9 +58,9 @@ fn main() -> Result<()> {
 					_ => {
 						let collator = Collator::new();
 
-						let full_node = polkadot_service::build_full(
+						let full_node = tetcoin_service::build_full(
 							config,
-							polkadot_service::IsCollator::Yes(collator.collator_id()),
+							tetcoin_service::IsCollator::Yes(collator.collator_id()),
 							None,
 							None,
 						).map_err(|e| e.to_string())?;

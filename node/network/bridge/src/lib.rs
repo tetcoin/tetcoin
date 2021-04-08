@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Network Bridge Subsystem - protocol multiplexer for Polkadot.
+//! The Network Bridge Subsystem - protocol multiplexer for Tetcoin.
 
 #![deny(unused_crate_dependencies)]
 #![warn(missing_docs)]
@@ -23,24 +23,24 @@
 use parity_scale_codec::{Encode, Decode};
 use futures::prelude::*;
 
-use polkadot_subsystem::{
+use tetcoin_subsystem::{
 	ActiveLeavesUpdate, Subsystem, SubsystemContext, SpawnedSubsystem, SubsystemError,
 	SubsystemResult, JaegerSpan,
 };
-use polkadot_subsystem::messages::{
+use tetcoin_subsystem::messages::{
 	NetworkBridgeMessage, AllMessages, AvailabilityDistributionMessage,
 	BitfieldDistributionMessage, PoVDistributionMessage, StatementDistributionMessage,
 	CollatorProtocolMessage, ApprovalDistributionMessage,
 };
-use polkadot_primitives::v1::{Hash, BlockNumber};
-use polkadot_node_network_protocol::{
+use tetcoin_primitives::v1::{Hash, BlockNumber};
+use tetcoin_node_network_protocol::{
 	ReputationChange, PeerId, peer_set::PeerSet, View, NetworkBridgeEvent, v1 as protocol_v1, OurView,
 };
 
 /// Peer set infos for network initialization.
 ///
 /// To be added to [`NetworkConfiguration::extra_sets`].
-pub use polkadot_node_network_protocol::peer_set::peer_sets_info;
+pub use tetcoin_node_network_protocol::peer_set::peer_sets_info;
 
 use std::collections::{HashMap, hash_map};
 use std::iter::ExactSizeIterator;
@@ -549,22 +549,22 @@ mod tests {
 	use parking_lot::Mutex;
 	use assert_matches::assert_matches;
 
-	use sc_network::Event as NetworkEvent;
+	use tc_network::Event as NetworkEvent;
 
-	use polkadot_subsystem::{ActiveLeavesUpdate, FromOverseer, OverseerSignal};
-	use polkadot_subsystem::messages::{
+	use tetcoin_subsystem::{ActiveLeavesUpdate, FromOverseer, OverseerSignal};
+	use tetcoin_subsystem::messages::{
 		StatementDistributionMessage, BitfieldDistributionMessage,
 		ApprovalDistributionMessage,
 	};
-	use polkadot_node_subsystem_test_helpers::{
+	use tetcoin_node_subsystem_test_helpers::{
 		SingleItemSink, SingleItemStream, TestSubsystemContextHandle,
 	};
-	use polkadot_node_subsystem_util::metered;
-	use polkadot_node_network_protocol::view;
-	use sc_network::Multiaddr;
-	use sp_keyring::Sr25519Keyring;
-	use polkadot_primitives::v1::AuthorityDiscoveryId;
-	use polkadot_node_network_protocol::ObservedRole;
+	use tetcoin_node_subsystem_util::metered;
+	use tetcoin_node_network_protocol::view;
+	use tc_network::Multiaddr;
+	use tp_keyring::Sr25519Keyring;
+	use tetcoin_primitives::v1::AuthorityDiscoveryId;
+	use tetcoin_node_network_protocol::ObservedRole;
 
 	use crate::network::{Network, NetworkAction};
 
@@ -588,7 +588,7 @@ mod tests {
 		TestNetworkHandle,
 		TestAuthorityDiscovery,
 	) {
-		let (net_tx, net_rx) = polkadot_node_subsystem_test_helpers::single_item_sink();
+		let (net_tx, net_rx) = tetcoin_node_subsystem_test_helpers::single_item_sink();
 		let (action_tx, action_rx) = metered::unbounded("test_action");
 
 		(
@@ -697,9 +697,9 @@ mod tests {
 	}
 
 	fn test_harness<T: Future<Output=()>>(test: impl FnOnce(TestHarness) -> T) {
-		let pool = sp_core::testing::TaskExecutor::new();
+		let pool = tet_core::testing::TaskExecutor::new();
 		let (network, network_handle, discovery) = new_test_network();
-		let (context, virtual_overseer) = polkadot_node_subsystem_test_helpers::make_subsystem_context(pool);
+		let (context, virtual_overseer) = tetcoin_node_subsystem_test_helpers::make_subsystem_context(pool);
 
 		let network_bridge = run_network(
 			network,

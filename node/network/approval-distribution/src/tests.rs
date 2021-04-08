@@ -1,26 +1,26 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 use std::time::Duration;
 use futures::{future, Future, executor};
 use assert_matches::assert_matches;
-use polkadot_node_subsystem_test_helpers as test_helpers;
-use polkadot_node_subsystem_util::TimeoutExt as _;
-use polkadot_node_network_protocol::{view, ObservedRole};
-use polkadot_node_primitives::approval::{
+use tetcoin_node_subsystem_test_helpers as test_helpers;
+use tetcoin_node_subsystem_util::TimeoutExt as _;
+use tetcoin_node_network_protocol::{view, ObservedRole};
+use tetcoin_node_primitives::approval::{
 	AssignmentCertKind, RELAY_VRF_MODULO_CONTEXT, VRFOutput, VRFProof,
 };
 use super::*;
@@ -39,7 +39,7 @@ fn test_harness<T: Future<Output = ()>>(
 		)
 		.try_init();
 
-	let pool = sp_core::testing::TaskExecutor::new();
+	let pool = tet_core::testing::TaskExecutor::new();
 	let (context, virtual_overseer) = test_helpers::make_subsystem_context(pool.clone());
 
 	let subsystem = ApprovalDistribution::new(Default::default());
@@ -264,7 +264,7 @@ fn try_import_the_same_assignment() {
 	});
 }
 
-/// https://github.com/paritytech/polkadot/pull/2160#discussion_r547594835
+/// https://github.com/tetcoin/tetcoin/pull/2160#discussion_r547594835
 ///
 /// 1. Send a view update that removes block B from their view.
 /// 2. Send a message from B that they incur COST_UNEXPECTED_MESSAGE for,

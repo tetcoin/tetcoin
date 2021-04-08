@@ -1,15 +1,15 @@
 #!/bin/bash
-BIN=./target/release/polkadot
-LIVE_WS=wss://rpc.polkadot.io
+BIN=./target/release/tetcoin
+LIVE_WS=wss://rpc.tetcoin.io
 LOCAL_WS=ws://localhost:9944
 
-# Kill the polkadot client before exiting
+# Kill the tetcoin client before exiting
 trap 'kill "$(jobs -p)"' EXIT
 
 runtimes=(
   "westend"
   "kusama"
-  "polkadot"
+  "tetcoin"
 )
 
 for RUNTIME in "${runtimes[@]}"; do
@@ -32,18 +32,18 @@ for RUNTIME in "${runtimes[@]}"; do
     exit 0
   fi
 
-  if [ "$RUNTIME" = 'polkadot' ]; then
-    LIVE_WS="wss://rpc.polkadot.io"
+  if [ "$RUNTIME" = 'tetcoin' ]; then
+    LIVE_WS="wss://rpc.tetcoin.io"
   else
-    LIVE_WS="wss://${RUNTIME}-rpc.polkadot.io"
+    LIVE_WS="wss://${RUNTIME}-rpc.tetcoin.io"
   fi
 
-  # Start running the local polkadot node in the background
+  # Start running the local tetcoin node in the background
   $BIN --chain="$RUNTIME-local"  &
   jobs
 
   changed_extrinsics=$(
-    polkadot-js-metadata-cmp "$LIVE_WS" "$LOCAL_WS" \
+    tetcoin-js-metadata-cmp "$LIVE_WS" "$LOCAL_WS" \
       | sed 's/^ \+//g' | grep -e 'idx: [0-9]\+ -> [0-9]\+'
   )
 

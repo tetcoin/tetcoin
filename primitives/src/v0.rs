@@ -1,26 +1,26 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Tetcoin.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Tetcoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Tetcoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Primitives which are necessary for parachain execution from a relay-chain
 //! perspective.
 
-use sp_std::prelude::*;
+use tetcore_std::prelude::*;
 #[cfg(feature = "std")]
-use sp_std::convert::TryInto;
-use sp_std::cmp::Ordering;
+use tetcore_std::convert::TryInto;
+use tetcore_std::cmp::Ordering;
 
 use parity_scale_codec::{Encode, Decode};
 use bitvec::vec::BitVec;
@@ -30,7 +30,7 @@ use serde::{Serialize, Deserialize};
 use parity_util_mem::{MallocSizeOf, MallocSizeOfOps};
 
 #[cfg(feature = "std")]
-use sp_keystore::{CryptoStore, SyncCryptoStorePtr, Error as KeystoreError};
+use tp_keystore::{CryptoStore, SyncCryptoStorePtr, Error as KeystoreError};
 use primitives::RuntimeDebug;
 use runtime_primitives::traits::{AppVerify, Block as BlockT};
 use inherents::InherentIdentifier;
@@ -39,10 +39,10 @@ use application_crypto::AppKey;
 use application_crypto::KeyTypeId;
 
 pub use runtime_primitives::traits::{BlakeTwo256, Hash as HashT, Verify, IdentifyAccount};
-pub use polkadot_core_primitives::*;
+pub use tetcoin_core_primitives::*;
 pub use parity_scale_codec::Compact;
 
-pub use polkadot_parachain::primitives::{
+pub use tetcoin_parachain::primitives::{
 	Id, LOWEST_USER_ID, UpwardMessage, HeadData, BlockData,
 	ValidationCode,
 };
@@ -386,7 +386,7 @@ impl PartialOrd for CandidateReceipt {
 impl Ord for CandidateReceipt {
 	fn cmp(&self, other: &Self) -> Ordering {
 		// TODO: compare signatures or something more sane
-		// https://github.com/paritytech/polkadot/issues/222
+		// https://github.com/tetcoin/tetcoin/issues/222
 		self.parachain_index.cmp(&other.parachain_index)
 			.then_with(|| self.head_data.cmp(&other.head_data))
 	}
@@ -538,7 +538,7 @@ impl PartialOrd for AbridgedCandidateReceipt {
 impl Ord for AbridgedCandidateReceipt {
 	fn cmp(&self, other: &Self) -> Ordering {
 		// TODO: compare signatures or something more sane
-		// https://github.com/paritytech/polkadot/issues/222
+		// https://github.com/tetcoin/tetcoin/issues/222
 		self.parachain_index.cmp(&other.parachain_index)
 			.then_with(|| self.head_data.cmp(&other.head_data))
 	}
@@ -746,7 +746,7 @@ impl ValidityAttestation {
 #[derive(Clone, Eq, PartialEq, Default, Decode, Encode, RuntimeDebug)]
 pub struct SigningContext<H = Hash> {
 	/// Current session index.
-	pub session_index: sp_staking::SessionIndex,
+	pub session_index: tp_staking::SessionIndex,
 	/// Hash of the parent.
 	pub parent_hash: H,
 }
@@ -788,7 +788,7 @@ pub struct FeeSchedule {
 impl FeeSchedule {
 	/// Compute the fee for a message of given size.
 	pub fn compute_message_fee(&self, n_bytes: usize) -> Balance {
-		use sp_std::mem;
+		use tetcore_std::mem;
 		debug_assert!(mem::size_of::<Balance>() >= mem::size_of::<usize>());
 
 		let n_bytes = n_bytes as Balance;
@@ -796,7 +796,7 @@ impl FeeSchedule {
 	}
 }
 
-sp_api::decl_runtime_apis! {
+tp_api::decl_runtime_apis! {
 	/// The API for querying the state of parachains on-chain.
 	#[api_version(3)]
 	pub trait ParachainHost {
@@ -825,7 +825,7 @@ sp_api::decl_runtime_apis! {
 
 /// Runtime ID module.
 pub mod id {
-	use sp_version::ApiId;
+	use tp_version::ApiId;
 
 	/// Parachain host runtime API id.
 	pub const PARACHAIN_HOST: ApiId = *b"parahost";
@@ -871,7 +871,7 @@ pub struct Signed<Payload, RealPayload = Payload> {
 	/// The signature by the validator of the signed payload.
 	signature: ValidatorSignature,
 	/// This ensures the real payload is tracked at the typesystem level.
-	real_payload: sp_std::marker::PhantomData<RealPayload>,
+	real_payload: tetcore_std::marker::PhantomData<RealPayload>,
 }
 
 // We can't bound this on `Payload: Into<RealPayload>` beacuse that conversion consumes
@@ -970,12 +970,12 @@ impl<Payload: EncodeAs<RealPayload>, RealPayload: Encode> Signed<Payload, RealPa
 			signature: self.signature.clone(),
 			validator_index: self.validator_index,
 			payload: self.payload().into(),
-			real_payload: sp_std::marker::PhantomData,
+			real_payload: tetcore_std::marker::PhantomData,
 		}
 	}
 }
 
-/// Custom validity errors used in Polkadot while validating transactions.
+/// Custom validity errors used in Tetcoin while validating transactions.
 #[repr(u8)]
 pub enum ValidityError {
 	/// The Ethereum signature is invalid.
@@ -1016,7 +1016,7 @@ pub mod fisherman {
 	/// An `AppCrypto` type to allow submitting signed transactions using the fisherman
 	/// application key as signer.
 	pub struct FishermanAppCrypto;
-	impl frame_system::offchain::AppCrypto<<Signature as Verify>::Signer, Signature> for FishermanAppCrypto {
+	impl fabric_system::offchain::AppCrypto<<Signature as Verify>::Signer, Signature> for FishermanAppCrypto {
 		type RuntimeAppPublic = FishermanId;
 		type GenericSignature = primitives::sr25519::Signature;
 		type GenericPublic = primitives::sr25519::Public;

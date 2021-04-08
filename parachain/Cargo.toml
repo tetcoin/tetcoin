@@ -1,29 +1,29 @@
 [package]
-name = "polkadot-parachain"
+name = "tetcoin-parachain"
 version = "0.8.28"
 authors = ["Parity Technologies <admin@parity.io>"]
 description = "Types and utilities for creating and working with parachains"
 edition = "2018"
 
 [dependencies]
-# note: special care is taken to avoid inclusion of `sp-io` externals when compiling
+# note: special care is taken to avoid inclusion of `tp-io` externals when compiling
 # this crate for WASM. This is critical to avoid forcing all parachain WASM into implementing
 # various unnecessary Substrate-specific endpoints.
 parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 parity-util-mem = { version = "0.9.0", optional = true }
-sp-std = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-sp-wasm-interface = { git = "https://github.com/paritytech/substrate", branch = "master", default-features = false }
-polkadot-core-primitives = { path = "../core-primitives", default-features = false }
+tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-wasm-interface = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcoin-core-primitives = { path = "../core-primitives", default-features = false }
 derive_more = "0.99.11"
 
 # all optional crates.
 thiserror = { version = "1.0.22", optional = true }
 serde = { version = "1.0.117", default-features = false, features = [ "derive" ], optional = true }
-sp-externalities = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
-sc-executor = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
-sp-io = { git = "https://github.com/paritytech/substrate", branch = "master", optional = true }
+tp-externalities = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+tp-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 parking_lot = { version = "0.11.1", optional = true }
 log = { version = "0.4.11", optional = true }
 futures = { version = "0.3.8", optional = true }
@@ -33,22 +33,22 @@ shared_memory = { version = "0.10.0", optional = true }
 
 [features]
 default = ["std"]
-wasmtime = [ "sc-executor/wasmtime" ]
+wasmtime = [ "tc-executor/wasmtime" ]
 wasm-api = []
 std = [
 	"parity-scale-codec/std",
 	"thiserror",
 	"serde/std",
-	"sp-std/std",
-	"sp-runtime/std",
+	"tetcore-std/std",
+	"tp-runtime/std",
 	"shared_memory",
-	"sp-core/std",
+	"tet-core/std",
 	"parking_lot",
 	"log",
 	"parity-util-mem",
-	"sp-externalities",
-	"sc-executor",
-	"sp-io",
-	"polkadot-core-primitives/std",
+	"tp-externalities",
+	"tc-executor",
+	"tp-io",
+	"tetcoin-core-primitives/std",
 	"futures",
 ]
