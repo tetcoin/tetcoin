@@ -21,7 +21,7 @@ derive_more = "0.99.11"
 # all optional crates.
 thiserror = { version = "1.0.22", optional = true }
 serde = { version = "1.0.117", default-features = false, features = [ "derive" ], optional = true }
-tp-externalities = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+externalities = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 parking_lot = { version = "0.11.1", optional = true }
@@ -46,7 +46,7 @@ std = [
 	"parking_lot",
 	"log",
 	"tetsy-util-mem",
-	"tp-externalities",
+	"externalities",
 	"tc-executor",
 	"tet-io",
 	"tetcoin-core-primitives/std",

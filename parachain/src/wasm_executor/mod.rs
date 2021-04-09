@@ -24,7 +24,7 @@ use std::{any::{TypeId, Any}, path::PathBuf};
 use crate::primitives::{ValidationParams, ValidationResult};
 use tetsy_scale_codec::{Decode, Encode};
 use tet_core::{storage::{ChildInfo, TrackedStorageKey}, traits::{CallInWasm, SpawnNamed}};
-use tp_externalities::Extensions;
+use externalities::Extensions;
 use tp_wasm_interface::HostFunctions as _;
 
 #[cfg(not(any(target_os = "android", target_os = "unknown")))]
@@ -254,7 +254,7 @@ pub fn validate_candidate_internal(
 /// access to the parachain extension.
 struct ValidationExternalities(Extensions);
 
-impl tp_externalities::Externalities for ValidationExternalities {
+impl externalities::Externalities for ValidationExternalities {
 	fn storage(&self, _: &[u8]) -> Option<Vec<u8>> {
 		panic!("storage: unsupported feature for parachain validation")
 	}
@@ -360,7 +360,7 @@ impl tp_externalities::Externalities for ValidationExternalities {
 	}
 }
 
-impl tp_externalities::ExtensionStore for ValidationExternalities {
+impl externalities::ExtensionStore for ValidationExternalities {
 	fn extension_by_type_id(&mut self, type_id: TypeId) -> Option<&mut dyn Any> {
 		self.0.get_mut(type_id)
 	}
@@ -368,19 +368,19 @@ impl tp_externalities::ExtensionStore for ValidationExternalities {
 	fn register_extension_with_type_id(
 		&mut self,
 		type_id: TypeId,
-		extension: Box<dyn tp_externalities::Extension>,
-	) -> Result<(), tp_externalities::Error> {
+		extension: Box<dyn externalities::Extension>,
+	) -> Result<(), externalities::Error> {
 		self.0.register_with_type_id(type_id, extension)
 	}
 
 	fn deregister_extension_by_type_id(
 		&mut self,
 		type_id: TypeId,
-	) -> Result<(), tp_externalities::Error> {
+	) -> Result<(), externalities::Error> {
 		if self.0.deregister(type_id) {
 			Ok(())
 		} else {
-			Err(tp_externalities::Error::ExtensionIsNotRegistered(type_id))
+			Err(externalities::Error::ExtensionIsNotRegistered(type_id))
 		}
 	}
 }
