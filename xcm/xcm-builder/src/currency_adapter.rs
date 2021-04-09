@@ -16,7 +16,7 @@
 
 use tetcore_std::{result, convert::TryInto, marker::PhantomData};
 use xcm::v0::{Error, Result, MultiAsset, MultiLocation};
-use tp_arithmetic::traits::SaturatedConversion;
+use arithmetic::traits::SaturatedConversion;
 use fabric_support::traits::{ExistenceRequirement::AllowDeath, WithdrawReasons};
 use xcm_executor::traits::{MatchesFungible, LocationConversion, TransactAsset};
 

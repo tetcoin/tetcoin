@@ -48,7 +48,7 @@ use service::{
 	RpcHandlers, TaskExecutor, TaskManager, KeepBlocks, TransactionStorageMode,
 };
 use service::{BasePath, Configuration, Role};
-use tp_arithmetic::traits::SaturatedConversion;
+use arithmetic::traits::SaturatedConversion;
 use tp_blockchain::HeaderBackend;
 use tp_keyring::Sr25519Keyring;
 use tp_runtime::{codec::Encode, generic, traits::IdentifyAccount, MultiSigner};

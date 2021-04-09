@@ -48,7 +48,7 @@ tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 service = { package = "tc-service", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

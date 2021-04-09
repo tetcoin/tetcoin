@@ -16,7 +16,7 @@ tp-version = { git = "https://github.com/tetcoin/tetcore", branch = "master", de
 tetcore-std = { package = "tetcore-std", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 runtime_primitives = { package = "tp-runtime", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcoin-parachain = { path = "../parachain", default-features = false }
@@ -46,7 +46,7 @@ std = [
 	"tet-io/std",
 	"tp-version/std",
 	"tp-staking/std",
-	"tp-arithmetic/std",
+	"arithmetic/std",
 	"runtime_primitives/std",
 	"serde",
 	"tetsy-util-mem",

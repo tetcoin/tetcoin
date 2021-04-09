@@ -24,7 +24,7 @@ use bitvec::vec::BitVec;
 use primitives::RuntimeDebug;
 use runtime_primitives::traits::AppVerify;
 use inherents::InherentIdentifier;
-use tp_arithmetic::traits::{BaseArithmetic, Saturating};
+use arithmetic::traits::{BaseArithmetic, Saturating};
 use application_crypto::KeyTypeId;
 
 pub use runtime_primitives::traits::{BlakeTwo256, Hash as HashT};

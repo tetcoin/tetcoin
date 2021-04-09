@@ -10,7 +10,7 @@ tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["
 xcm = { path = "..", default-features = false }
 xcm-executor = { path = "../xcm-executor", default-features = false }
 tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
@@ -25,7 +25,7 @@ std = [
 	"xcm/std",
 	"xcm-executor/std",
 	"tetcore-std/std",
-	"tp-arithmetic/std",
+	"arithmetic/std",
 	"tet-io/std",
 	"tp-runtime/std",
 	"fabric-support/std",
