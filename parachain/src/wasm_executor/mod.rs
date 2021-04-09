@@ -25,7 +25,7 @@ use crate::primitives::{ValidationParams, ValidationResult};
 use tetsy_scale_codec::{Decode, Encode};
 use tet_core::{storage::{ChildInfo, TrackedStorageKey}, traits::{CallInWasm, SpawnNamed}};
 use externalities::Extensions;
-use tp_wasm_interface::HostFunctions as _;
+use tetcore_wasm_interface::HostFunctions as _;
 
 #[cfg(not(any(target_os = "android", target_os = "unknown")))]
 pub use validation_host::{run_worker, ValidationPool, EXECUTION_TIMEOUT_SEC, WORKER_ARGS};
