@@ -48,7 +48,7 @@ hex-literal = "0.3.1"
 keyring = { package = "tp-keyring", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-trie = { version = "2.0.2" }
 noble-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-randomness-collective-flip = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-staking-reward-curve = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-treasury = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

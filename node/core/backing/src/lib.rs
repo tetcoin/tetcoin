@@ -1183,7 +1183,7 @@ mod tests {
 	};
 	use tetcoin_node_primitives::InvalidCandidate;
 	use tp_keyring::Sr25519Keyring;
-	use tp_application_crypto::AppKey;
+	use tet_application_crypto::AppKey;
 	use tp_keystore::{CryptoStore, SyncCryptoStore};
 	use statement_table::v1::Misbehavior;
 	use std::collections::HashMap;

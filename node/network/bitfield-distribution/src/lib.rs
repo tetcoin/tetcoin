@@ -780,7 +780,7 @@ mod test {
 	use tetcoin_node_subsystem_test_helpers::make_subsystem_context;
 	use tetcoin_node_subsystem_util::TimeoutExt;
 	use tp_keystore::{SyncCryptoStorePtr, SyncCryptoStore};
-	use tp_application_crypto::AppKey;
+	use tet_application_crypto::AppKey;
 	use tp_keystore::testing::KeyStore;
 	use std::sync::Arc;
 	use std::time::Duration;

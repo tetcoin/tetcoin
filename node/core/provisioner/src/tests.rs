@@ -46,7 +46,7 @@ mod select_availability_bitfields {
 	use futures::executor::block_on;
 	use std::sync::Arc;
 	use tetcoin_primitives::v1::{SigningContext, ValidatorIndex, ValidatorId};
-	use tp_application_crypto::AppKey;
+	use tet_application_crypto::AppKey;
 	use tp_keystore::{CryptoStore, SyncCryptoStorePtr, testing::KeyStore};
 
 	async fn signed_bitfield(

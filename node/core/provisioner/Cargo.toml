@@ -16,5 +16,5 @@ tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 futures-timer = "3.0.2"
 
 [dev-dependencies]
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

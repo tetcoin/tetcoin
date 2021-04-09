@@ -18,7 +18,7 @@ tetcoin-node-network-protocol = { path = "../../network/protocol" }
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 maplit = "1.0.2"
 log = "0.4.13"

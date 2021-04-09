@@ -29,6 +29,6 @@ smallvec = "1.5.1"
 
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
 tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }

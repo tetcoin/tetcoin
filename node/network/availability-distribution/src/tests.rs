@@ -28,7 +28,7 @@ use tetcoin_subsystem_testhelpers as test_helpers;
 
 use futures::{executor, future, Future};
 use tc_keystore::LocalKeystore;
-use tp_application_crypto::AppKey;
+use tet_application_crypto::AppKey;
 use tp_keystore::{SyncCryptoStore, SyncCryptoStorePtr};
 use tp_keyring::Sr25519Keyring;
 use std::{sync::Arc, time::Duration};

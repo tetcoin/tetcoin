@@ -451,7 +451,7 @@ mod tests {
 
 		mod app {
 			use super::super::Inclusion;
-			use tp_application_crypto::{app_crypto, sr25519};
+			use tet_application_crypto::{app_crypto, sr25519};
 
 			app_crypto!(sr25519, super::KEY_TYPE);
 

@@ -25,7 +25,7 @@ metered-channel = { path = "../metered-channel"}
 
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 prometheus-endpoint = { version = "0.8.1" }
 

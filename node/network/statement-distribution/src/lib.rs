@@ -1111,7 +1111,7 @@ mod tests {
 	use super::*;
 	use std::sync::Arc;
 	use tp_keyring::Sr25519Keyring;
-	use tp_application_crypto::AppKey;
+	use tet_application_crypto::AppKey;
 	use node_primitives::Statement;
 	use tetcoin_primitives::v1::CommittedCandidateReceipt;
 	use assert_matches::assert_matches;

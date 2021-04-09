@@ -20,7 +20,7 @@ thiserror = "1.0.23"
 
 [dev-dependencies]
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 futures = { version = "0.3.12", features = ["thread-pool"] }
