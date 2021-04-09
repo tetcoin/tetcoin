@@ -71,7 +71,7 @@ fn test_harness<T: Future<Output = ()>>(
 	keystore: SyncCryptoStorePtr,
 	test_fx: impl FnOnce(TestHarness) -> T,
 ) -> ProtocolState {
-	tp_tracing::try_init_simple();
+	tetcore_tracing::try_init_simple();
 
 	let pool = tet_core::testing::TaskExecutor::new();
 	let (context, virtual_overseer) = test_helpers::make_subsystem_context(pool.clone());

@@ -23,7 +23,7 @@ tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers
 tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", features = ["std"] }
 tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tetcore-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 assert_matches = "1.4.0"
 maplit = "1.0"
