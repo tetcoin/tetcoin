@@ -28,8 +28,8 @@ use std::time::{Duration, SystemTime, SystemTimeError, UNIX_EPOCH};
 use tetsy_scale_codec::{Encode, Decode, Input, Error as CodecError};
 use futures::{select, channel::oneshot, future, FutureExt};
 use futures_timer::Delay;
-use kvdb_rocksdb::{Database, DatabaseConfig};
-use kvdb::{KeyValueDB, DBTransaction};
+use tetsy_kvdb_rocksdb::{Database, DatabaseConfig};
+use tetsy_kvdb::{KeyValueDB, DBTransaction};
 
 use tetcoin_primitives::v1::{
 	Hash, AvailableData, BlockNumber, CandidateEvent, ErasureChunk, ValidatorIndex, CandidateHash,

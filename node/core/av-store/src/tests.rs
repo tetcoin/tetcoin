@@ -223,7 +223,7 @@ fn with_tx(db: &Arc<impl KeyValueDB>, f: impl FnOnce(&mut DBTransaction)) {
 
 #[test]
 fn runtime_api_error_does_not_stop_the_subsystem() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 
 	test_harness(TestState::default(), store, |test_harness| async move {
 		let TestHarness { mut virtual_overseer } = test_harness;
@@ -268,7 +268,7 @@ fn runtime_api_error_does_not_stop_the_subsystem() {
 
 #[test]
 fn store_chunk_works() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	test_harness(TestState::default(), store.clone(), |test_harness| async move {
 		let TestHarness { mut virtual_overseer } = test_harness;
 		let relay_parent = Hash::repeat_byte(32);
@@ -320,7 +320,7 @@ fn store_chunk_works() {
 
 #[test]
 fn store_chunk_does_nothing_if_no_entry_already() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	test_harness(TestState::default(), store.clone(), |test_harness| async move {
 		let TestHarness { mut virtual_overseer } = test_harness;
 		let relay_parent = Hash::repeat_byte(32);
@@ -360,7 +360,7 @@ fn store_chunk_does_nothing_if_no_entry_already() {
 
 #[test]
 fn query_chunk_checks_meta() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	test_harness(TestState::default(), store.clone(), |test_harness| async move {
 		let TestHarness { mut virtual_overseer } = test_harness;
 		let candidate_hash = CandidateHash(Hash::repeat_byte(33));
@@ -405,7 +405,7 @@ fn query_chunk_checks_meta() {
 
 #[test]
 fn store_block_works() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	let test_state = TestState::default();
 	test_harness(test_state.clone(), store.clone(), |test_harness| async move {
 		let TestHarness { mut virtual_overseer } = test_harness;
@@ -457,7 +457,7 @@ fn store_block_works() {
 
 #[test]
 fn store_pov_and_query_chunk_works() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	let test_state = TestState::default();
 
 	test_harness(test_state.clone(), store.clone(), |test_harness| async move {
@@ -499,7 +499,7 @@ fn store_pov_and_query_chunk_works() {
 
 #[test]
 fn stored_but_not_included_data_is_pruned() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	let test_state = TestState::default();
 
 	test_harness(test_state.clone(), store.clone(), |test_harness| async move {
@@ -546,7 +546,7 @@ fn stored_but_not_included_data_is_pruned() {
 
 #[test]
 fn stored_data_kept_until_finalized() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	let test_state = TestState::default();
 
 	test_harness(test_state.clone(), store.clone(), |test_harness| async move {
@@ -651,7 +651,7 @@ fn stored_data_kept_until_finalized() {
 
 #[test]
 fn forkfullness_works() {
-	let store = Arc::new(kvdb_memorydb::create(columns::NUM_COLUMNS));
+	let store = Arc::new(tetsy_kvdb_memorydb::create(columns::NUM_COLUMNS));
 	let test_state = TestState::default();
 
 	test_harness(test_state.clone(), store.clone(), |test_harness| async move {
