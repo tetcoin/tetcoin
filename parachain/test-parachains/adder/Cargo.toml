@@ -17,7 +17,7 @@ dlmalloc = { version = "0.2.1", features = [ "global" ] }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false, features = [ "disable_allocator" ] }
 
 [build-dependencies]
-tetcore-wasm-builder = "3.0.0"
+wasm-builder = "3.0.0"
 
 [features]
 default = [ "std" ]

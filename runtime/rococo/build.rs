@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Tetcore.  If not, see <http://www.gnu.org/licenses/>.
 
-use tetcore_wasm_builder::WasmBuilder;
+use wasm_builder::WasmBuilder;
 
 fn main() {
 	WasmBuilder::new()

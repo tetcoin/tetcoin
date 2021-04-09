@@ -84,7 +84,7 @@ tp-trie = { version = "2.0.2" }
 serde_json = "1.0.61"
 
 [build-dependencies]
-tetcore-wasm-builder = "3.0.0"
+wasm-builder = "3.0.0"
 
 [features]
 default = ["std"]

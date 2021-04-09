@@ -23,7 +23,7 @@ use tp_runtime::{
 	Justification, generic::{BlockId, SignedBlock}, traits::{Block as BlockT, BlakeTwo256},
 };
 use tc_client_api::{Backend as BackendT, BlockchainEvents, KeyIterator};
-use tp_storage::{StorageData, StorageKey, ChildInfo, PrefixedStorageKey};
+use tetcore_storage::{StorageData, StorageKey, ChildInfo, PrefixedStorageKey};
 use tetcoin_primitives::v1::{Block, ParachainHost, AccountId, Nonce, Balance, Header, BlockNumber, Hash};
 use consensus_common::BlockStatus;
 
