@@ -23,7 +23,7 @@ tetcoin-service = { path = "../../../../node/service" }
 tetcoin-node-primitives = { path = "../../../../node/primitives" }
 tetcoin-node-subsystem = { path = "../../../../node/subsystem" }
 
-tc-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-cli = "0.8.0"
 tet-core = "2.0.2"
 tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

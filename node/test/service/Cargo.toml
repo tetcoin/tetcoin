@@ -40,7 +40,7 @@ noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master" 
 noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 noble-transaction-payment = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-chain-spec = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-cli = "0.8.0"
 tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
