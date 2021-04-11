@@ -64,7 +64,7 @@ thiserror = "1.0.23"
 # Tetcoin
 tetcoin-node-core-proposer = { path = "../core/proposer" }
 tetcoin-overseer = { path = "../overseer" }
-tetcoin-parachain = { path = "../../parachain" }
+tetcoin-parachain = { version = "0.8.28", path = "../../parachain" }
 tetcoin-primitives = { path = "../../primitives" }
 tetcoin-rpc = { path = "../../rpc" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../subsystem" }

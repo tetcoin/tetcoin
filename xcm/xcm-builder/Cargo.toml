@@ -16,7 +16,7 @@ tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", de
 fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 # Tetcoin dependencies
-tetcoin-parachain = { path = "../../parachain", default-features = false }
+tetcoin-parachain = { version = "0.8.28", path = "../../parachain", default-features = false }
 
 [features]
 default = ["std"]

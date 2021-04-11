@@ -22,7 +22,7 @@ wasm-bindgen-futures = { version = "0.4.19", optional = true }
 futures = "0.3.12"
 
 service = { version = "0.8.3", package = "tetcoin-service", path = "../node/service", default-features = false, optional = true }
-tetcoin-parachain = { path = "../parachain", optional = true }
+tetcoin-parachain = { version = "0.8.28", path = "../parachain", optional = true }
 
 tet-core = "2.0.2"
 tracing-futures = "0.2.4"

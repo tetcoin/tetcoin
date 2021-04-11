@@ -9,7 +9,7 @@ edition = "2018"
 tiny-keccak = "2.0.2"
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 
-parachain = { package = "tetcoin-parachain", path = ".." }
+parachain = { version = "0.8.28", package = "tetcoin-parachain", path = ".." }
 adder = { package = "test-parachain-adder", path = "adder" }
 halt = { package = "test-parachain-halt", path = "halt" }
 

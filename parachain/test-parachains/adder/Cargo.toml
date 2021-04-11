@@ -7,7 +7,7 @@ edition = "2018"
 build = "build.rs"
 
 [dependencies]
-parachain = { package = "tetcoin-parachain", path = "../../", default-features = false, features = [ "wasm-api" ] }
+parachain = { version = "0.8.28", package = "tetcoin-parachain", path = "../../", default-features = false, features = [ "wasm-api" ] }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tiny-keccak = { version = "2.0.2", features = ["keccak"] }
