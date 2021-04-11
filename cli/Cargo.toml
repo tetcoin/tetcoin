@@ -29,7 +29,7 @@ tracing-futures = "0.2.4"
 fabric-benchmarking-cli = { version = "2.0.1", optional = true }
 tc-cli = { version = "0.8.0", optional = true }
 tc-service = { version = "0.8.0", optional = true }
-browser-utils = { package = "tetcore-browser-utils", version = "0.8.1" , optional = true }
+browser-utils = { version = "0.8.1", package = "tetcore-browser-utils", optional = true }
 
 # this crate is used only to enable `trie-memory-tracker` feature
 # see https://github.com/tetcoin/tetcore/pull/6745

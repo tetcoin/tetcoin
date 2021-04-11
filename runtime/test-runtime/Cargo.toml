@@ -19,7 +19,7 @@ babe-primitives = { package = "tp-consensus-babe", git = "https://github.com/tet
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 offchain-primitives = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { version = "2.0.2", default-features = false }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

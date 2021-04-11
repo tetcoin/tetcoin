@@ -9,7 +9,7 @@ version = "0.8.22"
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 xcm = { path = "..", default-features = false }
 xcm-executor = { path = "../xcm-executor", default-features = false }
-tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { version = "2.0.2", default-features = false }
 arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

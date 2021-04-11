@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 tet-core = { version = "2.0.2", default-features = false }
-tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { version = "2.0.2", default-features = false }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 tetsy-util-mem = { version = "0.9.0", default-features = false, optional = true }

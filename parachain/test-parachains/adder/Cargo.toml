@@ -9,7 +9,7 @@ build = "build.rs"
 [dependencies]
 parachain = { version = "0.8.28", package = "tetcoin-parachain", path = "../../", default-features = false, features = [ "wasm-api" ] }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
-tetcore-std = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tetcore-std = { version = "2.0.2", default-features = false }
 tiny-keccak = { version = "2.0.2", features = ["keccak"] }
 dlmalloc = { version = "0.2.1", features = [ "global" ] }
 
