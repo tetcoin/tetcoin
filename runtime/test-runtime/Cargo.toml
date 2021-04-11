@@ -52,7 +52,7 @@ noble-sudo = { git = "https://github.com/tetcoin/tetcore", branch = "master", de
 noble-vesting = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 runtime-common = { package = "tetcoin-runtime-common", path = "../common", default-features = false }
-primitives = { package = "tetcoin-primitives", path = "../../primitives", default-features = false }
+primitives = { version = "0.8.28", package = "tetcoin-primitives", path = "../../primitives", default-features = false }
 tetcoin-parachain = { version = "0.8.28", path = "../../parachain", default-features = false }
 tetcoin-runtime-parachains = { path = "../parachains", default-features = false }
 

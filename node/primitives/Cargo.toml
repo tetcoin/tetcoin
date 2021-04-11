@@ -7,7 +7,7 @@ description = "Primitives types for the Node-side"
 
 [dependencies]
 futures = "0.3.12"
-tetcoin-primitives = { path = "../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 runtime_primitives = { package = "tp-runtime", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

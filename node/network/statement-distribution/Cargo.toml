@@ -9,7 +9,7 @@ edition = "2018"
 futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 node-primitives = { package = "tetcoin-node-primitives", path = "../../primitives" }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }

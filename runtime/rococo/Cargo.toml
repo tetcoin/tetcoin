@@ -50,7 +50,7 @@ fabric-system = {git = "https://github.com/tetcoin/tetcore", branch = "master", 
 fabric-system-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 runtime-common = { package = "tetcoin-runtime-common", path = "../common", default-features = false }
-primitives = { package = "tetcoin-primitives", path = "../../primitives", default-features = false }
+primitives = { version = "0.8.28", package = "tetcoin-primitives", path = "../../primitives", default-features = false }
 tetcoin-parachain = { version = "0.8.28", path = "../../parachain", default-features = false }
 runtime-parachains = { package = "tetcoin-runtime-parachains", path = "../parachains", default-features = false }
 

@@ -10,7 +10,7 @@ futures-timer = "3.0.2"
 tracing = "0.1.22"
 tetcoin-node-subsystem = { path = "../../subsystem" }
 tetcoin-overseer = { path = "../../overseer" }
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tc-basic-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

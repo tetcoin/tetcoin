@@ -15,7 +15,7 @@ tempfile = "3.2.0"
 
 # Tetcoin dependencies
 tetcoin-overseer = { path = "../../overseer" }
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-parachain = { version = "0.8.28", path = "../../../parachain" }
 tetcoin-rpc = { path = "../../../rpc" }
 tetcoin-runtime-common = { path = "../../../runtime/common" }

@@ -11,7 +11,7 @@ tracing-futures = "0.2.4"
 thiserror = "1.0.23"
 
 
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-network-protocol = { path = "../../network/protocol" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }

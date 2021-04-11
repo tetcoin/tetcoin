@@ -12,7 +12,7 @@ futures-timer = "3.0.2"
 oorandom = "11.1.3"
 tetcoin-node-primitives = { package = "tetcoin-node-primitives", path = "../primitives" }
 tetcoin-node-subsystem-util = { path = "../subsystem-util" }
-tetcoin-primitives = { path = "../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../subsystem" }
 tracing = "0.1.22"
 tracing-futures = "0.2.4"

@@ -35,7 +35,7 @@ noble-transaction-payment = { git = "https://github.com/tetcoin/tetcore", branch
 noble-treasury = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false, optional = true }
 
-primitives = { package = "tetcoin-primitives", path = "../../primitives", default-features = false }
+primitives = { version = "0.8.28", package = "tetcoin-primitives", path = "../../primitives", default-features = false }
 libsecp256k1 = { version = "0.3.5", default-features = false, optional = true }
 runtime-parachains = { package = "tetcoin-runtime-parachains", path = "../parachains", default-features = false }
 

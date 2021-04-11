@@ -9,7 +9,7 @@ futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 

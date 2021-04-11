@@ -20,7 +20,7 @@ tracing-futures = "0.2.4"
 tetcoin-node-primitives = { path = "../primitives" }
 tetcoin-node-subsystem = { path = "../subsystem" }
 tetcoin-node-jaeger = { path = "../jaeger" }
-tetcoin-primitives = { path = "../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 metered-channel = { path = "../metered-channel"}
 
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

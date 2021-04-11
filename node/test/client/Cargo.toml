@@ -10,7 +10,7 @@ tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["
 # Tetcoin dependencies
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
 tetcoin-test-service = { path = "../service" }
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 
 # Tetcore dependencies

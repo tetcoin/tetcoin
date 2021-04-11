@@ -9,7 +9,7 @@ async-trait = "0.1.42"
 futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
-tetcoin-primitives = { path = "../../../primitives" }
+tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

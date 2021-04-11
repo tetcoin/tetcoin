@@ -7,4 +7,4 @@ edition = "2018"
 [dependencies]
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 tet-core = "2.0.2"
-primitives = { package = "tetcoin-primitives", path = "../primitives" }
+primitives = { version = "0.8.28", package = "tetcoin-primitives", path = "../primitives" }
