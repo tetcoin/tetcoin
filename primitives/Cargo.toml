@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 serde = { version = "1.0.123", optional = true, features = ["derive"] }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
-primitives = { package = "tet-core", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+primitives = { package = "tet-core", version = "2.0.2", default-features = false }
 inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 application-crypto = { package = "tet-application-crypto", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
@@ -29,7 +29,7 @@ tetsy-util-mem = { version = "0.9.0", default-features = false, optional = true 
 
 [dev-dependencies]
 serializer = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-pretty_assertions = "0.6.1"
+pretty_assertions = "0.7.1"
 
 [features]
 default = ["std"]
