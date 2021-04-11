@@ -11,6 +11,6 @@ tetcoin-primitives = { path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 runtime_primitives = { package = "tp-runtime", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tp-consensus-vrf = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-consensus-slots = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

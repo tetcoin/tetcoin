@@ -14,7 +14,7 @@ adder = { package = "test-parachain-adder", path = "adder" }
 halt = { package = "test-parachain-halt", path = "halt" }
 
 [dev-dependencies]
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 
 [features]
 default = [ "std" ]

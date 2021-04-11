@@ -22,7 +22,7 @@ env_logger = "0.8.2"
 assert_matches = "1.4.0"
 futures-timer = "3.0.2"
 
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", features = ["std"] }
+tet-core = { version = "2.0.2", features = ["std"] }
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
 tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }

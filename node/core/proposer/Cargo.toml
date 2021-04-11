@@ -17,7 +17,7 @@ tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" 
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

@@ -2735,45 +2735,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "kvdb"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8891bd853eff90e33024195d79d578dc984c82f9e0715fcd2b525a0c19d52811"
-dependencies = [
- "parity-util-mem",
- "smallvec 1.6.1",
-]
-
-[[package]]
-name = "kvdb-memorydb"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30a0da8e08caf08d384a620ec19bb6c9b85c84137248e202617fb91881f25912"
-dependencies = [
- "kvdb",
- "parity-util-mem",
- "parking_lot 0.11.1",
-]
-
-[[package]]
-name = "kvdb-rocksdb"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34446c373ccc494c2124439281c198c7636ccdc2752c06722bbffd56d459c1e4"
-dependencies = [
- "fs-swap",
- "kvdb",
- "log",
- "num_cpus",
- "owning_ref",
- "parity-util-mem",
- "parking_lot 0.11.1",
- "regex",
- "rocksdb",
- "smallvec 1.6.1",
-]
-
-[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4036,31 +3997,6 @@ version = "2.0.2"
 source = "git+https://github.com/tetcoin/tetcore?branch=master#62b17c968dc4e0605e0ea25b01171f69e205893c"
 dependencies = [
  "backtrace",
-]
-
-[[package]]
-name = "parity-util-mem"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "664a8c6b8e62d8f9f2f937e391982eb433ab285b4cd9545b342441e04a906e42"
-dependencies = [
- "cfg-if 1.0.0",
- "impl-trait-for-tuples 0.2.1",
- "parity-util-mem-derive",
- "parking_lot 0.11.1",
- "smallvec 1.6.1",
- "winapi 0.3.9",
-]
-
-[[package]]
-name = "parity-util-mem-derive"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f557c32c6d268a07c921471619c0295f5efad3a0e76d4f97a05c091a51d110b2"
-dependencies = [
- "proc-macro2 1.0.26",
- "syn 1.0.69",
- "synstructure",
 ]
 
 [[package]]
@@ -8012,9 +7948,6 @@ dependencies = [
  "env_logger 0.8.3",
  "futures 0.3.13",
  "futures-timer 3.0.2",
- "kvdb",
- "kvdb-memorydb",
- "kvdb-rocksdb",
  "log",
  "parking_lot 0.11.1",
  "tc-service 0.8.0 (git+https://github.com/tetcoin/tetcore)",
@@ -8025,6 +7958,9 @@ dependencies = [
  "tetcoin-node-subsystem-util",
  "tetcoin-overseer",
  "tetcoin-primitives",
+ "tetsy-kvdb",
+ "tetsy-kvdb-memorydb",
+ "tetsy-kvdb-rocksdb",
  "tetsy-scale-codec",
  "thiserror",
  "tp-keyring",

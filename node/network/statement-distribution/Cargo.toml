@@ -22,7 +22,7 @@ indexmap = "1.6.1"
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
 assert_matches = "1.4.0"
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

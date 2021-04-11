@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name: tetcoin
-Summary: Implementation of a https://tetcoin.network node in Rust based on the Tetcore framework.
+Summary: Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework.
 Version: @@VERSION@@
 Release: @@RELEASE@@%{?dist}
 License: GPLv3

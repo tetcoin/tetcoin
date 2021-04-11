@@ -27,7 +27,7 @@ futures-timer = "3.0.2"
 log = "0.4.11"
 smallvec = "1.5.1"
 
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 

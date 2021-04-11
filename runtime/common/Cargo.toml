@@ -20,7 +20,7 @@ tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", defaul
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-core = { version = "2.0.2", default-features = false }
 
 noble-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

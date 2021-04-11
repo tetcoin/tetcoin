@@ -50,7 +50,7 @@ tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "ma
 service = { package = "tc-service", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

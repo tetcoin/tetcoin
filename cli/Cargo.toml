@@ -24,7 +24,7 @@ futures = "0.3.12"
 service = { package = "tetcoin-service", path = "../node/service", default-features = false, optional = true }
 tetcoin-parachain = { path = "../parachain", optional = true }
 
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tracing-futures = "0.2.4"
 fabric-benchmarking-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tc-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }

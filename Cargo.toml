@@ -4,7 +4,7 @@ path = "src/main.rs"
 
 [package]
 name = "tetcoin"
-description = "Implementation of a https://tetcoin.network node in Rust based on the Tetcore framework."
+description = "Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework."
 license = "GPL-3.0-only"
 version = "0.8.28"
 authors = ["Parity Technologies <admin@parity.io>"]
@@ -95,7 +95,7 @@ real-overseer=["cli/real-overseer"]
 # Configuration for building a .deb package - for use with `cargo-deb`
 [package.metadata.deb]
 name = "tetcoin"
-extended-description = "Implementation of a https://tetcoin.network node in Rust based on the Tetcore framework."
+extended-description = "Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework."
 section = "misc"
 maintainer = "martin@parity.io"
 license-file = ["LICENSE", "0"]

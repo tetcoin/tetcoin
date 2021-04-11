@@ -21,7 +21,7 @@ tetcoin-primitives = { path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 smallvec = "1.6.1"
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 
 [dev-dependencies]
 tetcoin-overseer = { path = "../overseer" }

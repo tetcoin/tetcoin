@@ -2,8 +2,8 @@ name: tetcoin
 version: 0.2
 appVersion: 0.2.0
 description: Tetcoin Node Implementation
-home: https://tetcoin.network/
-icon: https://tetcoin.network/favicon.ico
+home: https://tetcoin.org/
+icon: https://tetcoin.org/favicon.ico
 sources:
   - https://github.com/tetcoin/tetcoin/
 maintainers:

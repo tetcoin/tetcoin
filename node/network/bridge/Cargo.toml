@@ -21,5 +21,5 @@ assert_matches = "1.4.0"
 parking_lot = "0.11.1"
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util"}
-tet-core = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-core = "2.0.2"
 tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
