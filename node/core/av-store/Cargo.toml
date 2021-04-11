@@ -21,7 +21,7 @@ tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 tetcoin-overseer = { path = "../../overseer" }
 tetcoin-primitives = { path = "../../../primitives" }
 
-tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tc-service = { version = "0.8.0", default-features = false }
 
 [dev-dependencies]
 log = "0.4.13"

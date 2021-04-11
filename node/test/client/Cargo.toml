@@ -15,7 +15,7 @@ tetcoin-node-subsystem = { path = "../../subsystem" }
 
 # Tetcore dependencies
 tetcore-test-client = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-service = "0.8.0"
 tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

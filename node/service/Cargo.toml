@@ -19,7 +19,7 @@ tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-finality-grandpa-warp-sync = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-service = { package = "tc-service", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+service = { package = "tc-service", version = "0.8.0", default-features = false }
 telemetry = { package = "tc-telemetry", git = "https://github.com/tetcoin/tetcore", branch = "master" }
 
 # Tetcore Primitives
