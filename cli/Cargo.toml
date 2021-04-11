@@ -26,7 +26,7 @@ tetcoin-parachain = { path = "../parachain", optional = true }
 
 tet-core = "2.0.2"
 tracing-futures = "0.2.4"
-fabric-benchmarking-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
+fabric-benchmarking-cli = { version = "2.0.1", optional = true }
 tc-cli = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 tc-service = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
 # browser-utils = { package = "tetcore-browser-utils", git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
