@@ -11,7 +11,7 @@ tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-primitives = { path = "../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
-erasure-coding = { package = "tetcoin-erasure-coding", path = "../../../erasure-coding" }
+erasure-coding = { version = "0.8.28", package = "tetcoin-erasure-coding", path = "../../../erasure-coding" }
 statement-table = { package = "tetcoin-statement-table", path = "../../../statement-table" }
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
 tracing = "0.1.22"

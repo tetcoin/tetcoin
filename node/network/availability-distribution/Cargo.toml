@@ -10,7 +10,7 @@ tracing = "0.1.22"
 tracing-futures = "0.2.4"
 tetsy-scale-codec = { version = "2.0.0", features = ["std"]  }
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
-tetcoin-erasure-coding = { path = "../../../erasure-coding" }
+tetcoin-erasure-coding = { version = "0.8.28", path = "../../../erasure-coding" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-network-protocol = { path = "../../network/protocol" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }

@@ -12,7 +12,7 @@ thiserror = "1.0.21"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
 
-tetcoin-erasure-coding = { path = "../../../erasure-coding" }
+tetcoin-erasure-coding = { version = "0.8.28", path = "../../../erasure-coding" }
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
