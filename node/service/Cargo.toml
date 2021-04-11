@@ -35,7 +35,7 @@ tet-core = "2.0.2"
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-offchain = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-runtime = "2.0.2"
 tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tetcore-storage = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

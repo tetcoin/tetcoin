@@ -12,7 +12,7 @@ edition = "2018"
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 tetsy-util-mem = { version = "0.9.0", optional = true }
 tetcore-std = { version = "2.0.2", default-features = false }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-runtime = { version = "2.0.2", default-features = false }
 tet-core = { version = "2.0.2", default-features = false }
 tetcore-wasm-interface = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tetcoin-core-primitives = { path = "../core-primitives", default-features = false }

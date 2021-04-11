@@ -19,7 +19,7 @@ tc-service = "0.8.0"
 tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-runtime = "2.0.2"
 tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = "2.0.2"
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

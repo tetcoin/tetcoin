@@ -12,7 +12,7 @@ xcm-executor = { path = "../xcm-executor", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
 arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-runtime = { version = "2.0.2", default-features = false }
 fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
 
 # Tetcoin dependencies

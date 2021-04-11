@@ -19,6 +19,6 @@ tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" 
 tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 tet-core = "2.0.2"
 tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-runtime = "2.0.2"
 tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
 prometheus-endpoint = { version = "0.8.1" }

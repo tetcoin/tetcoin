@@ -10,7 +10,7 @@ tetcoin-primitives = { path = "../primitives" }
 tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
 tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
 tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tp-runtime = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
+tp-runtime = "2.0.2"
 tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
 tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
 tp-consensus-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
