@@ -16,7 +16,7 @@ cli = { package = "tetcoin-cli", path = "cli" }
 color-eyre = "0.5.10"
 thiserror = "1.0.23"
 futures = "0.3.12"
-service = { package = "tetcoin-service", path = "node/service" }
+service = { version = "0.8.3", package = "tetcoin-service", path = "node/service" }
 tetsy-util-mem = { version = "*", default-features = false, features = ["jemalloc-global"] }
 
 [dev-dependencies]

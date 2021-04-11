@@ -19,7 +19,7 @@ structopt = "0.3.21"
 test-parachain-adder = { path = ".." }
 tetcoin-primitives = { path = "../../../../primitives" }
 tetcoin-cli = { path = "../../../../cli" }
-tetcoin-service = { path = "../../../../node/service" }
+tetcoin-service = { version = "0.8.3", path = "../../../../node/service" }
 tetcoin-node-primitives = { path = "../../../../node/primitives" }
 tetcoin-node-subsystem = { path = "../../../../node/subsystem" }
 

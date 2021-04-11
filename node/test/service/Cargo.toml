@@ -19,7 +19,7 @@ tetcoin-primitives = { path = "../../../primitives" }
 tetcoin-parachain = { path = "../../../parachain" }
 tetcoin-rpc = { path = "../../../rpc" }
 tetcoin-runtime-common = { path = "../../../runtime/common" }
-tetcoin-service = { path = "../../service" }
+tetcoin-service = { version = "0.8.3", path = "../../service" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 tetcoin-node-primitives = { path = "../../primitives" }
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
