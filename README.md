@@ -2,9 +2,6 @@
 
 Implementation of a https://tetcoin.org node in Rust based on the Tetcore framework.
 
-> **NOTE:** In 2018, we split our implementation of "Tetcoin" from its development framework
-> "Tetcore". See the [Tetcore][tetcore-repo] repo for git history prior to 2018.
-
 [tetcore-repo]: https://github.com/tetcoin/tetcore
 
 This repo contains runtimes for the Tetcoin, Kusama, and Westend networks. The README provides
