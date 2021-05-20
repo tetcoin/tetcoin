@@ -6,51 +6,51 @@ edition = "2018"
 
 [dependencies]
 # Tetcore Client
-tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-babe = { package = "tc-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-grandpa = { package = "tc-finality-grandpa", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-chain-spec = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-client-db = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-consensus-slots = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-finality-grandpa-warp-sync = { git = "https://github.com/tetcoin/tetcore", branch = "master", optional = true }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-authority-discovery = { version = "0.8.0" }
+babe = { package = "tc-consensus-babe", version = "0.8.0" }
+grandpa = { package = "tc-finality-grandpa", version = "0.8.0" }
+tc-block-builder = { version = "0.8.0" }
+tc-chain-spec = { version = "2.0.0" }
+tc-client-api = { version = "2.0.0" }
+tc-client-db = { version = "0.8.0" }
+tc-consensus = { version = "0.8.0" }
+tc-consensus-slots = { version = "0.8.0" }
+tc-executor = { version = "0.8.0" }
+tc-finality-grandpa-warp-sync = { version = "0.8.0", optional = true }
+tc-network = { version = "0.8.0" }
+tc-transaction-pool = { version = "2.0.0" }
 service = { package = "tc-service", version = "0.8.0", default-features = false }
-telemetry = { package = "tc-telemetry", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+telemetry = { package = "tc-telemetry", version = "2.0.0" }
 
 # Tetcore Primitives
-tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-babe-primitives = { package = "tp-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-consensus_common = { package = "tp-consensus", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-grandpa_primitives = { package = "tp-finality-grandpa", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-authority-discovery = { version = "2.0.2" }
+babe-primitives = { package = "tp-consensus-babe", version = "0.8.2" }
+consensus_common = { package = "tp-consensus", version = "0.8.2" }
+grandpa_primitives = { package = "tp-finality-grandpa", version = "2.0.2" }
+inherents = { package = "tp-inherents", version = "2.0.2" }
+tp-api = { version = "2.0.2" }
+tp-block-builder = { version = "2.0.2" }
+tp-blockchain = { version = "2.0.2" }
 tet-core = "2.0.2"
-tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-offchain = { package = "tp-offchain", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-io = { version = "2.0.2" }
+tp-keystore = { version = "0.8.1" }
+tp-offchain = { package = "tp-offchain", version = "2.0.2" }
 tp-runtime = "2.0.2"
-tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcore-storage = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-session = { version = "2.0.2" }
+tetcore-storage = { version = "2.0.2" }
+tp-transaction-pool = { version = "2.0.2" }
 tp-trie = { version = "2.0.2" }
-tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-state-machine = { version = "0.8.2" }
 
 # Tetcore Pallets
-noble-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-im-online = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-transaction-payment-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+noble-babe = { version = "2.0.1" }
+noble-im-online = { version = "2.0.0", branch = "master" }
+noble-staking = { version = "2.0.0" }
+noble-transaction-payment-rpc-runtime-api = { version = "2.0.0" }
 
 # Tetcore Other
-fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-fabric-system-rpc-runtime-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+fabric-benchmarking = { version = "2.0.0" }
+fabric-system-rpc-runtime-api = { version = "2.0.0" }
 prometheus-endpoint = { version = "0.8.1" }
 
 # External Crates

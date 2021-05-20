@@ -14,7 +14,7 @@ tiny-keccak = { version = "2.0.2", features = ["keccak"] }
 dlmalloc = { version = "0.2.1", features = [ "global" ] }
 
 # We need to make sure the global allocator is disabled until we have support of full tetcore externalities
-tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false, features = [ "disable_allocator" ] }
+tet-io = { version = "2.0.2", default-features = false, features = [ "disable_allocator" ] }
 
 [build-dependencies]
 wasm-builder = "3.0.0"

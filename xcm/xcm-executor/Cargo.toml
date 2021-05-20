@@ -10,11 +10,11 @@ impl-trait-for-tuples = "0.2.0"
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 xcm = { path = "..", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
-tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { version = "2.0.2", default-features = false }
+arithmetic = { version = "2.0.2", default-features = false }
 tet-core = { version = "2.0.2", default-features = false }
 tp-runtime = { version = "2.0.2", default-features = false }
-fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+fabric-support = { version = "2.0.0", default-features = false }
 
 [features]
 default = ["std"]

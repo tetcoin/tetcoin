@@ -15,15 +15,15 @@ tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsyste
 tetcoin-node-network-protocol = { path = "../../network/protocol" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 tet-core = { version = "2.0.2", features = ["std"]  }
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keystore = { version = "0.8.1" }
 thiserror = "1.0.23"
 
 [dev-dependencies]
 tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }
 tet-core = { version = "2.0.2", features = ["std"] }
-tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcore-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { version = "2.0.2" }
+tp-keyring = { version = "2.0.2" }
+tetcore-tracing = { version = "2.0.2" }
+tc-keystore = { version = "2.0.0" }
 assert_matches = "1.4.0"
 maplit = "1.0"

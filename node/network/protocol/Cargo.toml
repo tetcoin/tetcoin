@@ -10,7 +10,7 @@ tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 tetcoin-node-jaeger = { path = "../../jaeger" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { version = "0.8.0" }
 strum = { version = "0.20", features = ["derive"] }
 thiserror = "1.0.23"
 

@@ -14,18 +14,18 @@ tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 
 # Tetcore dependencies
-tetcore-test-client = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tetcore-test-client = { version = "2.0.0" }
 tc-service = "0.8.0"
-tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-block-builder = { version = "0.8.0" }
+tc-consensus = { version = "0.8.0" }
+tp-blockchain = { version = "2.0.2" }
 tp-runtime = "2.0.2"
-tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-inherents = { version = "2.0.2" }
 tet-core = "2.0.2"
-tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-timestamp = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-api = { version = "2.0.2" }
+tp-timestamp = { version = "2.0.2" }
+tp-consensus = { version = "0.8.2" }
+tp-state-machine = { version = "0.8.2" }
 
 [dev-dependencies]
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }

@@ -14,8 +14,8 @@ tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 bitvec = "0.20.1"
 
-tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-consensus-slots = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tc-client-api = { version = "2.0.0", default-features = false }
+tp-consensus-slots = { version = "0.8.2", default-features = false }
+tp-blockchain = { version = "2.0.2", default-features = false }
 
 [dev-dependencies]

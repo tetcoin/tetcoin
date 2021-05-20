@@ -11,14 +11,14 @@ tracing = "0.1.22"
 tetcoin-node-subsystem = { path = "../../subsystem" }
 tetcoin-overseer = { path = "../../overseer" }
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
-tc-basic-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-basic-authorship = { version = "0.8.0" }
+tc-block-builder = { version = "0.8.0" }
+tc-client-api = { version = "2.0.0" }
+tp-api = { version = "2.0.2" }
+tp-blockchain = { version = "2.0.2" }
+tp-consensus = { version = "0.8.2" }
 tet-core = "2.0.2"
-tp-inherents = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-inherents = { version = "2.0.2" }
 tp-runtime = "2.0.2"
-tp-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-transaction-pool = { version = "2.0.2" }
 prometheus-endpoint = { version = "0.8.1" }

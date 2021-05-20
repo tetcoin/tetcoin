@@ -11,7 +11,7 @@ tracing = "0.1.22"
 tracing-futures = "0.2.4"
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 node-primitives = { version = "0.1.0", package = "tetcoin-node-primitives", path = "../../primitives" }
-tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-staking = { version = "2.0.2", default-features = false }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 tetcoin-node-network-protocol = { path = "../../network/protocol" }
@@ -21,8 +21,8 @@ indexmap = "1.6.1"
 [dev-dependencies]
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
 assert_matches = "1.4.0"
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }
 tet-core = "2.0.2"
-tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { version = "2.0.2" }
+tp-keystore = { version = "0.8.1" }
+tc-keystore = { version = "2.0.0" }

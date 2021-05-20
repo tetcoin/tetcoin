@@ -23,10 +23,10 @@ tetcoin-node-jaeger = { path = "../jaeger" }
 tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 metered-channel = { path = "../metered-channel"}
 
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { version = "0.8.0" }
 tet-core = "2.0.2"
-tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tet-application-crypto = { version = "2.0.2" }
+tp-keystore = { version = "0.8.1" }
 prometheus-endpoint = { version = "0.8.1" }
 
 [dev-dependencies]

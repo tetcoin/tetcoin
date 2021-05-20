@@ -26,38 +26,38 @@ tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
 tetcoin-runtime-parachains = { path = "../../../runtime/parachains" }
 
 # Tetcore dependencies
-tp-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-babe = { package = "tc-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-babe-primitives = { package = "tp-consensus-babe", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-consensus_common = { package = "tp-consensus", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-fabric-system = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-grandpa = { package = "tc-finality-grandpa", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-grandpa_primitives = { package = "tp-finality-grandpa", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-transaction-payment = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-chain-spec = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-authority-discovery = { version = "2.0.2" }
+tc-authority-discovery = { version = "0.8.0" }
+babe = { package = "tc-consensus-babe", version = "0.8.0" }
+babe-primitives = { package = "tp-consensus-babe", version = "0.8.2" }
+consensus_common = { package = "tp-consensus", version = "0.8.2" }
+fabric-benchmarking = { version = "2.0.0" }
+fabric-system = { version = "2.0.0" }
+grandpa = { package = "tc-finality-grandpa", version = "0.8.0" }
+grandpa_primitives = { package = "tp-finality-grandpa", version = "2.0.2" }
+inherents = { package = "tp-inherents", version = "2.0.2" }
+noble-staking = { version = "2.0.0" }
+noble-balances = { version = "2.0.1" }
+noble-transaction-payment = { version = "2.0.0" }
+tc-chain-spec = { version = "2.0.0" }
 tc-cli = "0.8.0"
-tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-executor = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-tracing = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-transaction-pool = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-client-api = { version = "2.0.0" }
+tc-consensus = { version = "0.8.0" }
+tc-executor = { version = "0.8.0" }
+tc-network = { version = "0.8.0" }
+tc-tracing = { version = "2.0.0" }
+tc-transaction-pool = { version = "2.0.0" }
 service = { package = "tc-service", version = "0.8.0", default-features = false }
-arithmetic = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+arithmetic = { version = "2.0.2" }
+tp-blockchain = { version = "2.0.2" }
 tet-core = "2.0.2"
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }
 tp-runtime = "2.0.2"
-tp-state-machine = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tetcore-test-client = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-state-machine = { version = "0.8.2" }
+tetcore-test-client = { version = "2.0.0" }
 
 [dev-dependencies]
-noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+noble-balances = { version = "2.0.1", default-features = false }
 serde_json = "1.0.61"
-tetcore-test-utils = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tetcore-test-utils = { version = "2.0.1" }
 tokio = { version = "0.2", features = ["macros"] }

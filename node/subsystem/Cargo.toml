@@ -23,10 +23,10 @@ tetcoin-node-network-protocol = { path = "../network/protocol" }
 tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
 tetcoin-node-jaeger = { path = "../jaeger" }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { version = "0.8.0" }
 smallvec = "1.6.1"
 tet-core = "2.0.2"
-prometheus-endpoint = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+prometheus-endpoint = { version = "0.8.1" }
 thiserror = "1.0.23"
 log = "0.4.13"
 

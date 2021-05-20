@@ -23,6 +23,6 @@ assert_matches = "1.4.0"
 futures-timer = "3.0.2"
 
 tet-core = { version = "2.0.2", features = ["std"] }
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }
 
 tetcoin-subsystem-testhelpers = { package = "tetcoin-node-subsystem-test-helpers", path = "../../subsystem-test-helpers" }

@@ -13,27 +13,27 @@ serde = { version = "1.0.123", default-features = false }
 serde_derive = { version = "1.0.117", optional = true }
 static_assertions = "1.1.0"
 
-tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-inherents = { package = "tp-inherents", git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-api = { version = "2.0.2", default-features = false }
+inherents = { package = "tp-inherents", version = "2.0.2", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
-tet-io = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tet-io = { version = "2.0.2", default-features = false }
 tp-runtime = { version = "2.0.2", default-features = false }
-tp-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-tp-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
+tp-session = { version = "2.0.2", default-features = false }
+tp-staking = { version = "2.0.2", default-features = false }
 tet-core = { version = "2.0.2", default-features = false }
 
-noble-authorship = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-balances = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-session = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-fabric-support = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-staking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-fabric-system = {git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-timestamp = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-vesting = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-offences = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-transaction-payment = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-noble-treasury = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }
-fabric-benchmarking = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false, optional = true }
+noble-authorship = { version = "2.0.1", default-features = false }
+noble-balances = { version = "2.0.1", default-features = false }
+noble-session = { version = "2.0.0", default-features = false }
+fabric-support = { version = "2.0.0", default-features = false }
+noble-staking = { version = "2.0.0", default-features = false }
+fabric-system = { version = "2.0.0", default-features = false }
+noble-timestamp = { version = "2.0.0", default-features = false }
+noble-vesting = { version = "2.0.0", default-features = false }
+noble-offences = { version = "2.0.1", default-features = false }
+noble-transaction-payment = { version = "2.0.0", default-features = false }
+noble-treasury = { version = "2.0.0", default-features = false }
+fabric-benchmarking = { version = "2.0.0", default-features = false, optional = true }
 
 primitives = { version = "0.8.28", package = "tetcoin-primitives", path = "../../primitives", default-features = false }
 libsecp256k1 = { version = "0.3.5", default-features = false, optional = true }
@@ -43,13 +43,13 @@ xcm = { path = "../../xcm", default-features = false }
 
 [dev-dependencies]
 hex-literal = "0.3.1"
-keyring = { package = "tp-keyring", git = "https://github.com/tetcoin/tetcore", branch = "master" }
+keyring = { package = "tp-keyring", version = "2.0.2" }
 tp-trie = { version = "2.0.2" }
-noble-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tet-application-crypto = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-randomness-collective-flip = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-staking-reward-curve = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-noble-treasury = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+noble-babe = { version = "2.0.1" }
+tet-application-crypto = { version = "2.0.2" }
+noble-randomness-collective-flip = { version = "2.0.0" }
+noble-staking-reward-curve = { version = "2.0.0" }
+noble-treasury = { version = "2.0.0" }
 trie-db = "0.22.2"
 serde_json = "1.0.61"
 libsecp256k1 = "0.3.5"

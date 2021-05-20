@@ -19,7 +19,7 @@ tetcoin-node-subsystem = { path = "../subsystem" }
 tetcoin-node-subsystem-util = { path = "../subsystem-util" }
 tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 tetcoin-statement-table = { path = "../../statement-table" }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { version = "0.8.0" }
 smallvec = "1.6.1"
 tet-core = "2.0.2"
 

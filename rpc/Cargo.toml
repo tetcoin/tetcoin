@@ -7,24 +7,24 @@ edition = "2018"
 [dependencies]
 jsonrpc-core = "15.1.0"
 tetcoin-primitives = { version = "0.8.28", path = "../primitives" }
-tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tp-blockchain = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
+tc-client-api = { version = "2.0.0" }
+tp-blockchain = { version = "2.0.2" }
+tp-keystore = { version = "0.8.1" }
 tp-runtime = "2.0.2"
-tp-api = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tp-consensus = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tp-consensus-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-tc-chain-spec = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-consensus-babe = { git = "https://github.com/tetcoin/tetcore", branch = "master"}
-tc-consensus-babe-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master"}
-tc-consensus-epochs = { git = "https://github.com/tetcoin/tetcore", branch = "master"}
-tc-finality-grandpa = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-finality-grandpa-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master"}
-tc-sync-state-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master"}
-txpool-api = { package = "tp-transaction-pool", git = "https://github.com/tetcoin/tetcore", branch = "master" }
-fabric-rpc-system = { package = "tetcore-fabric-rpc-system", git = "https://github.com/tetcoin/tetcore", branch = "master"  }
-noble-transaction-payment-rpc = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-api = { version = "2.0.2" }
+tp-consensus = { version = "0.8.2" }
+tp-consensus-babe = { version = "0.8.2" }
+tc-chain-spec = { version = "2.0.0" }
+tc-rpc = { version = "2.0.0" }
+tc-consensus-babe = { version = "0.8.0" }
+tc-consensus-babe-rpc = { version = "0.8.0" }
+tc-consensus-epochs = { version = "0.8.0" }
+tc-finality-grandpa = { version = "0.8.0" }
+tc-finality-grandpa-rpc = { version = "0.8.0" }
+tc-keystore = { version = "2.0.0" }
+tc-sync-state-rpc = { version = "0.8.0" }
+txpool-api = { package = "tp-transaction-pool", version = "2.0.2" }
+fabric-rpc-system = { package = "tetcore-fabric-rpc-system", version = "2.0.1" }
+noble-transaction-payment-rpc = { version = "2.0.0" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false }
-tp-block-builder = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-block-builder = { version = "2.0.2" }

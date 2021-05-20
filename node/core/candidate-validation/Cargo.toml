@@ -19,7 +19,7 @@ tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsyste
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 
 [dev-dependencies]
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }
 futures = { version = "0.3.12", features = ["thread-pool"] }
 assert_matches = "1.4.0"
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }

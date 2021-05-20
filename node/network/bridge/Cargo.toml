@@ -11,8 +11,8 @@ tracing = "0.1.22"
 tracing-futures = "0.2.4"
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
-tc-authority-discovery = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-authority-discovery = { version = "0.8.0" }
+tc-network = { version = "0.8.0" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-network-protocol = { path = "../protocol" }
 
@@ -22,4 +22,4 @@ parking_lot = "0.11.1"
 tetcoin-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util"}
 tet-core = "2.0.2"
-tp-keyring = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keyring = { version = "2.0.2" }

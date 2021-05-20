@@ -10,7 +10,7 @@ tracing = "0.1.22"
 tracing-futures = "0.2.4"
 thiserror = "1.0.23"
 
-tp-keystore = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tp-keystore = { version = "0.8.1" }
 
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-subsystem = { path = "../../subsystem" }

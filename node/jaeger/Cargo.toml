@@ -11,7 +11,7 @@ mick-jaeger = "0.1.4"
 lazy_static = "1.4"
 parking_lot = "0.11.1"
 tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
-tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }
+tc-network = { version = "0.8.0" }
 tet-core = "2.0.2"
 thiserror = "1.0.23"
 log = "0.4.13"
