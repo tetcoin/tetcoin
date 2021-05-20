@@ -7,7 +7,7 @@ description = "Primitives types for the Node-side"
 
 [dependencies]
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
-tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 tetcoin-node-jaeger = { path = "../../jaeger" }
 tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
 tc-network = { git = "https://github.com/tetcoin/tetcore", branch = "master" }

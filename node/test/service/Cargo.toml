@@ -21,7 +21,7 @@ tetcoin-rpc = { path = "../../../rpc" }
 tetcoin-runtime-common = { path = "../../../runtime/common" }
 tetcoin-service = { version = "0.8.3", path = "../../service" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
-tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }
 tetcoin-runtime-parachains = { path = "../../../runtime/parachains" }
 

@@ -11,7 +11,7 @@ tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-overseer = { path = "../../overseer" }
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
-tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 bitvec = "0.20.1"
 
 tc-client-api = { git = "https://github.com/tetcoin/tetcore", branch = "master", default-features = false }

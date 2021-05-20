@@ -14,7 +14,7 @@ tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["
 
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-parachain = { version = "0.8.28", path = "../../../parachain" }
-tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
 

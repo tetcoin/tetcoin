@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-tetcoin-node-primitives = { path = "../../primitives" }
+tetcoin-node-primitives = { version = "0.1.0", path = "../../primitives" }
 tetcoin-node-network-protocol = { path = "../protocol" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }
