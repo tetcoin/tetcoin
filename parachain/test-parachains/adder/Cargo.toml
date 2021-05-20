@@ -17,7 +17,7 @@ dlmalloc = { version = "0.2.1", features = [ "global" ] }
 tet-io = { version = "2.0.2", default-features = false, features = [ "disable_allocator" ] }
 
 [build-dependencies]
-wasm-builder = "3.0.0"
+wasm-builder = "3.0.1"
 
 [features]
 default = [ "std" ]

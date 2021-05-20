@@ -44,7 +44,7 @@ tp-state-machine = { version = "0.8.2" }
 
 # Tetcore Pallets
 noble-babe = { version = "2.0.1" }
-noble-im-online = { version = "2.0.0", branch = "master" }
+noble-im-online = { version = "2.0.0" }
 noble-staking = { version = "2.0.0" }
 noble-transaction-payment-rpc-runtime-api = { version = "2.0.0" }
 

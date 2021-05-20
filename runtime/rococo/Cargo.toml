@@ -59,7 +59,7 @@ xcm-executor = { package = "xcm-executor", path = "../../xcm/xcm-executor", defa
 xcm-builder = { package = "xcm-builder", path = "../../xcm/xcm-builder", default-features = false }
 
 [build-dependencies]
-wasm-builder = "3.0.0"
+wasm-builder = "3.0.1"
 
 [features]
 default = ["std"]
