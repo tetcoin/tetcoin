@@ -14,7 +14,7 @@ hex-literal = "0.3.1"
 
 fabric-support = { version = "2.0.0", default-features = false }
 tp-api = { version = "2.0.2", default-features = false }
-tet-io = { version = "2.0.2", default-features = false }
+tet-io = { version = "2.0.2", default-features = false, features = [ "disable_oom", "disable_panic_handler" ] }
 tetcore-std = { version = "2.0.2", default-features = false }
 tp-runtime = { version = "2.0.2", default-features = false }
 tp-session = { version = "2.0.2", default-features = false }

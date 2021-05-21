@@ -15,7 +15,7 @@ derive_more = "0.99.11"
 tp-api = { version = "2.0.2", default-features = false }
 inherents = { package = "tp-inherents", version = "2.0.2", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
-tet-io = { version = "2.0.2", default-features = false }
+tet-io = { version = "2.0.2", default-features = false, features = [ "disable_oom", "disable_panic_handler" ] }
 tp-runtime = { version = "2.0.2", default-features = false }
 tp-session = { version = "2.0.2", default-features = false }
 tp-staking = { version = "2.0.2", default-features = false }

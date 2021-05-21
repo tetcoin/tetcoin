@@ -11,6 +11,13 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 readme = "README.md"
 
+[patch.crates-io]
+
+# tet-io = { path = "/home/ceo/live/tetcoin/tetcore/primitives/io" }
+
+[dependencies.funty]
+version = "1.1"
+default-features = false
 
 [dependencies]
 cli = { package = "tetcoin-cli", path = "cli" }

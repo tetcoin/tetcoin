@@ -6922,6 +6922,7 @@ version = "0.8.28"
 dependencies = [
  "assert_cmd",
  "color-eyre",
+ "funty",
  "futures 0.3.15",
  "getrandom 0.2.3",
  "nix 0.19.1",
