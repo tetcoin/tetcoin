@@ -20,7 +20,7 @@ candidate branch.
     (non-private/test) networks.
 - [ ] Verify previously [completed migrations](#old-migrations-removed) are
     removed for any public (non-private/test) networks.
-- [ ] Verify pallet and [extrinsic ordering](#extrinsic-ordering) has stayed
+- [ ] Verify noble and [extrinsic ordering](#extrinsic-ordering) has stayed
     the same. Bump `transaction_version` if not.
 - [ ] Verify new extrinsics have been correctly whitelisted/blacklisted for
     [proxy filters](#proxy-filtering).
@@ -95,7 +95,7 @@ can be found in `runtime/<runtime>/src/lib.rs`.
 ### New Migrations
 
 Ensure that any migrations that are required due to storage or logic changes
-are included in the `on_runtime_upgrade` function of the appropriate pallets.
+are included in the `on_runtime_upgrade` function of the appropriate nobles.
 
 ### Extrinsic Ordering
 
@@ -118,11 +118,11 @@ the metadata:
   - For Kusama: `docker run --network host jacogr/tetcoin-js-tools metadata wss://kusama-rpc.tetcoin.io ws://localhost:9944`
 4. Things to look for in the output are lines like:
   - `[Identity] idx 28 -> 25 (calls 15)` - indicates the index for `Identity` has changed
-  - `[+] Society, Recovery` - indicates the new version includes 2 additional modules/pallets.
+  - `[+] Society, Recovery` - indicates the new version includes 2 additional modules/nobles.
   - If no indices have changed, every modules line should look something like `[Identity] idx 25 (calls 15)`
 
 Note: Adding new functions to the runtime does not constitute a breaking change
-as long as they are added to the end of a pallet (i.e., does not break any
+as long as they are added to the end of a noble (i.e., does not break any
 other call index).
 
 ### Proxy Filtering

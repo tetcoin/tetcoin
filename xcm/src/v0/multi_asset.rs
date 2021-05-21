@@ -97,10 +97,10 @@ pub enum AssetInstance {
 /// Bitcoin with BTC or Ethereum with ETH), then it will conventionally be identified as the chain itself. Alternative
 /// and more specific ways of referring to an asset within a system include:
 ///
-/// - `<chain>/PalletInstance(<id>)` for a Frame chain with a single-asset pallet instance (such as an instance of the
-///   Balances pallet).
-/// - `<chain>/PalletInstance(<id>)/GeneralIndex(<index>)` for a Frame chain with an indexed multi-asset pallet
-///   instance (such as an instance of the Assets pallet).
+/// - `<chain>/NobleInstance(<id>)` for a Frame chain with a single-asset noble instance (such as an instance of the
+///   Balances noble).
+/// - `<chain>/NobleInstance(<id>)/GeneralIndex(<index>)` for a Frame chain with an indexed multi-asset noble
+///   instance (such as an instance of the Assets noble).
 /// - `<chain>/AccountId32` for an ERC-20-style single-asset smart-contract on a Frame-based contracts chain.
 /// - `<chain>/AccountKey20` for an ERC-20-style single-asset smart-contract on an Ethereum-like chain.
 ///

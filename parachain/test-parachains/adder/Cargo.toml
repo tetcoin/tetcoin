@@ -8,7 +8,7 @@ build = "build.rs"
 
 [dependencies]
 parachain = { version = "0.8.28", package = "tetcoin-parachain", path = "../../", default-features = false, features = [ "wasm-api" ] }
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 tetcore-std = { version = "2.0.2", default-features = false }
 tiny-keccak = { version = "2.0.2", features = ["keccak"] }
 dlmalloc = { version = "0.2.1", features = [ "global" ] }
@@ -17,7 +17,7 @@ dlmalloc = { version = "0.2.1", features = [ "global" ] }
 tet-io = { version = "2.0.2", default-features = false, features = [ "disable_allocator" ] }
 
 [build-dependencies]
-wasm-builder = "3.0.1"
+wasm-builder = "3.0.0"
 
 [features]
 default = [ "std" ]

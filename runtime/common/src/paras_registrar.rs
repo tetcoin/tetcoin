@@ -326,7 +326,7 @@ mod tests {
 		type BlockWeights = BlockWeights;
 		type BlockLength = BlockLength;
 		type Version = ();
-		type PalletInfo = ();
+		type NobleInfo = ();
 		type AccountData = noble_balances::AccountData<u128>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();

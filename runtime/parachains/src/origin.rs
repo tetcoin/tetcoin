@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Declaration of the parachain specific origin and a pallet that hosts it.
+//! Declaration of the parachain specific origin and a noble that hosts it.
 
 use tetcore_std::result;
 use tp_runtime::traits::BadOrigin;
@@ -43,7 +43,7 @@ pub fn ensure_parachain<OuterOrigin>(o: OuterOrigin) -> result::Result<ParaId, B
 pub trait Config: fabric_system::Config {}
 
 fabric_support::decl_module! {
-	/// There is no way to register an origin type in `construct_runtime` without a pallet the origin
+	/// There is no way to register an origin type in `construct_runtime` without a noble the origin
 	/// belongs to.
 	///
 	/// This module fulfills only the single purpose of housing the `Origin` in `construct_runtime`.

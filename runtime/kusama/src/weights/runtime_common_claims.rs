@@ -25,7 +25,7 @@
 // --chain=kusama-dev
 // --steps=50
 // --repeat=20
-// --pallet=runtime_common::claims
+// --noble=runtime_common::claims
 // --extrinsic=*
 // --execution=wasm
 // --wasm-execution=compiled

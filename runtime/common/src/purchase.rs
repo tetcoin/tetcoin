@@ -31,13 +31,13 @@ use tetcore_std::prelude::*;
 pub trait Config: fabric_system::Config {
 	/// The overarching event type.
 	type Event: From<Event<Self>> + Into<<Self as fabric_system::Config>::Event>;
-	/// Balances Pallet
+	/// Balances Noble
 	type Currency: Currency<Self::AccountId>;
-	/// Vesting Pallet
+	/// Vesting Noble
 	type VestingSchedule: VestingSchedule<Self::AccountId, Moment=Self::BlockNumber, Currency=Self::Currency>;
 	/// The origin allowed to set account status.
 	type ValidityOrigin: EnsureOrigin<Self::Origin>;
-	/// The origin allowed to make configurations to the pallet.
+	/// The origin allowed to make configurations to the noble.
 	type ConfigurationOrigin: EnsureOrigin<Self::Origin>;
 	/// The maximum statement length for the statement users to sign when creating an account.
 	type MaxStatementLength: Get<usize>;
@@ -183,7 +183,7 @@ decl_module! {
 			signature: Vec<u8>
 		) {
 			T::ValidityOrigin::ensure_origin(origin)?;
-			// Account is already being tracked by the pallet.
+			// Account is already being tracked by the noble.
 			ensure!(!Accounts::<T>::contains_key(&who), Error::<T>::ExistingAccount);
 			// Account should not have a vesting schedule.
 			ensure!(T::VestingSchedule::vesting_balance(&who).is_none(), Error::<T>::VestingScheduleExists);
@@ -371,9 +371,9 @@ fn account_to_bytes<AccountId>(account: &AccountId) -> Result<[u8; 32], Dispatch
 	Ok(bytes)
 }
 
-/// WARNING: Executing this function will clear all storage used by this pallet.
+/// WARNING: Executing this function will clear all storage used by this noble.
 /// Be sure this is what you want...
-pub fn remove_pallet<T>() -> fabric_support::weights::Weight
+pub fn remove_noble<T>() -> fabric_support::weights::Weight
 	where T: fabric_system::Config
 {
 	use fabric_support::migration::remove_storage_prefix;
@@ -442,7 +442,7 @@ mod tests {
 		type Event = ();
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
-		type PalletInfo = ();
+		type NobleInfo = ();
 		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
@@ -505,7 +505,7 @@ mod tests {
 	type Purchase = Module<Test>;
 
 	// This function basically just builds a genesis storage key/value store according to
-	// our desired mockup. It also executes our `setup` function which sets up this pallet for use.
+	// our desired mockup. It also executes our `setup` function which sets up this noble for use.
 	pub fn new_test_ext() -> tet_io::TestExternalities {
 		let t = fabric_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 		let mut ext = tet_io::TestExternalities::new(t);
@@ -1046,7 +1046,7 @@ mod tests {
 			assert!(UnlockBlock::<Test>::exists());
 
 			// Remove storage.
-			remove_pallet::<Test>();
+			remove_noble::<Test>();
 
 			// Verify storage is gone.
 			assert_eq!(Accounts::<Test>::iter().count(), 0);

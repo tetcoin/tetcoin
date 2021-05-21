@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 
 # Tetcoin dependencies
 tetcoin-test-runtime = { path = "../../../runtime/test-runtime" }

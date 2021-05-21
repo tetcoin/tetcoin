@@ -141,7 +141,7 @@ impl fabric_system::Config for Runtime {
 	type Event = Event;
 	type BlockHashCount = BlockHashCount;
 	type Version = Version;
-	type PalletInfo = PalletInfo;
+	type NobleInfo = NobleInfo;
 	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();

@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 futures = "0.3.8"
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["bit-vec", "derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["bit-vec", "derive"] }
 
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-overseer = { path = "../../overseer" }

@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! A pallet for proposing a parachain for Rococo.
+//! A noble for proposing a parachain for Rococo.
 //!
-//! This pallet works as registration of parachains for Rococo. The idea is to have
-//! the registration of community provides parachains being handled by this pallet.
+//! This noble works as registration of parachains for Rococo. The idea is to have
+//! the registration of community provides parachains being handled by this noble.
 //! People will be able to propose their parachain for registration. This proposal
 //! will need to be improved by some priviledged account. After approval the workflow
 //! is the following:
 //!
-//! 1. On start of the next session the pallet announces the new relay chain validators.
+//! 1. On start of the next session the noble announces the new relay chain validators.
 //!
 //! 2. The session after announcing the new relay chain validators, they will be active. At the
 //!    switch to this session, the parachain will be registered and is allowed to produce blocks.

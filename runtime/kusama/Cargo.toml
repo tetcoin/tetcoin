@@ -7,7 +7,7 @@ build = "build.rs"
 
 [dependencies]
 bitvec = { version = "0.20.1", default-features = false, features = ["alloc"] }
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 log = { version = "0.4.13", optional = true }
 rustc-hex = { version = "2.1.0", default-features = false }
 serde = { version = "1.0.123", default-features = false }
@@ -21,7 +21,7 @@ tp-api = { version = "2.0.2", default-features = false }
 inherents = { package = "tp-inherents", version = "2.0.2", default-features = false }
 offchain-primitives = { package = "tp-offchain", version = "2.0.2", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
-tet-io = { version = "2.0.2", default-features = false }
+tet-io = { version = "2.0.2", default-features = false, features = [ "disable_oom", "disable_panic_handler" ] }
 tp-runtime = { version = "2.0.2", default-features = false }
 tp-staking = { version = "2.0.2", default-features = false }
 tet-core = { version = "2.0.2", default-features = false }
@@ -85,7 +85,7 @@ separator = "0.4.1"
 serde_json = "1.0.61"
 
 [build-dependencies]
-wasm-builder = "3.0.1"
+wasm-builder = "3.0.0"
 
 [features]
 default = ["std"]

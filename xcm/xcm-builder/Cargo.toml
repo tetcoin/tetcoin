@@ -6,7 +6,7 @@ description = "Tools & types for building with XCM and its executor."
 version = "0.8.22"
 
 [dependencies]
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 xcm = { path = "..", default-features = false }
 xcm-executor = { path = "../xcm-executor", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }

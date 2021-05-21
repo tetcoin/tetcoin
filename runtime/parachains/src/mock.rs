@@ -86,7 +86,7 @@ impl fabric_system::Config for Test {
 	type Event = TestEvent;
 	type BlockHashCount = BlockHashCount;
 	type Version = ();
-	type PalletInfo = ();
+	type NobleInfo = ();
 	type AccountData = noble_balances::AccountData<u128>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();

@@ -46,10 +46,10 @@ pub enum Subcommand {
 	#[structopt(name = "validation-worker", setting = structopt::clap::AppSettings::Hidden)]
 	ValidationWorker(ValidationWorkerCommand),
 
-	/// The custom benchmark subcommmand benchmarking runtime pallets.
+	/// The custom benchmark subcommmand benchmarking runtime nobles.
 	#[structopt(
 		name = "benchmark",
-		about = "Benchmark runtime pallets."
+		about = "Benchmark runtime nobles."
 	)]
 	Benchmark(fabric_benchmarking_cli::BenchmarkCmd),
 

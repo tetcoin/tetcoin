@@ -62,7 +62,7 @@ decl_module! {
 	}
 }
 
-/// An abstraction for the authority discovery pallet
+/// An abstraction for the authority discovery noble
 /// to help with mock testing.
 pub trait AuthorityDiscoveryConfig {
 	/// Retrieve authority identifiers of the current authority set in canonical ordering.

@@ -9,7 +9,7 @@ edition = "2018"
 # note: special care is taken to avoid inclusion of `tet-io` externals when compiling
 # this crate for WASM. This is critical to avoid forcing all parachain WASM into implementing
 # various unnecessary Tetcore-specific endpoints.
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = [ "derive" ] }
 tetsy-util-mem = { version = "0.9.0", optional = true }
 tetcore-std = { version = "2.0.2", default-features = false }
 tp-runtime = { version = "2.0.2", default-features = false }

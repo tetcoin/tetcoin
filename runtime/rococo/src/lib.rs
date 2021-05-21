@@ -203,7 +203,7 @@ construct_runtime! {
 		// Sudo
 		Sudo: noble_sudo::{Module, Call, Storage, Event<T>, Config<T>},
 
-		// Propose parachain pallet.
+		// Propose parachain noble.
 		ProposeParachain: propose_parachain::{Module, Call, Storage, Event<T>},
 	}
 }
@@ -237,7 +237,7 @@ impl fabric_system::Config for Runtime {
 	type Event = Event;
 	type BlockHashCount = BlockHashCount;
 	type Version = Version;
-	type PalletInfo = PalletInfo;
+	type NobleInfo = NobleInfo;
 	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();

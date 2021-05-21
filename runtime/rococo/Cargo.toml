@@ -6,7 +6,7 @@ edition = "2018"
 build = "build.rs"
 
 [dependencies]
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 serde = { version = "1.0.123", default-features = false }
 serde_derive = { version = "1.0.117", optional = true }
 smallvec = "1.6.1"
@@ -59,7 +59,7 @@ xcm-executor = { package = "xcm-executor", path = "../../xcm/xcm-executor", defa
 xcm-builder = { package = "xcm-builder", path = "../../xcm/xcm-builder", default-features = false }
 
 [build-dependencies]
-wasm-builder = "3.0.1"
+wasm-builder = "3.0.0"
 
 [features]
 default = ["std"]

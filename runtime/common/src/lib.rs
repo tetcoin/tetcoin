@@ -231,7 +231,7 @@ mod multiplier_tests {
 		type Event = ();
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
-		type PalletInfo = ();
+		type NobleInfo = ();
 		type AccountData = ();
 		type OnNewAccount = ();
 		type OnKilledAccount = ();

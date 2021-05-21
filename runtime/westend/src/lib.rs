@@ -135,7 +135,7 @@ impl fabric_system::Config for Runtime {
 	type BlockHashCount = BlockHashCount;
 	type DbWeight = RocksDbWeight;
 	type Version = Version;
-	type PalletInfo = PalletInfo;
+	type NobleInfo = NobleInfo;
 	type AccountData = noble_balances::AccountData<Balance>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
@@ -152,7 +152,7 @@ parameter_types! {
 impl noble_scheduler::Config for Runtime {
 	type Event = Event;
 	type Origin = Origin;
-	type PalletsOrigin = OriginCaller;
+	type NoblesOrigin = OriginCaller;
 	type Call = Call;
 	type MaximumWeight = MaximumSchedulerWeight;
 	type ScheduleOrigin = EnsureRoot<AccountId>;
@@ -604,7 +604,7 @@ impl InstanceFilter<Call> for ProxyType {
 				Call::Indices(noble_indices::Call::free(..)) |
 				Call::Indices(noble_indices::Call::freeze(..)) |
 				// Specifically omitting Indices `transfer`, `force_transfer`
-				// Specifically omitting the entire Balances pallet
+				// Specifically omitting the entire Balances noble
 				Call::Authorship(..) |
 				Call::Staking(..) |
 				Call::Offences(..) |
@@ -625,7 +625,7 @@ impl InstanceFilter<Call> for ProxyType {
 				Call::Vesting(noble_vesting::Call::vest_other(..)) |
 				// Specifically omitting Vesting `vested_transfer`, and `force_vested_transfer`
 				Call::Scheduler(..) |
-				// Specifically omitting Sudo pallet
+				// Specifically omitting Sudo noble
 				Call::Proxy(..) |
 				Call::Multisig(..)
 			),
@@ -1028,7 +1028,7 @@ tp_api::impl_runtime_apis! {
 			config: fabric_benchmarking::BenchmarkConfig,
 		) -> Result<Vec<fabric_benchmarking::BenchmarkBatch>, RuntimeString> {
 			use fabric_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
-			// Trying to add benchmarks directly to the Session Pallet caused cyclic dependency issues.
+			// Trying to add benchmarks directly to the Session Noble caused cyclic dependency issues.
 			// To get around that, we separated the Session benchmarks into its own crate, which is why
 			// we need these two lines below.
 			use noble_session_benchmarking::Module as SessionBench;
@@ -1072,7 +1072,7 @@ tp_api::impl_runtime_apis! {
 			add_benchmark!(params, batches, noble_utility, Utility);
 			add_benchmark!(params, batches, noble_vesting, Vesting);
 
-			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
+			if batches.is_empty() { return Err("Benchmark not found for this noble.".into()) }
 			Ok(batches)
 		}
 	}

@@ -54,17 +54,17 @@ pub enum Junction {
 	/// An 8-byte index for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.
 	///
-	/// May be used when the context is a Frame-based chain and includes e.g. an indices pallet.
+	/// May be used when the context is a Frame-based chain and includes e.g. an indices noble.
 	AccountIndex64 { network: NetworkId, #[codec(compact)] index: u64 },
 	/// A 20-byte identifier for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.
 	///
 	/// May be used when the context is an Ethereum or Bitcoin chain or smart-contract.
 	AccountKey20 { network: NetworkId, key: [u8; 20] },
-	/// An instanced, indexed pallet that forms a constituent part of the context.
+	/// An instanced, indexed noble that forms a constituent part of the context.
 	///
 	/// Generally used when the context is a Frame-based chain.
-	PalletInstance { id: u8 },
+	NobleInstance { id: u8 },
 	/// A non-descript index within the context location.
 	///
 	/// Usage will vary widely owing to its generality.
@@ -92,7 +92,7 @@ impl Junction {
 			Junction::AccountId32 { .. } |
 			Junction::AccountIndex64 { .. } |
 			Junction::AccountKey20 { .. } |
-			Junction::PalletInstance { .. } |
+			Junction::NobleInstance { .. } |
 			Junction::GeneralIndex { .. } |
 			Junction::GeneralKey(..) |
 			Junction::OnlyChild => true,

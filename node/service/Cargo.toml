@@ -42,7 +42,7 @@ tp-transaction-pool = { version = "2.0.2" }
 tp-trie = { version = "2.0.2" }
 tp-state-machine = { version = "0.8.2" }
 
-# Tetcore Pallets
+# Tetcore Nobles
 noble-babe = { version = "2.0.1" }
 noble-im-online = { version = "2.0.0" }
 noble-staking = { version = "2.0.0" }

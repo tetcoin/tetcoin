@@ -8,7 +8,7 @@ edition = "2018"
 futures = "0.3.12"
 tracing = "0.1.22"
 tracing-futures = "0.2.4"
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }

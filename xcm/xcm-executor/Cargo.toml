@@ -7,7 +7,7 @@ version = "0.8.22"
 
 [dependencies]
 impl-trait-for-tuples = "0.2.0"
-tetsy-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+tetsy-scale-codec = { version = "2.0.1", default-features = false, features = ["derive"] }
 xcm = { path = "..", default-features = false }
 tetcore-std = { version = "2.0.2", default-features = false }
 tet-io = { version = "2.0.2", default-features = false }

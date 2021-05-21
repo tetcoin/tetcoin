@@ -11,6 +11,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 readme = "README.md"
 
+
 [dependencies]
 cli = { package = "tetcoin-cli", path = "cli" }
 color-eyre = "0.5.10"
@@ -18,6 +19,7 @@ thiserror = "1.0.23"
 futures = "0.3.12"
 service = { version = "0.8.3", package = "tetcoin-service", path = "node/service" }
 tetsy-util-mem = { version = "*", default-features = false, features = ["jemalloc-global"] }
+getrandom = { version = "0.2", features = ["js"] }
 
 [dev-dependencies]
 assert_cmd = "1.0.2"

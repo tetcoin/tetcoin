@@ -776,7 +776,7 @@ tp_api::decl_runtime_apis! {
 		// That in turns will lead to two things:
 		//
 		// (a) The fabric_system module will be initialized to the next block.
-		// (b) Initialization sequences for each runtime module (pallet) will be run.
+		// (b) Initialization sequences for each runtime module (noble) will be run.
 		//
 		// (a) is undesirable because the runtime APIs are querying the state against a specific
 		// block state. However, due to that initialization the observed block number would be as if

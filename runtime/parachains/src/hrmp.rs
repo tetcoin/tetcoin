@@ -870,7 +870,7 @@ impl<T: Config> Module<T> {
 	/// parameters.
 	///
 	/// Basically the same as [`hrmp_init_open_channel`](Module::hrmp_init_open_channel) but intendend for calling directly from
-	/// other pallets rather than dispatched.
+	/// other nobles rather than dispatched.
 	pub fn init_open_channel(
 		origin: ParaId,
 		recipient: ParaId,
@@ -971,7 +971,7 @@ impl<T: Config> Module<T> {
 	/// Accept a pending open channel request from the given sender.
 	///
 	/// Basically the same as [`hrmp_accept_open_channel`](Module::hrmp_accept_open_channel) but
-	/// intendend for calling directly from other pallets rather than dispatched.
+	/// intendend for calling directly from other nobles rather than dispatched.
 	pub fn accept_open_channel(origin: ParaId, sender: ParaId) -> DispatchResult {
 		let channel_id = HrmpChannelId {
 			sender,

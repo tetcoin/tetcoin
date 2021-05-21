@@ -208,7 +208,7 @@ decl_event! {
 		DeployDataFixed(FundIndex),
 		/// Onboarding process for a winning parachain fund is completed. [find_index, parachain_id]
 		Onboarded(FundIndex, ParaId),
-		/// The result of trying to submit a new bid to the Slots pallet.
+		/// The result of trying to submit a new bid to the Slots noble.
 		HandleBidResult(FundIndex, DispatchResult),
 	}
 }
@@ -641,7 +641,7 @@ mod tests {
 		type Event = Event;
 		type BlockHashCount = BlockHashCount;
 		type Version = ();
-		type PalletInfo = ();
+		type NobleInfo = ();
 		type AccountData = noble_balances::AccountData<u64>;
 		type OnNewAccount = ();
 		type OnKilledAccount = ();
