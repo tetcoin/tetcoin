@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [dependencies]
-jsonrpc-core = "15.1.0"
+tetsy-jsonrpc-core = "15.1.0"
 tetcoin-primitives = { version = "0.8.28", path = "../primitives" }
 tc-client-api = { version = "2.0.0" }
 tp-blockchain = { version = "2.0.2" }

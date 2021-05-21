@@ -12,8 +12,14 @@ edition = "2018"
 readme = "README.md"
 
 [patch.crates-io]
-
-# tet-io = { path = "/home/ceo/live/tetcoin/tetcore/primitives/io" }
+# tetsy-scale-codec = { path = "~/live/tetcoin/tetsy-scale-codec" }
+# tetsy-scale-codec-derive = { path = "~/live/tetcoin/tetsy-scale-codec/derive" }
+tetsy-scale-codec = { git = "https://github.com/tetcoin/tetsy-scale-codec", branch="tet-hotfix-1" }
+tetsy-scale-codec-derive = { git = "https://github.com/tetcoin/tetsy-scale-codec", branch="tet-hotfix-1" }
+# tet-core = { path = "~/live/tetcoin/tetcore/primitives/core" }
+# tc-cli = { path = "~/live/tetcoin/tetcore/client/cli" }
+# tet-core = { git = "https://github.com/tetcoin/tetcore", branch="master" }
+# tc-cli = { git = "https://github.com/tetcoin/tetcore", branch="master" }
 
 [dependencies.funty]
 version = "1.1"

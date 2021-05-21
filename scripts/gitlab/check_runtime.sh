@@ -19,9 +19,9 @@ set -e # fail on any error
 #shellcheck source=lib.sh
 . "$(dirname "${0}")/lib.sh"
 
-SUBSTRATE_REPO="https://github.com/tetcoin/tetcore"
-SUBSTRATE_REPO_CARGO="git\+${SUBSTRATE_REPO}"
-SUBSTRATE_VERSIONS_FILE="bin/node/runtime/src/lib.rs"
+TETCORE_REPO="https://github.com/tetcoin/tetcore"
+TETCORE_REPO_CARGO="git\+${TETCORE_REPO}"
+TETCORE_VERSIONS_FILE="bin/node/runtime/src/lib.rs"
 
 # figure out the latest release tag
 boldprint "make sure we have all tags (including those from the release branch)"
@@ -62,13 +62,13 @@ then
   # continue checking if Cargo.lock was updated with a new tetcore reference
   # and if that change includes a {spec|impl}_version update.
 
-  SUBSTRATE_REFS_CHANGED="$(
+  TETCORE_REFS_CHANGED="$(
     git diff "refs/tags/${LATEST_TAG}...${CI_COMMIT_SHA}" Cargo.lock \
-    | sed -n -r "s~^[\+\-]source = \"${SUBSTRATE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | wc -l
+    | sed -n -r "s~^[\+\-]source = \"${TETCORE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | wc -l
   )"
 
   # check Cargo.lock for tetcore ref change
-  case "${SUBSTRATE_REFS_CHANGED}" in
+  case "${TETCORE_REFS_CHANGED}" in
     (0)
       boldprint "tetcore refs not changed in Cargo.lock"
       exit 0
@@ -77,37 +77,37 @@ then
       boldprint "tetcore refs updated since ${LATEST_TAG}"
       ;;
     (*)
-      boldprint "check unsupported: more than one commit targeted in repo ${SUBSTRATE_REPO_CARGO}"
+      boldprint "check unsupported: more than one commit targeted in repo ${TETCORE_REPO_CARGO}"
       exit 1
   esac
 
 
-  SUBSTRATE_PREV_REF="$(
+  TETCORE_PREV_REF="$(
     git diff "refs/tags/${LATEST_TAG}...${CI_COMMIT_SHA}" Cargo.lock \
-    | sed -n -r "s~^\-source = \"${SUBSTRATE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | head -n 1
+    | sed -n -r "s~^\-source = \"${TETCORE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | head -n 1
   )"
 
-  SUBSTRATE_NEW_REF="$(
+  TETCORE_NEW_REF="$(
     git diff "refs/tags/${LATEST_TAG}...${CI_COMMIT_SHA}" Cargo.lock \
-    | sed -n -r "s~^\+source = \"${SUBSTRATE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | head -n 1
+    | sed -n -r "s~^\+source = \"${TETCORE_REPO_CARGO}#([a-f0-9]+)\".*$~\1~p" | sort -u | head -n 1
   )"
 
 
   boldcat <<EOT
-previous tetcore commit id ${SUBSTRATE_PREV_REF}
-new tetcore commit id      ${SUBSTRATE_NEW_REF}
+previous tetcore commit id ${TETCORE_PREV_REF}
+new tetcore commit id      ${TETCORE_NEW_REF}
 EOT
 
   # okay so now need to fetch the tetcore repository and check whether spec_version or impl_version has changed there
-  SUBSTRATE_CLONE_DIR="$(mktemp -t -d tetcore-XXXXXX)"
-  trap 'rm -rf "${SUBSTRATE_CLONE_DIR}"' INT QUIT TERM ABRT EXIT
+  TETCORE_CLONE_DIR="$(mktemp -t -d tetcore-XXXXXX)"
+  trap 'rm -rf "${TETCORE_CLONE_DIR}"' INT QUIT TERM ABRT EXIT
 
   git clone --depth="${GIT_DEPTH:-100}" --no-tags \
-    "${SUBSTRATE_REPO}" "${SUBSTRATE_CLONE_DIR}"
+    "${TETCORE_REPO}" "${TETCORE_CLONE_DIR}"
 
   # check if there are changes to the spec|impl versions
-  git -C "${SUBSTRATE_CLONE_DIR}" diff \
-    "${SUBSTRATE_PREV_REF}..${SUBSTRATE_NEW_REF}" "${SUBSTRATE_VERSIONS_FILE}" \
+  git -C "${TETCORE_CLONE_DIR}" diff \
+    "${TETCORE_PREV_REF}..${TETCORE_NEW_REF}" "${TETCORE_VERSIONS_FILE}" \
     | grep -E '^[\+\-][[:space:]]+(spec|impl)_version: +([0-9]+),$' || exit 0
 
   boldcat <<EOT
@@ -117,8 +117,8 @@ EOT
 
   # Now check if any of the tetcore changes have been tagged D2-breaksapi
   (
-    cd "${SUBSTRATE_CLONE_DIR}"
-    tetcore_changes="$(sanitised_git_logs "${SUBSTRATE_PREV_REF}" "${SUBSTRATE_NEW_REF}")"
+    cd "${TETCORE_CLONE_DIR}"
+    tetcore_changes="$(sanitised_git_logs "${TETCORE_PREV_REF}" "${TETCORE_NEW_REF}")"
     echo "$tetcore_changes" | while read -r line; do
       pr_id=$(echo "$line" | sed -E 's/.*#([0-9]+)\)$/\1/')
 

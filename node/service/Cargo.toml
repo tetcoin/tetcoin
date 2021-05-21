@@ -32,7 +32,10 @@ tp-api = { version = "2.0.2" }
 tp-block-builder = { version = "2.0.2" }
 tp-blockchain = { version = "2.0.2" }
 tet-core = "2.0.2"
-tet-io = { version = "2.0.2" }
+# kedia: note that ', default-features = false, features = [ "disable_oom", "disable_panic_handler" ]' was added as may not be needed
+# the change was made due to the reciept of a rustc panic - memory was added as the solution
+# this raises the Tetcoin System RAM requirement to 32 GB
+tet-io = { version = "2.0.2", default-features = false, features = [ "disable_oom", "disable_panic_handler" ] }
 tp-keystore = { version = "0.8.1" }
 tp-offchain = { package = "tp-offchain", version = "2.0.2" }
 tp-runtime = "2.0.2"

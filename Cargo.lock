@@ -2601,19 +2601,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "jsonrpc-core"
-version = "15.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0745a6379e3edc893c84ec203589790774e4247420033e71a76d3ab4687991fa"
-dependencies = [
- "futures 0.1.31",
- "log",
- "serde",
- "serde_derive",
- "serde_json",
-]
-
-[[package]]
 name = "keccak"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7549,7 +7536,6 @@ dependencies = [
 name = "tetcoin-rpc"
 version = "0.8.28"
 dependencies = [
- "jsonrpc-core",
  "noble-transaction-payment-rpc",
  "tc-chain-spec",
  "tc-client-api",
@@ -7563,6 +7549,7 @@ dependencies = [
  "tc-sync-state-rpc",
  "tetcoin-primitives",
  "tetcore-fabric-rpc-system",
+ "tetsy-jsonrpc-core",
  "tetsy-scale-codec",
  "tp-api",
  "tp-block-builder",
@@ -8930,6 +8917,7 @@ dependencies = [
 [[package]]
 name = "tetsy-scale-codec"
 version = "2.0.1"
+source = "git+https://github.com/tetcoin/tetsy-scale-codec?branch=tet-hotfix-1#85c6db55a19e640691084cd6f9628a737e1732d5"
 dependencies = [
  "arrayvec 0.5.2",
  "bitvec",
@@ -8942,6 +8930,7 @@ dependencies = [
 [[package]]
 name = "tetsy-scale-codec-derive"
 version = "2.0.1"
+source = "git+https://github.com/tetcoin/tetsy-scale-codec?branch=tet-hotfix-1#85c6db55a19e640691084cd6f9628a737e1732d5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2 1.0.27",
@@ -10112,7 +10101,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "04f8ab788026715fa63b31960869617cba39117e520eb415b0139543e325ab59"
 dependencies = [
  "cfg-if 0.1.10",
- "rand 0.3.23",
+ "rand 0.7.3",
  "static_assertions",
 ]
 

@@ -36,7 +36,7 @@ use tc_sync_state_rpc::{SyncStateRpcApi, SyncStateRpcHandler};
 pub use tc_rpc::{DenyUnsafe, SubscriptionTaskExecutor};
 
 /// A type representing all RPC extensions.
-pub type RpcExtension = jsonrpc_core::IoHandler<tc_rpc::Metadata>;
+pub type RpcExtension = tetsy_jsonrpc_core::IoHandler<tc_rpc::Metadata>;
 
 /// Light client extra dependencies.
 pub struct LightDeps<C, F, P> {
@@ -110,7 +110,7 @@ pub fn create_full<C, P, SC, B>(deps: FullDeps<C, P, SC, B>) -> RpcExtension whe
 	use tc_finality_grandpa_rpc::{GrandpaApi, GrandpaRpcHandler};
 	use tc_consensus_babe_rpc::BabeRpcHandler;
 
-	let mut io = jsonrpc_core::IoHandler::default();
+	let mut io = tetsy_jsonrpc_core::IoHandler::default();
 	let FullDeps {
 		client,
 		pool,
@@ -191,7 +191,7 @@ pub fn create_light<C, P, F>(deps: LightDeps<C, F, P>) -> RpcExtension
 		remote_blockchain,
 		fetcher,
 	} = deps;
-	let mut io = jsonrpc_core::IoHandler::default();
+	let mut io = tetsy_jsonrpc_core::IoHandler::default();
 	io.extend_with(
 		SystemApi::<Hash, AccountId, Nonce>::to_delegate(LightSystem::new(client, remote_blockchain, fetcher, pool))
 	);

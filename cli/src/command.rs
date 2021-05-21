@@ -53,7 +53,7 @@ fn get_exec_name() -> Option<String> {
 impl TetcoreCli for Cli {
 	fn impl_name() -> String { "Parity Tetcoin".into() }
 
-	fn impl_version() -> String { env!("SUBSTRATE_CLI_IMPL_VERSION").into() }
+	fn impl_version() -> String { env!("TETCORE_CLI_IMPL_VERSION").into() }
 
 	fn description() -> String { env!("CARGO_PKG_DESCRIPTION").into() }
 
@@ -132,7 +132,7 @@ fn set_default_ss58_version(spec: &Box<dyn service::ChainSpec>) {
 	} else if spec.is_westend() {
 		Ss58AddressFormat::TetcoreAccount
 	} else {
-		Ss58AddressFormat::TetcoinAccount
+		Ss58AddressFormat::PolkadotAccount
 	};
 
 	tet_core::crypto::set_default_ss58_version(ss58_version);
