@@ -15,7 +15,7 @@ tetcoin-node-subsystem-util = { path = "../subsystem-util" }
 tetcoin-primitives = { version = "0.8.28", path = "../../primitives" }
 tetcoin-subsystem = { package = "tetcoin-node-subsystem", path = "../subsystem" }
 tracing = "0.1.22"
-tracing-futures = "0.2.4"
+# tracing-futures = "0.2.4"
 
 [dev-dependencies]
 tet-core = "2.0.2"

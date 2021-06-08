@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 futures = "0.3.12"
 tracing = "0.1.22"
-tracing-futures = "0.2.4"
+# tracing-futures = "0.2.4"
 tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 tetcoin-node-subsystem = { path = "../../subsystem" }
 tetcoin-node-subsystem-util = { path = "../../subsystem-util" }

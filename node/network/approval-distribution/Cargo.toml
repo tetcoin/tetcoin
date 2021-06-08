@@ -13,7 +13,7 @@ tetcoin-primitives = { version = "0.8.28", path = "../../../primitives" }
 
 futures = "0.3.8"
 tracing = "0.1.22"
-tracing-futures = "0.2.4"
+# tracing-futures = "0.2.4"
 
 [dev-dependencies]
 tet-core = { version = "2.0.2", features = ["std"] }
