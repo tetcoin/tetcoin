@@ -1,0 +1,27 @@
+environment:
+  matrix:
+    - FEATURES: ""
+
+platform:
+  - x86_64-pc-windows-msvc
+
+# avoid running tests twice
+branches:
+  only:
+    - master
+
+install:
+  - curl -sSf -o rustup-init.exe https://win.rustup.rs/
+  - rustup-init.exe -y --default-host %PLATFORM%
+  - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+  - rustc -vV
+  - cargo -vV
+  - rustup install nightly
+  - rustup target add wasm32-unknown-unknown --toolchain nightly
+
+build_script:
+  - cargo check --workspace --exclude tetcoin-erasure-coding --exclude test-parachains --exclude test-parachain-adder-collator --exclude test-parachain-adder --exclude test-parachain-halt --tests
+  - cargo build --workspace --exclude tetcoin-erasure-coding --exclude test-parachains --exclude test-parachain-adder-collator --exclude test-parachain-adder --exclude test-parachain-halt
+
+test_script:
+  - cargo test --workspace --exclude tetcoin-erasure-coding --exclude test-parachains --exclude test-parachain-adder-collator --exclude test-parachain-adder --exclude test-parachain-halt
