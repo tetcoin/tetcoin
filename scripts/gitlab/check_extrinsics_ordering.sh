@@ -8,7 +8,7 @@ trap 'kill "$(jobs -p)"' EXIT
 
 runtimes=(
   "westend"
-  "kusama"
+  "metrocoin"
   "tetcoin"
 )
 

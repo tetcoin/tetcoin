@@ -7,7 +7,7 @@ title: Tetcoin {{ env.VERSION }} Release checklist
 
 This is the release checklist for Tetcoin {{ env.VERSION }}. **All** following
 checks should be completed before publishing a new release of the
-Tetcoin/Kusama/Westend runtime or client. The current release candidate can be
+Tetcoin/Metrocoin/Westend runtime or client. The current release candidate can be
 checked out with `git checkout release-{{ env.VERSION }}`
 
 ### Runtime Releases
@@ -50,7 +50,7 @@ candidate branch.
 
 ### Burn In
 
-Ensure that Parity DevOps has run the new release on Westend, Kusama, and
+Ensure that Parity DevOps has run the new release on Westend, Metrocoin, and
 Tetcoin validators for at least 12 hours prior to publishing the release.
 
 ### Build Artifacts
@@ -111,11 +111,11 @@ on Github, or
 [AWS](https://releases.parity.io/tetcoin/x86_64-debian:stretch/{{ env.VERSION }}-rc1/tetcoin)
 (adjust the rc in this URL as necessary).
 2. Run the release-candidate binary using a local chain:
-`./tetcoin --chain=tetcoin-local` or `./tetcoin --chain=kusama.local`
+`./tetcoin --chain=tetcoin-local` or `./tetcoin --chain=metrocoin.local`
 3. Use [`tetcoin-js-tools`](https://github.com/tetcoin-js/tools) to compare
 the metadata:
   - For Tetcoin: `docker run --network host jacogr/tetcoin-js-tools metadata wss://rpc.tetcoin.io ws://localhost:9944`
-  - For Kusama: `docker run --network host jacogr/tetcoin-js-tools metadata wss://kusama-rpc.tetcoin.io ws://localhost:9944`
+  - For Metrocoin: `docker run --network host jacogr/tetcoin-js-tools metadata wss://metrocoin-rpc.tetcoin.io ws://localhost:9944`
 4. Things to look for in the output are lines like:
   - `[Identity] idx 28 -> 25 (calls 15)` - indicates the index for `Identity` has changed
   - `[+] Society, Recovery` - indicates the new version includes 2 additional modules/nobles.

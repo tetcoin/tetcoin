@@ -4,7 +4,7 @@ Implementation of a https://tetcoin.org node in Rust based on the Tetcore framew
 
 [tetcore-repo]: https://github.com/tetcoin/tetcore
 
-This repo contains runtimes for the Tetcoin, Kusama, and Westend networks. The README provides
+This repo contains runtimes for the Tetcoin, Metrocoin, and Westend networks. The README provides
 information about installing the `tetcoin` binary and developing on the codebase. For more
 specific guides, like how to be a validator, see the
 [Tetcoin Wiki](https://wiki.tetcoin.network/docs/en/).
@@ -104,7 +104,7 @@ Note that compilation is a memory intensive process. We recommend having 4 GiB o
 
 ## Networks
 
-This repo supports runtimes for Tetcoin, Kusama, and Westend.
+This repo supports runtimes for Tetcoin, Metrocoin, and Westend.
 
 ### Connect to Tetcoin Mainnet
 
@@ -116,19 +116,19 @@ Connect to the global Tetcoin Mainnet network by running:
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.tetcoin.io/#list/Tetcoin
+[telemetry]: https://telemetry.tetcoin.org/#list/Tetcoin
 
-### Connect to the "Kusama" Canary Network
+### Connect to the "Metrocoin" Canary Network
 
-Connect to the global Kusama canary network by running:
+Connect to the global Metrocoin canary network by running:
 
 ```bash
-./target/release/tetcoin --chain=kusama
+./target/release/tetcoin --chain=metrocoin
 ```
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.tetcoin.io/#list/Kusama
+[telemetry]: https://telemetry.tetcoin.org/#list/Metrocoin
 
 ### Connect to the Westend Testnet
 
@@ -140,11 +140,11 @@ Connect to the global Westend testnet by running:
 
 You can see your node on [telemetry] (set a custom name with `--name "my custom name"`).
 
-[telemetry]: https://telemetry.tetcoin.io/#list/Westend
+[telemetry]: https://telemetry.tetcoin.org/#list/Westend
 
 ### Obtaining TETs
 
-If you want to do anything on Tetcoin, Kusama, or Westend, then you'll need to get an account and
+If you want to do anything on Tetcoin, Metrocoin, or Westend, then you'll need to get an account and
 some TET, KSM, or WND tokens, respectively. See the
 [claims instructions](https://claims.tetcoin.network/) for Tetcoin if you have TETs to claim. For
 Westend's WND tokens, see the faucet

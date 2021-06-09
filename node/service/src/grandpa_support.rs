@@ -96,7 +96,7 @@ where
 /// w3f validators and randomly selected validators from the latest session (at
 /// #1500988).
 #[cfg(feature = "full-node")]
-pub(crate) fn kusama_hard_forks() -> Vec<(
+pub(crate) fn metrocoin_hard_forks() -> Vec<(
 	grandpa_primitives::SetId,
 	(Hash, tetcoin_primitives::v1::BlockNumber),
 	grandpa_primitives::AuthorityList,

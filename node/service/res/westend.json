@@ -13,7 +13,7 @@
   ],
   "telemetryEndpoints": [
     [
-      "wss://telemetry.tetcoin.io/submit/",
+      "wss://telemetry.tetcoin.org/submit/",
       0
     ]
   ],

@@ -53,7 +53,7 @@ use service::RpcHandlers;
 use telemetry::TelemetryConnectionNotifier;
 
 pub use self::client::{AbstractClient, Client, ClientHandle, ExecuteWithClient, RuntimeApiCollection};
-pub use chain_spec::{TetcoinChainSpec, KusamaChainSpec, WestendChainSpec, RococoChainSpec};
+pub use chain_spec::{TetcoinChainSpec, MetrocoinChainSpec, WestendChainSpec, RococoChainSpec};
 pub use consensus_common::{Proposal, SelectChain, BlockImport, RecordProof, block_validation::Chain};
 pub use tetcoin_parachain::wasm_executor::IsolationStrategy;
 pub use tetcoin_primitives::v1::{Block, BlockId, CollatorId, Hash, Id as ParaId};
@@ -69,7 +69,7 @@ pub use service::config::{DatabaseConfig, PrometheusConfig};
 pub use tp_api::{ApiRef, Core as CoreApi, ConstructRuntimeApi, ProvideRuntimeApi, StateBackend};
 pub use tp_runtime::traits::{DigestFor, HashFor, NumberFor, Block as BlockT, self as runtime_traits, BlakeTwo256};
 
-pub use kusama_runtime;
+pub use metrocoin_runtime;
 pub use tetcoin_runtime;
 pub use rococo_runtime;
 pub use westend_runtime;
@@ -82,9 +82,9 @@ native_executor_instance!(
 );
 
 native_executor_instance!(
-	pub KusamaExecutor,
-	kusama_runtime::api::dispatch,
-	kusama_runtime::native_version,
+	pub MetrocoinExecutor,
+	metrocoin_runtime::api::dispatch,
+	metrocoin_runtime::native_version,
 	fabric_benchmarking::benchmarking::HostFunctions,
 );
 
@@ -136,10 +136,10 @@ pub enum Error {
 	AuthoritiesRequireRealOverseer,
 }
 
-/// Can be called for a `Configuration` to check if it is a configuration for the `Kusama` network.
+/// Can be called for a `Configuration` to check if it is a configuration for the `Metrocoin` network.
 pub trait IdentifyVariant {
-	/// Returns if this is a configuration for the `Kusama` network.
-	fn is_kusama(&self) -> bool;
+	/// Returns if this is a configuration for the `Metrocoin` network.
+	fn is_metrocoin(&self) -> bool;
 
 	/// Returns if this is a configuration for the `Westend` network.
 	fn is_westend(&self) -> bool;
@@ -149,8 +149,8 @@ pub trait IdentifyVariant {
 }
 
 impl IdentifyVariant for Box<dyn ChainSpec> {
-	fn is_kusama(&self) -> bool {
-		self.id().starts_with("kusama") || self.id().starts_with("ksm")
+	fn is_metrocoin(&self) -> bool {
+		self.id().starts_with("metrocoin") || self.id().starts_with("ksm")
 	}
 	fn is_westend(&self) -> bool {
 		self.id().starts_with("westend") || self.id().starts_with("wnd")
@@ -246,8 +246,8 @@ fn new_partial<RuntimeApi, Executor>(config: &mut Configuration, jaeger_agent: O
 		client.clone(),
 	);
 
-	let grandpa_hard_forks = if config.chain_spec.is_kusama() {
-		grandpa_support::kusama_hard_forks()
+	let grandpa_hard_forks = if config.chain_spec.is_metrocoin() {
+		grandpa_support::metrocoin_hard_forks()
 	} else {
 		Vec::new()
 	};
@@ -950,10 +950,10 @@ pub fn new_chain_ops(mut config: &mut Configuration, jaeger_agent: Option<std::n
 		let service::PartialComponents { client, backend, import_queue, task_manager, .. }
 			= new_partial::<rococo_runtime::RuntimeApi, RococoExecutor>(config, jaeger_agent)?;
 		Ok((Arc::new(Client::Rococo(client)), backend, import_queue, task_manager))
-	} else if config.chain_spec.is_kusama() {
+	} else if config.chain_spec.is_metrocoin() {
 		let service::PartialComponents { client, backend, import_queue, task_manager, .. }
-			= new_partial::<kusama_runtime::RuntimeApi, KusamaExecutor>(config, jaeger_agent)?;
-		Ok((Arc::new(Client::Kusama(client)), backend, import_queue, task_manager))
+			= new_partial::<metrocoin_runtime::RuntimeApi, MetrocoinExecutor>(config, jaeger_agent)?;
+		Ok((Arc::new(Client::Metrocoin(client)), backend, import_queue, task_manager))
 	} else if config.chain_spec.is_westend() {
 		let service::PartialComponents { client, backend, import_queue, task_manager, .. }
 			= new_partial::<westend_runtime::RuntimeApi, WestendExecutor>(config, jaeger_agent)?;
@@ -973,8 +973,8 @@ pub fn build_light(config: Configuration) -> Result<(
 ), Error> {
 	if config.chain_spec.is_rococo() {
 		new_light::<rococo_runtime::RuntimeApi, RococoExecutor>(config)
-	} else if config.chain_spec.is_kusama() {
-		new_light::<kusama_runtime::RuntimeApi, KusamaExecutor>(config)
+	} else if config.chain_spec.is_metrocoin() {
+		new_light::<metrocoin_runtime::RuntimeApi, MetrocoinExecutor>(config)
 	} else if config.chain_spec.is_westend() {
 		new_light::<westend_runtime::RuntimeApi, WestendExecutor>(config)
 	} else {
@@ -997,14 +997,14 @@ pub fn build_full(
 			jaeger_agent,
 			Default::default(),
 		).map(|full| full.with_client(Client::Rococo))
-	} else if config.chain_spec.is_kusama() {
-		new_full::<kusama_runtime::RuntimeApi, KusamaExecutor>(
+	} else if config.chain_spec.is_metrocoin() {
+		new_full::<metrocoin_runtime::RuntimeApi, MetrocoinExecutor>(
 			config,
 			is_collator,
 			grandpa_pause,
 			jaeger_agent,
 			Default::default(),
-		).map(|full| full.with_client(Client::Kusama))
+		).map(|full| full.with_client(Client::Metrocoin))
 	} else if config.chain_spec.is_westend() {
 		new_full::<westend_runtime::RuntimeApi, WestendExecutor>(
 			config,

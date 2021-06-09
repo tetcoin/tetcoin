@@ -98,7 +98,7 @@ impl<Block, Backend, Client> AbstractClient<Block, Backend> for Client
 
 /// Execute something with the client instance.
 ///
-/// As there exist multiple chains inside Tetcoin, like Tetcoin itself, Kusama, Westend etc,
+/// As there exist multiple chains inside Tetcoin, like Tetcoin itself, Metrocoin, Westend etc,
 /// there can exist different kinds of client types. As these client types differ in the generics
 /// that are being used, we can not easily return them from a function. For returning them from a
 /// function there exists [`Client`]. However, the problem on how to use this client instance still
@@ -141,7 +141,7 @@ pub trait ClientHandle {
 pub enum Client {
 	Tetcoin(Arc<crate::FullClient<tetcoin_runtime::RuntimeApi, crate::TetcoinExecutor>>),
 	Westend(Arc<crate::FullClient<westend_runtime::RuntimeApi, crate::WestendExecutor>>),
-	Kusama(Arc<crate::FullClient<kusama_runtime::RuntimeApi, crate::KusamaExecutor>>),
+	Metrocoin(Arc<crate::FullClient<metrocoin_runtime::RuntimeApi, crate::MetrocoinExecutor>>),
 	Rococo(Arc<crate::FullClient<rococo_runtime::RuntimeApi, crate::RococoExecutor>>),
 }
 
@@ -154,7 +154,7 @@ impl ClientHandle for Client {
 			Self::Westend(client) => {
 				T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone())
 			},
-			Self::Kusama(client) => {
+			Self::Metrocoin(client) => {
 				T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone())
 			},
 			Self::Rococo(client) => {
@@ -169,7 +169,7 @@ impl tc_client_api::UsageProvider<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.usage_info(),
 			Self::Westend(client) => client.usage_info(),
-			Self::Kusama(client) => client.usage_info(),
+			Self::Metrocoin(client) => client.usage_info(),
 			Self::Rococo(client) => client.usage_info(),
 		}
 	}
@@ -183,7 +183,7 @@ impl tc_client_api::BlockBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.block_body(id),
 			Self::Westend(client) => client.block_body(id),
-			Self::Kusama(client) => client.block_body(id),
+			Self::Metrocoin(client) => client.block_body(id),
 			Self::Rococo(client) => client.block_body(id),
 		}
 	}
@@ -192,7 +192,7 @@ impl tc_client_api::BlockBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.block(id),
 			Self::Westend(client) => client.block(id),
-			Self::Kusama(client) => client.block(id),
+			Self::Metrocoin(client) => client.block(id),
 			Self::Rococo(client) => client.block(id),
 		}
 	}
@@ -201,7 +201,7 @@ impl tc_client_api::BlockBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.block_status(id),
 			Self::Westend(client) => client.block_status(id),
-			Self::Kusama(client) => client.block_status(id),
+			Self::Metrocoin(client) => client.block_status(id),
 			Self::Rococo(client) => client.block_status(id),
 		}
 	}
@@ -213,7 +213,7 @@ impl tc_client_api::BlockBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.justification(id),
 			Self::Westend(client) => client.justification(id),
-			Self::Kusama(client) => client.justification(id),
+			Self::Metrocoin(client) => client.justification(id),
 			Self::Rococo(client) => client.justification(id),
 		}
 	}
@@ -225,7 +225,7 @@ impl tc_client_api::BlockBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.block_hash(number),
 			Self::Westend(client) => client.block_hash(number),
-			Self::Kusama(client) => client.block_hash(number),
+			Self::Metrocoin(client) => client.block_hash(number),
 			Self::Rococo(client) => client.block_hash(number),
 		}
 	}
@@ -240,7 +240,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.storage(id, key),
 			Self::Westend(client) => client.storage(id, key),
-			Self::Kusama(client) => client.storage(id, key),
+			Self::Metrocoin(client) => client.storage(id, key),
 			Self::Rococo(client) => client.storage(id, key),
 		}
 	}
@@ -253,7 +253,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.storage_keys(id, key_prefix),
 			Self::Westend(client) => client.storage_keys(id, key_prefix),
-			Self::Kusama(client) => client.storage_keys(id, key_prefix),
+			Self::Metrocoin(client) => client.storage_keys(id, key_prefix),
 			Self::Rococo(client) => client.storage_keys(id, key_prefix),
 		}
 	}
@@ -266,7 +266,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.storage_hash(id, key),
 			Self::Westend(client) => client.storage_hash(id, key),
-			Self::Kusama(client) => client.storage_hash(id, key),
+			Self::Metrocoin(client) => client.storage_hash(id, key),
 			Self::Rococo(client) => client.storage_hash(id, key),
 		}
 	}
@@ -279,7 +279,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.storage_pairs(id, key_prefix),
 			Self::Westend(client) => client.storage_pairs(id, key_prefix),
-			Self::Kusama(client) => client.storage_pairs(id, key_prefix),
+			Self::Metrocoin(client) => client.storage_pairs(id, key_prefix),
 			Self::Rococo(client) => client.storage_pairs(id, key_prefix),
 		}
 	}
@@ -293,7 +293,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.storage_keys_iter(id, prefix, start_key),
 			Self::Westend(client) => client.storage_keys_iter(id, prefix, start_key),
-			Self::Kusama(client) => client.storage_keys_iter(id, prefix, start_key),
+			Self::Metrocoin(client) => client.storage_keys_iter(id, prefix, start_key),
 			Self::Rococo(client) => client.storage_keys_iter(id, prefix, start_key),
 		}
 	}
@@ -307,7 +307,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.child_storage(id, child_info, key),
 			Self::Westend(client) => client.child_storage(id, child_info, key),
-			Self::Kusama(client) => client.child_storage(id, child_info, key),
+			Self::Metrocoin(client) => client.child_storage(id, child_info, key),
 			Self::Rococo(client) => client.child_storage(id, child_info, key),
 		}
 	}
@@ -321,7 +321,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.child_storage_keys(id, child_info, key_prefix),
 			Self::Westend(client) => client.child_storage_keys(id, child_info, key_prefix),
-			Self::Kusama(client) => client.child_storage_keys(id, child_info, key_prefix),
+			Self::Metrocoin(client) => client.child_storage_keys(id, child_info, key_prefix),
 			Self::Rococo(client) => client.child_storage_keys(id, child_info, key_prefix),
 		}
 	}
@@ -335,7 +335,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.child_storage_hash(id, child_info, key),
 			Self::Westend(client) => client.child_storage_hash(id, child_info, key),
-			Self::Kusama(client) => client.child_storage_hash(id, child_info, key),
+			Self::Metrocoin(client) => client.child_storage_hash(id, child_info, key),
 			Self::Rococo(client) => client.child_storage_hash(id, child_info, key),
 		}
 	}
@@ -348,7 +348,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.max_key_changes_range(first, last),
 			Self::Westend(client) => client.max_key_changes_range(first, last),
-			Self::Kusama(client) => client.max_key_changes_range(first, last),
+			Self::Metrocoin(client) => client.max_key_changes_range(first, last),
 			Self::Rococo(client) => client.max_key_changes_range(first, last),
 		}
 	}
@@ -363,7 +363,7 @@ impl tc_client_api::StorageProvider<Block, crate::FullBackend> for Client {
 		match self {
 			Self::Tetcoin(client) => client.key_changes(first, last, storage_key, key),
 			Self::Westend(client) => client.key_changes(first, last, storage_key, key),
-			Self::Kusama(client) => client.key_changes(first, last, storage_key, key),
+			Self::Metrocoin(client) => client.key_changes(first, last, storage_key, key),
 			Self::Rococo(client) => client.key_changes(first, last, storage_key, key),
 		}
 	}
@@ -374,7 +374,7 @@ impl tp_blockchain::HeaderBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.header(&id),
 			Self::Westend(client) => client.header(&id),
-			Self::Kusama(client) => client.header(&id),
+			Self::Metrocoin(client) => client.header(&id),
 			Self::Rococo(client) => client.header(&id),
 		}
 	}
@@ -383,7 +383,7 @@ impl tp_blockchain::HeaderBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.info(),
 			Self::Westend(client) => client.info(),
-			Self::Kusama(client) => client.info(),
+			Self::Metrocoin(client) => client.info(),
 			Self::Rococo(client) => client.info(),
 		}
 	}
@@ -392,7 +392,7 @@ impl tp_blockchain::HeaderBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.status(id),
 			Self::Westend(client) => client.status(id),
-			Self::Kusama(client) => client.status(id),
+			Self::Metrocoin(client) => client.status(id),
 			Self::Rococo(client) => client.status(id),
 		}
 	}
@@ -401,7 +401,7 @@ impl tp_blockchain::HeaderBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.number(hash),
 			Self::Westend(client) => client.number(hash),
-			Self::Kusama(client) => client.number(hash),
+			Self::Metrocoin(client) => client.number(hash),
 			Self::Rococo(client) => client.number(hash),
 		}
 	}
@@ -410,7 +410,7 @@ impl tp_blockchain::HeaderBackend<Block> for Client {
 		match self {
 			Self::Tetcoin(client) => client.hash(number),
 			Self::Westend(client) => client.hash(number),
-			Self::Kusama(client) => client.hash(number),
+			Self::Metrocoin(client) => client.hash(number),
 			Self::Rococo(client) => client.hash(number),
 		}
 	}

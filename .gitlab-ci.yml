@@ -341,7 +341,7 @@ publish-s3-release:
 
 #### stage:                        deploy
 
-deploy-polkasync-kusama:
+deploy-tetsync-metrocoin:
   stage:                           deploy
   <<:                              *rules-build
   variables:

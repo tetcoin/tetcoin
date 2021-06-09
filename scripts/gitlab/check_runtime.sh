@@ -38,7 +38,7 @@ git fetch --depth="${GIT_DEPTH:-100}" origin master
 
 
 runtimes=(
-  "kusama"
+  "metrocoin"
   "tetcoin"
   "westend"
 )

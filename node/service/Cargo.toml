@@ -76,7 +76,7 @@ tetcoin-runtime-parachains = { path = "../../runtime/parachains" }
 
 # Tetcoin Runtimes
 tetcoin-runtime = { path = "../../runtime/tetcoin" }
-kusama-runtime = { path = "../../runtime/kusama" }
+metrocoin-runtime = { path = "../../runtime/metrocoin" }
 westend-runtime = { path = "../../runtime/westend" }
 rococo-runtime = { path = "../../runtime/rococo" }
 
@@ -113,7 +113,7 @@ full-node = [
 
 runtime-benchmarks = [
 	"tetcoin-runtime/runtime-benchmarks",
-	"kusama-runtime/runtime-benchmarks",
+	"metrocoin-runtime/runtime-benchmarks",
 	"westend-runtime/runtime-benchmarks",
 	"rococo-runtime/runtime-benchmarks"
 ]

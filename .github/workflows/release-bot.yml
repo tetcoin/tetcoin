@@ -8,8 +8,8 @@ jobs:
     strategy:
       matrix:
         channel:
-        - '!LhjZccBOqFNYKLdmbb:tetcoin.builders' # #KusamaValidatorLounge:tetcoin.builders
-        - '!FMwxpQnYhRCNDRsYGI:matrix.parity.io' # #kusama-announcements:matrix.parity.io
+        - '!LhjZccBOqFNYKLdmbb:tetcoin.builders' # #MetrocoinValidatorLounge:tetcoin.builders
+        - '!FMwxpQnYhRCNDRsYGI:matrix.parity.io' # #metrocoin-announcements:matrix.parity.io
         - '!NZrbtteFeqYKCUGQtr:matrix.parity.io' # #tetcoinvalidatorlounge:web3.foundation
         - '!UqHPWiCBGZWxrmYBkF:matrix.parity.io' # #tetcoin-announcements:matrix.parity.io
         - '!NTogofoetwjbTwOoPi:matrix.parity.io' # Internal release-notes channel

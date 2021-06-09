@@ -89,7 +89,7 @@ release_priority = Changelog.highest_priority_for_changes(client_changes)
 rustc_stable = ENV['RUSTC_STABLE']
 rustc_nightly = ENV['RUSTC_NIGHTLY']
 tetcoin_runtime = get_runtime('tetcoin', tetcoin_path)
-kusama_runtime = get_runtime('kusama', tetcoin_path)
+metrocoin_runtime = get_runtime('metrocoin', tetcoin_path)
 westend_runtime = get_runtime('westend', tetcoin_path)
 
 # These json files should have been downloaded as part of the build-runtimes
@@ -101,9 +101,9 @@ tetcoin_json = JSON.parse(
   )
 )
 
-kusama_json = JSON.parse(
+metrocoin_json = JSON.parse(
   File.read(
-    ENV['GITHUB_WORKSPACE'] + '/kusama-srtool-json/srtool_output.json'
+    ENV['GITHUB_WORKSPACE'] + '/metrocoin-srtool-json/srtool_output.json'
   )
 )
 

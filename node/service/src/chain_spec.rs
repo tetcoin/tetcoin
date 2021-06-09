@@ -20,8 +20,8 @@ use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use babe_primitives::AuthorityId as BabeId;
 use grandpa::AuthorityId as GrandpaId;
 use hex_literal::hex;
-use kusama::constants::currency::TETS as KSM;
-use kusama_runtime as kusama;
+use metrocoin::constants::currency::TETS as KSM;
+use metrocoin_runtime as metrocoin;
 use noble_im_online::sr25519::AuthorityId as ImOnlineId;
 use noble_staking::Forcing;
 use tetcoin::constants::currency::TETS;
@@ -37,10 +37,10 @@ use telemetry::TelemetryEndpoints;
 use westend::constants::currency::TETS as WND;
 use westend_runtime as westend;
 
-const TETCOIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
-const KUSAMA_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
-const WESTEND_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
-const ROCOCO_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.io/submit/";
+const TETCOIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.org/submit/";
+const METROCOIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.org/submit/";
+const WESTEND_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.org/submit/";
+const ROCOCO_STAGING_TELEMETRY_URL: &str = "wss://telemetry.tetcoin.org/submit/";
 const DEFAULT_PROTOCOL_ID: &str = "tet";
 
 /// Node `ChainSpec` extensions.
@@ -59,8 +59,8 @@ pub struct Extensions {
 /// The `ChainSpec` parametrised for the tetcoin runtime.
 pub type TetcoinChainSpec = service::GenericChainSpec<tetcoin::GenesisConfig, Extensions>;
 
-/// The `ChainSpec` parametrised for the kusama runtime.
-pub type KusamaChainSpec = service::GenericChainSpec<kusama::GenesisConfig, Extensions>;
+/// The `ChainSpec` parametrised for the metrocoin runtime.
+pub type MetrocoinChainSpec = service::GenericChainSpec<metrocoin::GenesisConfig, Extensions>;
 
 /// The `ChainSpec` parametrised for the westend runtime.
 pub type WestendChainSpec = service::GenericChainSpec<westend::GenesisConfig, Extensions>;
@@ -97,8 +97,8 @@ pub fn tetcoin_config() -> Result<TetcoinChainSpec, String> {
 	TetcoinChainSpec::from_json_bytes(&include_bytes!("../res/tetcoin.json")[..])
 }
 
-pub fn kusama_config() -> Result<KusamaChainSpec, String> {
-	KusamaChainSpec::from_json_bytes(&include_bytes!("../res/kusama.json")[..])
+pub fn metrocoin_config() -> Result<MetrocoinChainSpec, String> {
+	MetrocoinChainSpec::from_json_bytes(&include_bytes!("../res/metrocoin.json")[..])
 }
 
 pub fn westend_config() -> Result<TetcoinChainSpec, String> {
@@ -127,15 +127,15 @@ fn tetcoin_session_keys(
 	}
 }
 
-fn kusama_session_keys(
+fn metrocoin_session_keys(
 	babe: BabeId,
 	grandpa: GrandpaId,
 	im_online: ImOnlineId,
 	para_validator: ValidatorId,
 	para_assignment: AssignmentId,
 	authority_discovery: AuthorityDiscoveryId,
-) -> kusama::SessionKeys {
-	kusama::SessionKeys {
+) -> metrocoin::SessionKeys {
+	metrocoin::SessionKeys {
 		babe,
 		grandpa,
 		im_online,
@@ -459,7 +459,7 @@ fn westend_staging_testnet_config_genesis(wasm_binary: &[u8]) -> westend::Genesi
 	}
 }
 
-fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisConfig {
+fn metrocoin_staging_testnet_config_genesis(wasm_binary: &[u8]) -> metrocoin::GenesisConfig {
 	// subkey inspect "$SECRET"
 	let endowed_accounts = vec![
 		// 5CVFESwfkk7NmhQ6FwHCM9roBvr9BGa4vJHFYU8DnGQxrXvz
@@ -582,27 +582,27 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 	const ENDOWMENT: u128 = 1_000_000 * KSM;
 	const STASH: u128 = 100 * KSM;
 
-	kusama::GenesisConfig {
-		fabric_system: Some(kusama::SystemConfig {
+	metrocoin::GenesisConfig {
+		fabric_system: Some(metrocoin::SystemConfig {
 			code: wasm_binary.to_vec(),
 			changes_trie_config: Default::default(),
 		}),
-		noble_balances: Some(kusama::BalancesConfig {
+		noble_balances: Some(metrocoin::BalancesConfig {
 			balances: endowed_accounts
 				.iter()
 				.map(|k: &AccountId| (k.clone(), ENDOWMENT))
 				.chain(initial_authorities.iter().map(|x| (x.0.clone(), STASH)))
 				.collect(),
 		}),
-		noble_indices: Some(kusama::IndicesConfig { indices: vec![] }),
-		noble_session: Some(kusama::SessionConfig {
+		noble_indices: Some(metrocoin::IndicesConfig { indices: vec![] }),
+		noble_session: Some(metrocoin::SessionConfig {
 			keys: initial_authorities
 				.iter()
 				.map(|x| {
 					(
 						x.0.clone(),
 						x.0.clone(),
-						kusama_session_keys(
+						metrocoin_session_keys(
 							x.2.clone(),
 							x.3.clone(),
 							x.4.clone(),
@@ -614,7 +614,7 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 				})
 				.collect::<Vec<_>>(),
 		}),
-		noble_staking: Some(kusama::StakingConfig {
+		noble_staking: Some(metrocoin::StakingConfig {
 			validator_count: 50,
 			minimum_validator_count: 4,
 			stakers: initial_authorities
@@ -624,7 +624,7 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 						x.0.clone(),
 						x.1.clone(),
 						STASH,
-						kusama::StakerStatus::Validator,
+						metrocoin::StakerStatus::Validator,
 					)
 				})
 				.collect(),
@@ -635,11 +635,11 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 		}),
 		noble_elections_phragmen: Some(Default::default()),
 		noble_democracy: Some(Default::default()),
-		noble_collective_Instance1: Some(kusama::CouncilConfig {
+		noble_collective_Instance1: Some(metrocoin::CouncilConfig {
 			members: vec![],
 			phantom: Default::default(),
 		}),
-		noble_collective_Instance2: Some(kusama::TechnicalCommitteeConfig {
+		noble_collective_Instance2: Some(metrocoin::TechnicalCommitteeConfig {
 			members: vec![],
 			phantom: Default::default(),
 		}),
@@ -647,12 +647,12 @@ fn kusama_staging_testnet_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisC
 		noble_babe: Some(Default::default()),
 		noble_grandpa: Some(Default::default()),
 		noble_im_online: Some(Default::default()),
-		noble_authority_discovery: Some(kusama::AuthorityDiscoveryConfig { keys: vec![] }),
-		claims: Some(kusama::ClaimsConfig {
+		noble_authority_discovery: Some(metrocoin::AuthorityDiscoveryConfig { keys: vec![] }),
+		claims: Some(metrocoin::ClaimsConfig {
 			claims: vec![],
 			vesting: vec![],
 		}),
-		noble_vesting: Some(kusama::VestingConfig { vesting: vec![] }),
+		noble_vesting: Some(metrocoin::VestingConfig { vesting: vec![] }),
 		noble_treasury: Some(Default::default()),
 	}
 }
@@ -921,19 +921,19 @@ pub fn tetcoin_staging_testnet_config() -> Result<TetcoinChainSpec, String> {
 }
 
 /// Staging testnet config.
-pub fn kusama_staging_testnet_config() -> Result<KusamaChainSpec, String> {
-	let wasm_binary = kusama::WASM_BINARY.ok_or("Kusama development wasm not available")?;
+pub fn metrocoin_staging_testnet_config() -> Result<MetrocoinChainSpec, String> {
+	let wasm_binary = metrocoin::WASM_BINARY.ok_or("Metrocoin development wasm not available")?;
 	let boot_nodes = vec![];
 
-	Ok(KusamaChainSpec::from_genesis(
-		"Kusama Staging Testnet",
-		"kusama_staging_testnet",
+	Ok(MetrocoinChainSpec::from_genesis(
+		"Metrocoin Staging Testnet",
+		"metrocoin_staging_testnet",
 		ChainType::Live,
-		move || kusama_staging_testnet_config_genesis(wasm_binary),
+		move || metrocoin_staging_testnet_config_genesis(wasm_binary),
 		boot_nodes,
 		Some(
-			TelemetryEndpoints::new(vec![(KUSAMA_STAGING_TELEMETRY_URL.to_string(), 0)])
-				.expect("Kusama Staging telemetry url is valid; qed"),
+			TelemetryEndpoints::new(vec![(METROCOIN_STAGING_TELEMETRY_URL.to_string(), 0)])
+				.expect("Metrocoin Staging telemetry url is valid; qed"),
 		),
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
@@ -1138,8 +1138,8 @@ pub fn tetcoin_testnet_genesis(
 	}
 }
 
-/// Helper function to create kusama GenesisConfig for testing
-pub fn kusama_testnet_genesis(
+/// Helper function to create metrocoin GenesisConfig for testing
+pub fn metrocoin_testnet_genesis(
 	wasm_binary: &[u8],
 	initial_authorities: Vec<(
 		AccountId,
@@ -1153,32 +1153,32 @@ pub fn kusama_testnet_genesis(
 	)>,
 	_root_key: AccountId,
 	endowed_accounts: Option<Vec<AccountId>>,
-) -> kusama::GenesisConfig {
+) -> metrocoin::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
 	const ENDOWMENT: u128 = 1_000_000 * KSM;
 	const STASH: u128 = 100 * KSM;
 
-	kusama::GenesisConfig {
-		fabric_system: Some(kusama::SystemConfig {
+	metrocoin::GenesisConfig {
+		fabric_system: Some(metrocoin::SystemConfig {
 			code: wasm_binary.to_vec(),
 			changes_trie_config: Default::default(),
 		}),
-		noble_indices: Some(kusama::IndicesConfig { indices: vec![] }),
-		noble_balances: Some(kusama::BalancesConfig {
+		noble_indices: Some(metrocoin::IndicesConfig { indices: vec![] }),
+		noble_balances: Some(metrocoin::BalancesConfig {
 			balances: endowed_accounts
 				.iter()
 				.map(|k| (k.clone(), ENDOWMENT))
 				.collect(),
 		}),
-		noble_session: Some(kusama::SessionConfig {
+		noble_session: Some(metrocoin::SessionConfig {
 			keys: initial_authorities
 				.iter()
 				.map(|x| {
 					(
 						x.0.clone(),
 						x.0.clone(),
-						kusama_session_keys(
+						metrocoin_session_keys(
 							x.2.clone(),
 							x.3.clone(),
 							x.4.clone(),
@@ -1190,7 +1190,7 @@ pub fn kusama_testnet_genesis(
 				})
 				.collect::<Vec<_>>(),
 		}),
-		noble_staking: Some(kusama::StakingConfig {
+		noble_staking: Some(metrocoin::StakingConfig {
 			minimum_validator_count: 1,
 			validator_count: 2,
 			stakers: initial_authorities
@@ -1200,7 +1200,7 @@ pub fn kusama_testnet_genesis(
 						x.0.clone(),
 						x.1.clone(),
 						STASH,
-						kusama::StakerStatus::Validator,
+						metrocoin::StakerStatus::Validator,
 					)
 				})
 				.collect(),
@@ -1210,12 +1210,12 @@ pub fn kusama_testnet_genesis(
 			..Default::default()
 		}),
 		noble_elections_phragmen: Some(Default::default()),
-		noble_democracy: Some(kusama::DemocracyConfig::default()),
-		noble_collective_Instance1: Some(kusama::CouncilConfig {
+		noble_democracy: Some(metrocoin::DemocracyConfig::default()),
+		noble_collective_Instance1: Some(metrocoin::CouncilConfig {
 			members: vec![],
 			phantom: Default::default(),
 		}),
-		noble_collective_Instance2: Some(kusama::TechnicalCommitteeConfig {
+		noble_collective_Instance2: Some(metrocoin::TechnicalCommitteeConfig {
 			members: vec![],
 			phantom: Default::default(),
 		}),
@@ -1223,12 +1223,12 @@ pub fn kusama_testnet_genesis(
 		noble_babe: Some(Default::default()),
 		noble_grandpa: Some(Default::default()),
 		noble_im_online: Some(Default::default()),
-		noble_authority_discovery: Some(kusama::AuthorityDiscoveryConfig { keys: vec![] }),
-		claims: Some(kusama::ClaimsConfig {
+		noble_authority_discovery: Some(metrocoin::AuthorityDiscoveryConfig { keys: vec![] }),
+		claims: Some(metrocoin::ClaimsConfig {
 			claims: vec![],
 			vesting: vec![],
 		}),
-		noble_vesting: Some(kusama::VestingConfig { vesting: vec![] }),
+		noble_vesting: Some(metrocoin::VestingConfig { vesting: vec![] }),
 		noble_treasury: Some(Default::default()),
 	}
 }
@@ -1414,8 +1414,8 @@ fn tetcoin_development_config_genesis(wasm_binary: &[u8]) -> tetcoin::GenesisCon
 	)
 }
 
-fn kusama_development_config_genesis(wasm_binary: &[u8]) -> kusama::GenesisConfig {
-	kusama_testnet_genesis(
+fn metrocoin_development_config_genesis(wasm_binary: &[u8]) -> metrocoin::GenesisConfig {
+	metrocoin_testnet_genesis(
 		wasm_binary,
 		vec![get_authority_keys_from_seed("Alice")],
 		get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -1449,15 +1449,15 @@ pub fn tetcoin_development_config() -> Result<TetcoinChainSpec, String> {
 	))
 }
 
-/// Kusama development config (single validator Alice)
-pub fn kusama_development_config() -> Result<KusamaChainSpec, String> {
-	let wasm_binary = kusama::WASM_BINARY.ok_or("Kusama development wasm not available")?;
+/// Metrocoin development config (single validator Alice)
+pub fn metrocoin_development_config() -> Result<MetrocoinChainSpec, String> {
+	let wasm_binary = metrocoin::WASM_BINARY.ok_or("Metrocoin development wasm not available")?;
 
-	Ok(KusamaChainSpec::from_genesis(
+	Ok(MetrocoinChainSpec::from_genesis(
 		"Development",
-		"kusama_dev",
+		"metrocoin_dev",
 		ChainType::Development,
-		move || kusama_development_config_genesis(wasm_binary),
+		move || metrocoin_development_config_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
@@ -1512,8 +1512,8 @@ pub fn tetcoin_local_testnet_config() -> Result<TetcoinChainSpec, String> {
 	))
 }
 
-fn kusama_local_testnet_genesis(wasm_binary: &[u8]) -> kusama::GenesisConfig {
-	kusama_testnet_genesis(
+fn metrocoin_local_testnet_genesis(wasm_binary: &[u8]) -> metrocoin::GenesisConfig {
+	metrocoin_testnet_genesis(
 		wasm_binary,
 		vec![
 			get_authority_keys_from_seed("Alice"),
@@ -1524,15 +1524,15 @@ fn kusama_local_testnet_genesis(wasm_binary: &[u8]) -> kusama::GenesisConfig {
 	)
 }
 
-/// Kusama local testnet config (multivalidator Alice + Bob)
-pub fn kusama_local_testnet_config() -> Result<KusamaChainSpec, String> {
-	let wasm_binary = kusama::WASM_BINARY.ok_or("Kusama development wasm not available")?;
+/// Metrocoin local testnet config (multivalidator Alice + Bob)
+pub fn metrocoin_local_testnet_config() -> Result<MetrocoinChainSpec, String> {
+	let wasm_binary = metrocoin::WASM_BINARY.ok_or("Metrocoin development wasm not available")?;
 
-	Ok(KusamaChainSpec::from_genesis(
-		"Kusama Local Testnet",
-		"kusama_local_testnet",
+	Ok(MetrocoinChainSpec::from_genesis(
+		"Metrocoin Local Testnet",
+		"metrocoin_local_testnet",
 		ChainType::Local,
-		move || kusama_local_testnet_genesis(wasm_binary),
+		move || metrocoin_local_testnet_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),

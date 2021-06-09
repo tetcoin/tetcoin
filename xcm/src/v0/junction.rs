@@ -28,8 +28,8 @@ pub enum NetworkId {
 	Named(Vec<u8>),
 	/// The Tetcoin Relay chain
 	Tetcoin,
-	/// Kusama.
-	Kusama,
+	/// Metrocoin.
+	Metrocoin,
 }
 
 /// A single item in a path to describe the relative location of a consensus system.

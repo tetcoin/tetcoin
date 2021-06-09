@@ -68,7 +68,7 @@ impl TetcoreCli for Cli {
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn tc_service::ChainSpec>, String> {
 		let id = if id == "" {
 			let n = get_exec_name().unwrap_or_default();
-			["tetcoin", "kusama", "westend", "rococo"].iter()
+			["tetcoin", "metrocoin", "westend", "rococo"].iter()
 				.cloned()
 				.find(|&chain| n.starts_with(chain))
 				.unwrap_or("tetcoin")
@@ -77,12 +77,12 @@ impl TetcoreCli for Cli {
 			"tetcoin-dev" | "dev" => Box::new(service::chain_spec::tetcoin_development_config()?),
 			"tetcoin-local" => Box::new(service::chain_spec::tetcoin_local_testnet_config()?),
 			"tetcoin-staging" => Box::new(service::chain_spec::tetcoin_staging_testnet_config()?),
-			"kusama-dev" => Box::new(service::chain_spec::kusama_development_config()?),
-			"kusama-local" => Box::new(service::chain_spec::kusama_local_testnet_config()?),
-			"kusama-staging" => Box::new(service::chain_spec::kusama_staging_testnet_config()?),
+			"metrocoin-dev" => Box::new(service::chain_spec::metrocoin_development_config()?),
+			"metrocoin-local" => Box::new(service::chain_spec::metrocoin_local_testnet_config()?),
+			"metrocoin-staging" => Box::new(service::chain_spec::metrocoin_staging_testnet_config()?),
 			"tetcoin" => Box::new(service::chain_spec::tetcoin_config()?),
 			"westend" => Box::new(service::chain_spec::westend_config()?),
-			"kusama" => Box::new(service::chain_spec::kusama_config()?),
+			"metrocoin" => Box::new(service::chain_spec::metrocoin_config()?),
 			"westend-dev" => Box::new(service::chain_spec::westend_development_config()?),
 			"westend-local" => Box::new(service::chain_spec::westend_local_testnet_config()?),
 			"westend-staging" => Box::new(service::chain_spec::westend_staging_testnet_config()?),
@@ -100,8 +100,8 @@ impl TetcoreCli for Cli {
 				// we use the chain spec for the specific chain.
 				if self.run.force_rococo || starts_with("rococo") {
 					Box::new(service::RococoChainSpec::from_json_file(path)?)
-				} else if self.run.force_kusama || starts_with("kusama") {
-					Box::new(service::KusamaChainSpec::from_json_file(path)?)
+				} else if self.run.force_metrocoin || starts_with("metrocoin") {
+					Box::new(service::MetrocoinChainSpec::from_json_file(path)?)
 				} else if self.run.force_westend || starts_with("westend") {
 					Box::new(service::WestendChainSpec::from_json_file(path)?)
 				} else {
@@ -112,8 +112,8 @@ impl TetcoreCli for Cli {
 	}
 
 	fn native_runtime_version(spec: &Box<dyn service::ChainSpec>) -> &'static RuntimeVersion {
-		if spec.is_kusama() {
-			&service::kusama_runtime::VERSION
+		if spec.is_metrocoin() {
+			&service::metrocoin_runtime::VERSION
 		} else if spec.is_westend() {
 			&service::westend_runtime::VERSION
 		} else if spec.is_rococo() {
@@ -127,8 +127,8 @@ impl TetcoreCli for Cli {
 fn set_default_ss58_version(spec: &Box<dyn service::ChainSpec>) {
 	use tet_core::crypto::Ss58AddressFormat;
 
-	let ss58_version = if spec.is_kusama() {
-		Ss58AddressFormat::KusamaAccount
+	let ss58_version = if spec.is_metrocoin() {
+		Ss58AddressFormat::MetrocoinAccount
 	} else if spec.is_westend() {
 		Ss58AddressFormat::TetcoreAccount
 	} else {
@@ -156,11 +156,11 @@ pub fn run() -> Result<()> {
 				Some((cli.run.grandpa_pause[0], cli.run.grandpa_pause[1]))
 			};
 
-			if chain_spec.is_kusama() {
+			if chain_spec.is_metrocoin() {
 				info!("----------------------------");
 				info!("This chain is not in any way");
 				info!("      endorsed by the       ");
-				info!("     KUSAMA FOUNDATION      ");
+				info!("   METROCOIN FOUNDATION     ");
 				info!("----------------------------");
 			}
 
@@ -268,7 +268,7 @@ pub fn run() -> Result<()> {
 			set_default_ss58_version(chain_spec);
 
 			Ok(runner.sync_run(|config| {
-				cmd.run::<service::kusama_runtime::Block, service::KusamaExecutor>(config)
+				cmd.run::<service::metrocoin_runtime::Block, service::MetrocoinExecutor>(config)
 				.map_err(|e| Error::TetcoreCli(e))
 			})?)
 		},

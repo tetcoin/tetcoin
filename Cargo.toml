@@ -48,7 +48,7 @@ members = [
 	"runtime/common",
 	"runtime/parachains",
 	"runtime/tetcoin",
-	"runtime/kusama",
+	"runtime/metrocoin",
 	"runtime/rococo",
 	"runtime/westend",
 	"runtime/test-runtime",

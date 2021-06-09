@@ -71,9 +71,9 @@ pub struct RunCmd {
 	#[structopt(flatten)]
 	pub base: tc_cli::RunCmd,
 
-	/// Force using Kusama native runtime.
-	#[structopt(long = "force-kusama")]
-	pub force_kusama: bool,
+	/// Force using Metrocoin native runtime.
+	#[structopt(long = "force-metrocoin")]
+	pub force_metrocoin: bool,
 
 	/// Force using Westend native runtime.
 	#[structopt(long = "force-westend")]

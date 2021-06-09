@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Tetcoin.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Common runtime code for Tetcoin and Kusama.
+//! Common runtime code for Tetcoin and Metrocoin.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
