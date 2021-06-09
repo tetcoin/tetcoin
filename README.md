@@ -145,7 +145,7 @@ You can see your node on [telemetry] (set a custom name with `--name "my custom 
 ### Obtaining TETs
 
 If you want to do anything on Tetcoin, Metrocoin, or Westend, then you'll need to get an account and
-some TET, KSM, or WND tokens, respectively. See the
+some TET, MTC, or WND tokens, respectively. See the
 [claims instructions](https://claims.tetcoin.network/) for Tetcoin if you have TETs to claim. For
 Westend's WND tokens, see the faucet
 [instructions](https://wiki.tetcoin.network/docs/en/learn-TET#getting-westies) on the Wiki.

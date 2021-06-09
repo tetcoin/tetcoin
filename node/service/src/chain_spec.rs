@@ -20,7 +20,7 @@ use tp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use babe_primitives::AuthorityId as BabeId;
 use grandpa::AuthorityId as GrandpaId;
 use hex_literal::hex;
-use metrocoin::constants::currency::TETS as KSM;
+use metrocoin::constants::currency::TETS as MTC;
 use metrocoin_runtime as metrocoin;
 use noble_im_online::sr25519::AuthorityId as ImOnlineId;
 use noble_staking::Forcing;
@@ -579,8 +579,8 @@ fn metrocoin_staging_testnet_config_genesis(wasm_binary: &[u8]) -> metrocoin::Ge
 		),
 	];
 
-	const ENDOWMENT: u128 = 1_000_000 * KSM;
-	const STASH: u128 = 100 * KSM;
+	const ENDOWMENT: u128 = 1_000_000 * MTC;
+	const STASH: u128 = 100 * MTC;
 
 	metrocoin::GenesisConfig {
 		fabric_system: Some(metrocoin::SystemConfig {
@@ -1156,8 +1156,8 @@ pub fn metrocoin_testnet_genesis(
 ) -> metrocoin::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * KSM;
-	const STASH: u128 = 100 * KSM;
+	const ENDOWMENT: u128 = 1_000_000 * MTC;
+	const STASH: u128 = 100 * MTC;
 
 	metrocoin::GenesisConfig {
 		fabric_system: Some(metrocoin::SystemConfig {

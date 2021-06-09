@@ -1,6 +1,6 @@
 {
   "name": "Metrocoin",
-  "id": "ksmcc3",
+  "id": "metrocoin",
   "bootNodes": [
     "/dns/p2p.0.metrocoin.network/tcp/30333/p2p/12D3KooWJDohybWd7FvRmyeGjgi56yy36mRWLHmgRprFdUadUt6b",
     "/dns/p2p.1.metrocoin.network/tcp/30333/p2p/12D3KooWC7dnTvDY97afoLrvQSBrh7dDFEkWniTwyxAsBjfpaZk6",
@@ -18,11 +18,11 @@
       0
     ]
   ],
-  "protocolId": "ksmcc3",
+  "protocolId": "mtc",
   "properties": {
     "ss58Format": 2,
     "tokenDecimals": 12,
-    "tokenSymbol": "KSM"
+    "tokenSymbol": "MTC"
   },
   "consensusEngine": null,
   "forkBlocks": null,

@@ -150,7 +150,7 @@ pub trait IdentifyVariant {
 
 impl IdentifyVariant for Box<dyn ChainSpec> {
 	fn is_metrocoin(&self) -> bool {
-		self.id().starts_with("metrocoin") || self.id().starts_with("ksm")
+		self.id().starts_with("metrocoin") || self.id().starts_with("mtc")
 	}
 	fn is_westend(&self) -> bool {
 		self.id().starts_with("westend") || self.id().starts_with("wnd")

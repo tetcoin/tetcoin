@@ -132,7 +132,7 @@ fn set_default_ss58_version(spec: &Box<dyn service::ChainSpec>) {
 	} else if spec.is_westend() {
 		Ss58AddressFormat::TetcoreAccount
 	} else {
-		Ss58AddressFormat::PolkadotAccount
+		Ss58AddressFormat::TetcoinAccount
 	};
 
 	tet_core::crypto::set_default_ss58_version(ss58_version);

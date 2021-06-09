@@ -7,29 +7,29 @@ the tetcoin binary, pulled from our package repository.
 Let´s first check the version we have. The first time you run this command, the tetcoin docker image will be downloaded. This takes a bit of time and bandwidth, be patient:
 
 ```bash
-docker run --rm -it parity/tetcoin:latest --version
+docker run --rm -it tetcoin/tetcoin:latest --version
 ```
 
 You can also pass any argument/flag that tetcoin supports:
 
 ```bash
-docker run --rm -it parity/tetcoin:latest --chain westend --name "PolkaDocker"
+docker run --rm -it tetcoin/tetcoin:latest --chain westend --name "TetsyDocker"
 ```
 
 Once you are done experimenting and picking the best node name :) you can start tetcoin as daemon, exposes the tetcoin ports and mount a volume that will keep your blockchain data locally:
 
 ```bash
-docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data parity/tetcoin:latest --chain westend
+docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data tetcoin/tetcoin:latest --chain westend
 ```
 
 Additionally if you want to have custom node name you can add the `--name "YourName"` at the end
 
 ```bash
-docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data parity/tetcoin:latest --chain westend --name "PolkaDocker"
+docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data tetcoin/tetcoin:latest --chain westend --name "TetsyDocker"
 ```
 
 ```bash
-docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data parity/tetcoin:latest --rpc-external --chain westend
+docker run -d -p 30333:30333 -p 9933:9933 -v /my/local/folder:/data tetcoin/tetcoin:latest --rpc-external --chain westend
 ```
 
 If you want to connect to rpc port 9933, then must add tetcoin startup parameter: `--rpc-external`.
@@ -70,7 +70,7 @@ If you run into issues with tetcoin when using docker, please run the following 
 (replace the tag with the appropriate one if you do not use latest):
 
 ```bash
-docker run --rm -it parity/tetcoin:latest --version
+docker run --rm -it tetcoin/tetcoin:latest --version
 ```
 
 This will show you the tetcoin version as well as the git commit ref that was used to build your container.
