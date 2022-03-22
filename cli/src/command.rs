@@ -124,15 +124,16 @@ impl TetcoreCli for Cli {
 	}
 }
 
+/// dust TODO: unrevert Kusama to MetrocoinAccount and the same for Polkadot
 fn set_default_ss58_version(spec: &Box<dyn service::ChainSpec>) {
 	use tet_core::crypto::Ss58AddressFormat;
 
 	let ss58_version = if spec.is_metrocoin() {
-		Ss58AddressFormat::MetrocoinAccount
+		Ss58AddressFormat::KusamaAccount
 	} else if spec.is_westend() {
 		Ss58AddressFormat::TetcoreAccount
 	} else {
-		Ss58AddressFormat::TetcoinAccount
+		Ss58AddressFormat::PolkadotAccount
 	};
 
 	tet_core::crypto::set_default_ss58_version(ss58_version);
